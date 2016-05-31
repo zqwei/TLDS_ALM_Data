@@ -14,13 +14,8 @@ nFold        = 10;
 for nSession = 1:numSession
     
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
-    % Y : trial x yDim x T
     Y          = permute(Y, [2 3 1]);
-    % Y : yDim x T x trial
-    
-%     randSeqY   = randperm(size(Y,3));
-%     Y          = Y(:, :, randSeqY);
-    xDim       = size(Y,1)-2; %ceil(size(Y,1)/3*2);
+    xDim       = size(Y,1)-2;
     
     err_model1 = cross_valid_ldsi_uni(Y, xDim, nFold, timePoint, 'mean_type',mean_type,'tol',tol,'cyc',cyc,'is_fix_C',true,'is_fix_A',true);
     err_model2 = cross_valid_ldsi_uni(Y, xDim, nFold, timePoint, 'mean_type',mean_type,'tol',tol,'cyc',cyc,'is_fix_C',false,'is_fix_A',true);
