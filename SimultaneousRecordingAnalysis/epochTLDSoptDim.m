@@ -39,3 +39,5 @@ for nSession = 1:numSession
         end
     end
 end
+
+close all
