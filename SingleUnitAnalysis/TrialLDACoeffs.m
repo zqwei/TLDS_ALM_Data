@@ -4,11 +4,16 @@
 
 addpath('../Func');
 setDir;
-load([TempDatDir 'Shuffle_Spikes.mat']);
-
+load([TempDatDir 'Shuffle_Spikes.mat'])    
+for nUnit                 = 1:length(nDataSet)
+    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+end
+ActiveNeuronIndexOld      = ActiveNeuronIndex;
+load([TempDatDir 'Shuffle_HiSpikes.mat'])  
+nDataSet                  = [nDataSetOld'; nDataSet];
+ActiveNeuronIndex         = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 
 %% Single LDA of trial type across time
-load([TempDatDir 'Shuffle_Spikes.mat']);
 ROCThres            = 0.5;
 selectedNeuronalIndex = ActiveNeuronIndex';
 selectedNeuronalIndex = selectedHighROCneurons(nDataSet, params, ROCThres, selectedNeuronalIndex);

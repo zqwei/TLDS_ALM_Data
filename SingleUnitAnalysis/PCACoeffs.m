@@ -19,7 +19,12 @@ cmap = [         0    0.4470    0.7410
     0.6350    0.0780    0.1840];
 
 
-load([TempDatDir 'Shuffle_Spikes.mat']);
+load([TempDatDir 'Shuffle_Spikes.mat'])    
+for nUnit                 = 1:length(nDataSet)
+    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+end
+load([TempDatDir 'Shuffle_HiSpikes.mat'])  
+nDataSet                  = [nDataSetOld'; nDataSet];
 
 %% EV
 evMat              = zeros(numFold, length(combinedParams), numComps);
