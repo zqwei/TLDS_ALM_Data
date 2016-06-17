@@ -1,6 +1,25 @@
 addpath('../Func');
 setDir;
 load([TempDatDir 'SimilarityIndex.mat'])
+Boxcar150MeanOld = Boxcar150Mean;
+Boxcar150StdOld  = Boxcar150Std;
+Boxcar250MeanOld = Boxcar250Mean;
+Boxcar250StdOld  = Boxcar250Std;
+GPFAMeanOld      = GPFAMean;
+GPFAStdOld       = GPFAStd;
+TLDSMeanOld      = TLDSMean;
+TLDSStdOld       = TLDSStd;
+
+load([TempDatDir 'SimilarityIndexHi.mat'])
+Boxcar150Mean    = [Boxcar150MeanOld ;Boxcar150Mean ];
+Boxcar150Std     = [Boxcar150StdOld  ;Boxcar150Std  ];
+Boxcar250Mean    = [Boxcar250MeanOld ;Boxcar250Mean ];
+Boxcar250Std     = [Boxcar250StdOld  ;Boxcar250Std  ];
+GPFAMean         = [GPFAMeanOld      ;GPFAMean      ];
+GPFAStd          = [GPFAStdOld       ;GPFAStd       ];
+TLDSMean         = [TLDSMeanOld      ;TLDSMean      ];
+TLDSStd          = [TLDSStdOld       ;TLDSStd       ];
+
 
 legendSet = {'Sample', 'Delay', 'Response', 'S-D', 'D-R'};
 titleSet  = {'All', 'Contra', 'Ipsi'};
@@ -76,3 +95,25 @@ for nPlot = 1:length(titleSet)
 end
 
 setPrint(8*3, 6, 'Plots/SimilarityIndex_BoxCar_TLDS')
+
+
+figure;
+hold on
+for nEpoch = 1:size(GPFAMean, 3)
+    errorbarxy(squeeze(TLDSMean(:, 3, nEpoch)), squeeze(TLDSMean(:, 2, nEpoch)), ...
+        squeeze(TLDSStd(:, 3, nEpoch)), squeeze(TLDSStd(:, 2, nEpoch)),...
+        {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
+end
+plot([0 1], [0 1], '--k')
+box off
+% legend(legendSet)
+% legend('location', 'southeast')
+% legend('boxoff')
+xlim([0 1])
+ylim([0 1])
+xlabel('Contra similarity index')
+ylabel('Ipsi similarity index')
+title(titleSet{nPlot})
+
+setPrint(8, 6, 'Plots/SimilarityIndex_TLDS_ContraIpsi')
+
