@@ -9,8 +9,7 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [2, 2, 4, 2, 3, 2, 4, 2;
-                0, 3, 0, 0, 4, 0, 0, 3];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3];
 nFold        = 30;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
@@ -34,8 +33,24 @@ for nSession = 1:numSession
                 [curr_err(n_fold),~] = loo (Y, Ph, [0, timePoint, T]);
             end
             [~, optFit] = min(curr_err);
+            optFit
             load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
             [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+            
+            
+            yesActMat   = nan(size(Y, 1), length(params.timeSeries));
+            noActMat    = nan(size(Y, 1), length(params.timeSeries));
+            timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
+            contraIndex = false(size(Y,1), 1);
+
+            for nUnit   = 1:size(Y, 1)
+                yesTrial = squeeze(mean(Y(nUnit,:, 1:numYesTrial), 3));
+                noTrial  = squeeze(mean(Y(nUnit,:, 1+numYesTrial:end), 3));
+                yesActMat(nUnit, :)  = yesTrial;
+                noActMat(nUnit, :)   = noTrial;
+                contraIndex(nUnit)   = sum(noTrial(timePoints(2):end))<sum(yesTrial(timePoints(2):end));
+            end
+            
             
             figure
             
@@ -58,7 +73,7 @@ for nSession = 1:numSession
             hold off
             xlabel('Time (s)')
             ylabel('LDA score')
-            title('Score using instantaneous LDA')
+            title(['Score using instantaneous LDA - contra/ipsi: ' num2str(sum(contraIndex)) '/' num2str(sum(~contraIndex))])
             set(gca, 'TickDir', 'out')
 
             simCorrMat    = corr(scoreMat, 'type', 'Spearman');
@@ -113,7 +128,7 @@ for nSession = 1:numSession
             title('LDA score rank similarity -- ipsi')
             set(gca, 'TickDir', 'out')
             
-            setPrint(8*2, 6*2, ['Plots/LDASimilarityExampleSesssion_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
+            setPrint(8*2, 6*2, ['Plots/TLDSLDASimilarityExampleSesssion_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
         end
     end
 end
