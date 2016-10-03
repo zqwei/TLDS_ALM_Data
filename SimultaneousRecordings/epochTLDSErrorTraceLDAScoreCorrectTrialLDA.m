@@ -2,15 +2,38 @@ addpath('../Func');
 addpath('../Release_LDSI_v3')
 setDir;
 
-load([TempDatDir 'SimultaneousError_HiSpikes.mat'])
+load([TempDatDir 'Simultaneous_Spikes.mat'])
+corrDataSet  = nDataSet;
+
+load([TempDatDir 'SimultaneousError_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
+optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 for nSession = 1:numSession
+    
+    Y          = [corrDataSet(nSession).unit_yes_trial; corrDataSet(nSession).unit_no_trial];
+    numYesTrial = size(corrDataSet(nSession).unit_yes_trial, 1);
+    numNoTrial  = size(corrDataSet(nSession).unit_no_trial, 1);
+    Y          = permute(Y, [2 3 1]);
+    T          = size(Y, 2);
+    xDim       = xDimSet(nSession);
+    optFit     = optFitSet(nSession);
+    load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+    [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+    totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
+    nSessionData  = permute(y_est, [3 1 2]);
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    mean_scoreMat = nan(1, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        tscoreMat = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+        mean_scoreMat(:, nTime) = mean(tscoreMat);
+    end
+
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
@@ -21,7 +44,7 @@ for nSession = 1:numSession
     
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
-    load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+    load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
     [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
             
     yesActMat   = nan(size(Y, 1), length(params.timeSeries));
@@ -43,11 +66,11 @@ for nSession = 1:numSession
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
     nSessionData  = permute(y_est, [3 1 2]);
     nSessionData  = normalizationDim(nSessionData, 2);  
-    coeffs        = coeffLDA(nSessionData, totTargets);
+%     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-        scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
+        scoreMat(:, nTime) = scoreMat(:, nTime) - mean_scoreMat(:, nTime);%mean(scoreMat(:, nTime));
     end
 
     subplot(2, 2, 1)
@@ -121,7 +144,7 @@ for nSession = 1:numSession
         set(gca, 'TickDir', 'out')
     end
 
-    setPrint(8*2, 6*2, ['Plots/TLDSLDASimilarityErrorSesssion_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
+    setPrint(8*2, 6*2, ['Plots/TLDSLDASimilarityErrorSesssionCorrectLDA_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
 end
 
 close all

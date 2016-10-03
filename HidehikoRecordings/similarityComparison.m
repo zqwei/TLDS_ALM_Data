@@ -3,8 +3,8 @@ addpath('../Release_LDSI_v3');
 setDir;
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3];
-optFitSets   = [4, 25, 7, 20, 8];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
+optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
 timePoints   = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoints(2:end-1);
 nFold        = 30;
@@ -19,8 +19,8 @@ nFold        = 30;
 % row #2: contra
 % row #3: ipsi
 
-GPFAMean     = nan(numSession, 3, 5);
-GPFAStd      = nan(numSession, 3, 5);
+% GPFAMean     = nan(numSession, 3, 5);
+% GPFAStd      = nan(numSession, 3, 5);
 
 TLDSMean     = nan(numSession, 3, 5);
 TLDSStd      = nan(numSession, 3, 5);
@@ -47,24 +47,25 @@ for nSession = 1:numSession
     
     scoreMatSpike = scoreMat;
     
-    load(['GPFAFits/gpfa_optxDimFit_idx_' num2str(nSession) '.mat'])
-    y_est = nan(size(Y));
-    for nTrial = 1:size(Y, 3)
-        y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
-%                 y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
-%                 y_est_nTrial (y_est_nTrial <0) = 0;
-%                 y_est_nTrial = y_est_nTrial.^2;
-        y_est(:, :, nTrial) = y_est_nTrial;
-    end
-    nSessionData  = permute(y_est, [3 1 2]);
-    nSessionData  = normalizationDim(nSessionData, 2); 
-    coeffs        = coeffLDA(nSessionData, totTargets);
-    scoreMat      = nan(numTrials, size(nSessionData, 3));
-    for nTime     = 1:size(nSessionData, 3)
-        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-    end
+%     load(['GPFAFits/gpfa_optxDimFit_idx_' num2str(nSession) '.mat'])
+%     y_est = nan(size(Y));
+%     for nTrial = 1:size(Y, 3)
+%         y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
+% %                 y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
+% %                 y_est_nTrial (y_est_nTrial <0) = 0;
+% %                 y_est_nTrial = y_est_nTrial.^2;
+%         y_est(:, :, nTrial) = y_est_nTrial;
+%     end
+%     nSessionData  = permute(y_est, [3 1 2]);
+%     nSessionData  = normalizationDim(nSessionData, 2); 
+%     coeffs        = coeffLDA(nSessionData, totTargets);
+%     scoreMat      = nan(numTrials, size(nSessionData, 3));
+%     for nTime     = 1:size(nSessionData, 3)
+%         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+%     end
+%     
+%     scoreMatGPFA  = scoreMat;
     
-    scoreMatGPFA  = scoreMat;
     xDim       = xDimSet(nSession);
     optFit     = optFitSets(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
@@ -79,7 +80,7 @@ for nSession = 1:numSession
     
     scoreMatTLDS  = scoreMat;    
     
-    [GPFAMean(nSession,:,:), GPFAStd(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatGPFA, scoreMatSpike, timePoints, totTargets);
+%     [GPFAMean(nSession,:,:), GPFAStd(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatGPFA, scoreMatSpike, timePoints, totTargets);
     [TLDSMean(nSession,:,:), TLDSStd(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatTLDS, scoreMatSpike, timePoints, totTargets);
 end
 
@@ -141,5 +142,6 @@ for nSession  = 1:numSession
     
 end
 
-save([TempDatDir 'SimilarityIndexHi.mat'], 'GPFAMean', 'GPFAStd', 'TLDSMean', 'TLDSStd')
+% save([TempDatDir 'SimilarityIndexHi.mat'], 'GPFAMean', 'GPFAStd', 'TLDSMean', 'TLDSStd')
+save([TempDatDir 'SimilarityIndexHi.mat'], 'TLDSMean', 'TLDSStd')
 save([TempDatDir 'SimilarityIndexHi.mat'], 'Boxcar150Mean', 'Boxcar150Std', 'Boxcar250Mean', 'Boxcar250Std' , '-append')

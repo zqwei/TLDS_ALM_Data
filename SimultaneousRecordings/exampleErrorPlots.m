@@ -2,7 +2,10 @@ addpath('../Func');
 setDir;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 mCol                = 4;
-load([TempDatDir 'Simultaneous_HiSpikes.mat'])
+load([TempDatDir 'Simultaneous_Spikes.mat'])
+corrDataSet  = nDataSet;
+
+load([TempDatDir 'SimultaneousError_Spikes.mat'])
 mRow = ceil(length(nDataSet)/mCol);
 numFold = 10;
 
@@ -68,6 +71,19 @@ for nSession  = 1:length(nDataSet)
 %     title('LDA-LDA score using shuffled data')
 %     set(gca, 'TickDir', 'out')
 
+    numYesTrial   = length(corrDataSet(nSession).unit_yes_trial_index);
+    numNoTrial    = length(corrDataSet(nSession).unit_no_trial_index);
+    totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
+    numUnits      = length(corrDataSet(nSession).nUnit);
+    numTrials     = numYesTrial + numNoTrial;
+    nSessionData  = [corrDataSet(nSession).unit_yes_trial; corrDataSet(nSession).unit_no_trial];
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    mean_scoreMat = nan(1, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        tscoreMat = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+        mean_scoreMat(:, nTime) = mean(tscoreMat);
+    end
 
 
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
@@ -77,18 +93,26 @@ for nSession  = 1:length(nDataSet)
     numTrials     = numYesTrial + numNoTrial;
     nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     nSessionData  = normalizationDim(nSessionData, 2);  
-    coeffs        = coeffLDA(nSessionData, totTargets);
+%     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-        scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime)); % remove the momental mean
+        scoreMat(:, nTime) = scoreMat(:, nTime) - mean_scoreMat(:, nTime); %mean(scoreMat(:, nTime)); % remove the momental mean
     end
 
     % subplot(3, 2, 3)
     subplot(2, 2, 1)
     hold on
-    plot(params.timeSeries, scoreMat(1:8, :), '-b')
-    plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+    if numYesTrial > 8
+        plot(params.timeSeries, scoreMat(1:8, :), '-b')
+    else
+        plot(params.timeSeries, scoreMat(1:numYesTrial, :), '-b')
+    end
+    if numNoTrial > 8
+        plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+    else
+        plot(params.timeSeries, scoreMat(numYesTrial+1:end, :), '-r')
+    end
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off
@@ -170,5 +194,5 @@ for nSession  = 1:length(nDataSet)
     title('LDA score rank similarity -- ipsi')
     set(gca, 'TickDir', 'out')
 
-    setPrint(8*2, 6*2, ['Plots/LDASimilarityExampleSesssion_idx_' num2str(nSession, '%02d')])
+    setPrint(8*2, 6*2, ['Plots/LDASimilarityErrorExampleSesssion_idx_' num2str(nSession, '%02d')])
 end

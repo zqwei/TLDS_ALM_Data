@@ -251,8 +251,8 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3];
-optFitSet    = [4, 25, 7, 20, 8];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
+optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
 
 
 for nSession = 1:numSession
@@ -278,6 +278,7 @@ for nSession = 1:numSession
     scoreMat      = nan(numTrials, size(nSessionData, 3));
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+        scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
     end
 
     figure;

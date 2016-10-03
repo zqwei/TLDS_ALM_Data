@@ -70,6 +70,8 @@ numComps  = 3;
 pcaFiringRatesAverage = zeros(numComps, 2, 77);
 firingRatesAverage = nanmean(firingRates, ndims(firingRates));
 firingRatesAverage = [squeeze(firingRatesAverage(:, 1, :)), squeeze(firingRatesAverage(:, 2, :));];
+firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(firingRatesAverage,2));
+firingRatesAverage = bsxfun(@rdivide, firingRatesAverage, std(firingRatesAverage,[],2));
 [coeffs,score,~]        = pca(firingRatesAverage', 'NumComponents', numComps);
 pcaFiringRatesAverage(:, 1, :) = score(1:77, :)';
 pcaFiringRatesAverage(:, 2, :) = score(78:end, :)';
@@ -88,6 +90,76 @@ for nPlot           = 1:numComps
 end
 
 setPrint(8*3, 6, 'Plots/CollectedUnitsPCATrace')
+
+
+%% normalized EV
+numComps       = 10;
+evMat              = zeros(numFold, length(combinedParams), numComps);
+firingRates        = generateDPCAData(nDataSet, numTrials);
+firingRatesAverage = nanmean(firingRates, ndims(firingRates));
+pcaX               = firingRatesAverage(:,:);
+firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(pcaX,2));
+firingRatesAverage = bsxfun(@rdivide, firingRatesAverage, std(pcaX,[],2));
+pcaX               = bsxfun(@minus, pcaX, mean(pcaX,2));
+pcaX               = bsxfun(@rdivide, pcaX, std(pcaX,[],2));
+Xmargs             = dpca_marginalize(firingRatesAverage, 'combinedParams', combinedParams, 'ifFlat', 'yes');
+totalVar           = sum(sum(pcaX.^2));
+[~, ~, Wpca] = svd(pcaX');
+PCAmargVar         = zeros(length(combinedParams), length(nDataSet));
+for i=1:length(Xmargs)
+    PCAmargVar(i,:) = sum((Wpca' * Xmargs{i}).^2, 2)' / totalVar;
+end
+
+figure;
+bar(1:numComps, PCAmargVar(:, 1:numComps)','stacked')
+box off
+xlim([0 numComps+0.5])
+ylim([0 0.2])
+xlabel('Component index')
+ylabel('frac. EV per PC')
+colormap(cmap(1:3, :))
+set(gca, 'xTick', 0:5:10, 'yTick', [0 0.2])
+set(gca, 'TickDir', 'out')
+setPrint(8, 6, 'Plots/CollectedUnitsPCANomalized')    
+
+figure;
+hold on
+for nColor = 1:length(margNames)
+    plot(0, nColor, 's', 'color', cmap(nColor,:), 'MarkerFaceColor',cmap(nColor,:),'MarkerSize', 8)
+    text(1, nColor, margNames{nColor})
+end
+xlim([0 10])
+hold off
+axis off
+setPrint(3, 2, 'Plots/CollectedUnitsPCALabel')
+
+
+%% normalized PCA Trace
+numComps  = 3;
+pcaFiringRatesAverage = zeros(numComps, 2, 77);
+firingRatesAverage = nanmean(firingRates, ndims(firingRates));
+firingRatesAverage = [squeeze(firingRatesAverage(:, 1, :)), squeeze(firingRatesAverage(:, 2, :));];
+firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(pcaX,2));
+firingRatesAverage = bsxfun(@rdivide, firingRatesAverage, std(pcaX,[],2));
+[coeffs,score,~]        = pca(firingRatesAverage', 'NumComponents', numComps);
+pcaFiringRatesAverage(:, 1, :) = score(1:77, :)'/length(nDataSet);
+pcaFiringRatesAverage(:, 2, :) = score(78:end, :)'/length(nDataSet);
+pcaFiringRatesAverage(1, :, :) = -pcaFiringRatesAverage(1, :, :);
+figure;
+for nPlot           = 1:numComps
+    subplot(1, numComps, nPlot)
+    hold on
+    plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 1, :)), '-r', 'linewid', 2);
+    plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 2, :)), '-b', 'linewid', 2);
+    gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5)
+    hold off
+    box off
+    xlim([min(params.timeSeries) max(params.timeSeries)]);
+    xlabel('Time (s)')
+    ylabel(['PC' num2str(nPlot) ' score'])  
+end
+
+setPrint(8*3, 6, 'Plots/CollectedUnitsPCATraceNomalized')
 
 %% Coeff vs dynamical selectivity
 logPValue  = getLogPValueTscoreSpikeEpoch(nDataSet, params);
