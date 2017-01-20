@@ -62,3 +62,17 @@ for nSession  = 1:length(nDataSet)
  
     setPrint(8*2, 6*1, ['Plots/LDASimilarityRewardExampleSesssion_idx_' num2str(nSession, '%02d')])
 end
+
+rewardTimeLDA  = [20, 3, 4, 4, 5, 5,  6,   4, 8, 7,   5, 5, 10, 6,  2, 5, 13, 4, 9] * params.binsize;
+rewardTimeTLDS = [-1, 2, 4, 1, 1, 3, -9, -32, 4, 1, -15, 1, 0,  1, -7, 1, 2,  0, -1] * params.binsize;
+
+figure;
+scatter(rewardTimeLDA, rewardTimeTLDS, [], explainedCRR, 'filled')
+hold on
+plot([-2.2 1.4], [-2.2 1.4], '--k')
+xlim([-2.2 1.4])
+ylim([-2.2 1.4])
+xlabel('Reward signal time')
+ylabel('Reward signal time')
+set(gca, 'TickDir', 'out')
+setPrint(8, 6, 'Plots/Reward_signal_time')

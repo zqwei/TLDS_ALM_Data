@@ -2,18 +2,16 @@ addpath('../Func');
 addpath('../Release_LDSI_v3')
 setDir;
 
-load([TempDatDir 'Simultaneous_HiSpikes.mat'])
+load([TempDatDir 'Simultaneous_Spikes.mat'])
 mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-timePoint    = timePoint(2:end-1);
-numSession   = length(nDataSet);
-xDimSet      = [3, 3, 3, 3, 2, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3;
-                0, 0, 4, 0, 3, 0, 0, 0, 0, 0, 0, 6, 6, 0, 5, 5, 6, 0];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3];
 nFold        = 30;
+numSession   = length(nDataSet);
 
-for nSession = 12:numSession
+for nSession = 1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);
@@ -27,13 +25,13 @@ for nSession = 12:numSession
         if xDim>0
             curr_err   = nan(nFold, 1);
             for n_fold = 1:nFold
-                load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(n_fold) '.mat'],'Ph');
-                [curr_err(n_fold),~] = loo (Y, Ph, [0, timePoint, T]);
+                load ([TempDatDir 'SessionConstantAC_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(n_fold) '.mat'],'Ph');
+                [curr_err(n_fold),~] = loo (Y, Ph, [0 T]);
             end
             [~, optFit] = min(curr_err);
             disp(optFit)
-            load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-            [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+            load ([TempDatDir 'SessionConstantAC_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+            [~, y_est, ~] = loo (Y, Ph, [0 T]);
             
             figure;
             for nNeuron = 1: yDim
@@ -44,8 +42,8 @@ for nSession = 12:numSession
                 ymax  = max([ymax1, ymax2, ymax3, ymax4]);                
                 subplot(m, 4, nNeuron);
                 hold on;
-                shadedErrorBar(params.timeSeries, mean(squeeze(Y(nNeuron,:,1:yesTrial)),2),std(squeeze(Y(nNeuron,:,1:yesTrial)),[],2),{'-b','linewid',1},0.5);
-                shadedErrorBar(params.timeSeries, mean(squeeze(Y(nNeuron,:,yesTrial+1:end)),2),std(squeeze(Y(nNeuron,:,yesTrial+1:end)),[],2),{'-r','linewid',1},0.5);
+                shadedErrorBar(params.timeSeries, mean(squeeze(Y(nNeuron,:,1:yesTrial)),2),std(squeeze(Y(nNeuron,:,1:yesTrial)),[],2),{'-b','linewid',2},0.5);
+                shadedErrorBar(params.timeSeries, mean(squeeze(Y(nNeuron,:,yesTrial+1:end)),2),std(squeeze(Y(nNeuron,:,yesTrial+1:end)),[],2),{'-r','linewid',2},0.5);
                 box off;
                 xlim([params.timeSeries(1), params.timeSeries(end)])
                 ylim([0 ymax])
@@ -54,12 +52,10 @@ for nSession = 12:numSession
                 xlabel('Time (ms)','fontsize',12);
                 ylabel('Firing rate (Hz)','fontsize',12);
                 hold off;
-                set(gca, 'TickDir', 'out')
-                
                 subplot(m, 4, nNeuron + m/2*4);
                 hold on;
-                shadedErrorBar(params.timeSeries, mean(squeeze(y_est(nNeuron,:,1:yesTrial)),2),std(squeeze(y_est(nNeuron,:,1:yesTrial)),[],2),{'-b','linewid',1},0.5);
-                shadedErrorBar(params.timeSeries, mean(squeeze(y_est(nNeuron,:,yesTrial+1:end)),2),std(squeeze(y_est(nNeuron,:,yesTrial+1:end)),[],2),{'-r','linewid',1},0.5);
+                shadedErrorBar(params.timeSeries, mean(squeeze(y_est(nNeuron,:,1:yesTrial)),2),std(squeeze(y_est(nNeuron,:,1:yesTrial)),[],2),{'-b','linewid',2},0.5);
+                shadedErrorBar(params.timeSeries, mean(squeeze(y_est(nNeuron,:,yesTrial+1:end)),2),std(squeeze(y_est(nNeuron,:,yesTrial+1:end)),[],2),{'-r','linewid',2},0.5);
                 box off
                 xlim([params.timeSeries(1), params.timeSeries(end)])
                 ylim([0 ymax])
@@ -68,9 +64,8 @@ for nSession = 12:numSession
                 xlabel('Time (ms)','fontsize',12);
                 ylabel('Firing rate (Hz)','fontsize',12);
                 hold off;
-                set(gca, 'TickDir', 'out')
             end
-            setPrint(6*4, 4.5*m, ['LDSTracePlots/LDSModelFit_Session_' num2str(nSession) '_xDim_' num2str(xDim) ])
+            setPrint(6*4, 4.5*m, ['LDSTracePlots/LDSModelConstantACFit_Session_' num2str(nSession) '_xDim_' num2str(xDim) ])
         end
     end
 end

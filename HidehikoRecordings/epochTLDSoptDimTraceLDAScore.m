@@ -9,13 +9,18 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 nFold        = 30;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 for nSession = 1:numSession
-    Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    
+    mean_yes      = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
+    mean_no       = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8))); 
+    
+%     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    Y           = [nDataSet(nSession).unit_yes_trial - mean_yes; nDataSet(nSession).unit_no_trial - mean_no];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
     numTrials   = numYesTrial + numNoTrial;
@@ -27,30 +32,39 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSets(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+    % [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+    [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
 
 
     yesActMat   = nan(size(Y, 1), length(params.timeSeries));
     noActMat    = nan(size(Y, 1), length(params.timeSeries));
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-    contraIndex = false(size(Y,1), 1);
-
-    for nUnit   = 1:size(Y, 1)
-        yesTrial = squeeze(mean(Y(nUnit,:, 1:numYesTrial), 3));
-        noTrial  = squeeze(mean(Y(nUnit,:, 1+numYesTrial:end), 3));
-        yesActMat(nUnit, :)  = yesTrial;
-        noActMat(nUnit, :)   = noTrial;
-        contraIndex(nUnit)   = sum(noTrial(timePoints(2):end))<sum(yesTrial(timePoints(2):end));
-    end
-
+%     contraIndex = false(size(Y,1), 1);
+% 
+%     for nUnit   = 1:size(Y, 1)
+%         yesTrial = squeeze(mean(Y(nUnit,:, 1:numYesTrial), 3));
+%         noTrial  = squeeze(mean(Y(nUnit,:, 1+numYesTrial:end), 3));
+%         yesActMat(nUnit, :)  = yesTrial;
+%         noActMat(nUnit, :)   = noTrial;
+%         contraIndex(nUnit)   = sum(noTrial(timePoints(2):end))<sum(yesTrial(timePoints(2):end));
+%     end
+% 
 
     figure
 
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
-    nSessionData  = permute(y_est, [3 1 2]);
-    nSessionData  = normalizationDim(nSessionData, 2);  
+%     keep_neuron_id= ones(size(y_est, 1), 1);
+%     keep_neuron_id([1 8 9 14 15]) = 0;
+%     y_est         = y_est(keep_neuron_id==1, :, :);
+%     nSessionData  = permute(y_est, [3 1 2]);
+    nSessionData  = permute(x_est, [3 1 2]);
+    nSessionData  = normalizationDim(nSessionData, 2);      
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
+    
+%     nSessionData  = nSessionData(:, keep_neuron_id == 1, :);
+%     coeffs        = coeffs(keep_neuron_id == 1, :);
+    
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
         scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
@@ -60,13 +74,15 @@ for nSession = 1:numSession
     hold on
     plot(params.timeSeries, scoreMat(1:8, :), '-b')
     plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+%     plot(params.timeSeries, scoreMat(1:numYesTrial, :), '-b')
+%     plot(params.timeSeries, scoreMat(numYesTrial+1:end, :), '-r')
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off
     hold off
     xlabel('Time (s)')
     ylabel('LDA score')
-    title(['Score using instantaneous LDA - contra/ipsi: ' num2str(sum(contraIndex)) '/' num2str(sum(~contraIndex))])
+%     title(['Score using instantaneous LDA - contra/ipsi: ' num2str(sum(contraIndex)) '/' num2str(sum(~contraIndex))])
     set(gca, 'TickDir', 'out')
 
     simCorrMat    = corr(scoreMat, 'type', 'Spearman');
@@ -124,4 +140,4 @@ for nSession = 1:numSession
     setPrint(8*2, 6*2, ['Plots/TLDSLDASimilarityExampleSesssion_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
 end
 
-close all
+% close all

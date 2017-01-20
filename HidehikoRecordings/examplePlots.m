@@ -8,7 +8,7 @@ numFold = 10;
 
 
 
-for nSession  = 1:length(nDataSet)
+for nSession  = 3%1:length(nDataSet)
     figure;
     
 %     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
@@ -75,7 +75,14 @@ for nSession  = 1:length(nDataSet)
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
     numUnits      = length(nDataSet(nSession).nUnit);
     numTrials     = numYesTrial + numNoTrial;
-    nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    
+    mean_yes      = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
+    mean_no       = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8)));    
+    
+    nSessionData  = [nDataSet(nSession).unit_yes_trial - mean_yes; nDataSet(nSession).unit_no_trial - mean_no];
+%     keep_neuron_id= ones(size(y_est, 1), 1);
+%     keep_neuron_id([1 8 9 14 15]) = 0;
+%     nSessionData  = nSessionData(:, keep_neuron_id == 1, :);
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -87,8 +94,10 @@ for nSession  = 1:length(nDataSet)
     % subplot(3, 2, 3)
     subplot(2, 2, 1)
     hold on
-    plot(params.timeSeries, scoreMat(1:8, :), '-b')
-    plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+%     plot(params.timeSeries, scoreMat(1:8, :), '-b')
+%     plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+    plot(params.timeSeries, scoreMat(1:numYesTrial, :), '-b')
+    plot(params.timeSeries, scoreMat(numYesTrial+1:end, :), '-r')
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off

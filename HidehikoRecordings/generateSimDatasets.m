@@ -20,5 +20,5 @@ params.ActiveNeuronIndex = true(length(nDataSet), 1);%ActiveNeuronIndex;
                         params,...
                         minRate, perMinRate, ROCThres, ...
                         minUnitsSession);
-nDataSet = nDataSet([8:12, 2:7]);
+nDataSet = nDataSet([8:12, 2:7, 13:end]);
 save([TempDatDir 'Simultaneous_HiSpikes.mat'], 'nDataSet', 'kickOutIndex', 'params', 'ActiveNeuronIndex');

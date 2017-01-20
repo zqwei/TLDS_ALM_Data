@@ -129,7 +129,7 @@ function SpikeDataSet = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList,
                 SpikeDataSet(tot_Unit).depth_in_um          = neuron_unit_info{nUnit}.depth_in_um; %#ok<USENS>
                 SpikeDataSet(tot_Unit).AP_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(1);
                 SpikeDataSet(tot_Unit).ML_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(2);
-                SpikeDataSet(tot_Unit).cell_type            = neuron_unit_info{nUnit}.cell_type1;
+                SpikeDataSet(tot_Unit).cell_type            = strcmp(neuron_unit_info{nUnit}.cell_type1, 'putative_pyramidal');
                 
             end
         end

@@ -18,11 +18,11 @@ nFold        = 30;
 % row #2: contra
 % row #3: ipsi
 
-GPFAMean     = nan(numSession, 3, 5);
-GPFAStd      = nan(numSession, 3, 5);
+GPFAMean     = nan(numSession, 3, 7);
+GPFAStd      = nan(numSession, 3, 7);
 
-TLDSMean     = nan(numSession, 3, 5);
-TLDSStd      = nan(numSession, 3, 5);
+TLDSMean     = nan(numSession, 3, 7);
+TLDSStd      = nan(numSession, 3, 7);
 
 for nSession = 1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
@@ -87,11 +87,11 @@ for nSession = 1:numSession
 end
 
 
-Boxcar150Mean     = nan(numSession, 3, 5);
-Boxcar150Std      = nan(numSession, 3, 5);
+Boxcar150Mean     = nan(numSession, 3, 7);
+Boxcar150Std      = nan(numSession, 3, 7);
 
-Boxcar250Mean     = nan(numSession, 3, 5);
-Boxcar250Std      = nan(numSession, 3, 5);
+Boxcar250Mean     = nan(numSession, 3, 7);
+Boxcar250Std      = nan(numSession, 3, 7);
 
 
 load([TempDatDir 'DataListSimEphys.mat']);

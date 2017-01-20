@@ -37,8 +37,8 @@ load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSessionHi = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3];
-optFitSet    = [4, 25, 7, 20, 8];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
+optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
 
 for nSession = 1:numSessionHi
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
@@ -64,11 +64,12 @@ figure;
 hold on
 scatter(explainedCRR, explainedVRR, [], numUints, 'filled');
 plot([-0.05 1], [-0.05 1], '--k');
-colorbar
+% colorbar
 hold off
 xlim([-0.05 0.6])
 ylim([-0.05 0.6])
 xlabel('EV TLDS model')
 ylabel('EV Vanilla model')
+set(gca, 'TickDir', 'out')
 setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
 close all

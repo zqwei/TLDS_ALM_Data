@@ -20,9 +20,11 @@ set(0, 'defaultaxesLineWidth', 1.0)
 
 SpikingDataDir              = '../../../Data_In_Use/Dataset_Comparison/ElectrophysiologyData/';
 SpikingHiDir                = '../../../Data_In_Use/TLDS_Datasets/HidehikoData/';
+SpikingHiDir2               = '../../../Data_In_Use/TLDS_Datasets/HidehikoData2/';
 
 SpikeFileList               = dir([SpikingDataDir '*.mat']);
 SpikeHiFileList             = dir([SpikingHiDir '*.mat']);
+SpikeHiFileList2            = dir([SpikingHiDir2 '*.mat']);
 
 TempDatDir                   = '../TempDat/';
 if ~exist(TempDatDir, 'dir')

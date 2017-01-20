@@ -4,7 +4,7 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [1, 3, 4, 2, 5];
+xDimSet      = [1, 3, 4, 2, 5, 8, 6, 4, 6, 6, 8];
 
 for nSession = 1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
@@ -48,6 +48,7 @@ for nSession = 1:numSession
                 xlabel('Time (ms)','fontsize',12);
                 ylabel('Firing rate (Hz)','fontsize',12);
                 hold off;
+                set(gca, 'TickDir', 'out')
                 subplot(m, 4, nNeuron + m/2*4);
                 hold on;
                 shadedErrorBar(params.timeSeries, mean(squeeze(y_est(nNeuron,:,1:yesTrial)),2),std(squeeze(y_est(nNeuron,:,1:yesTrial)),[],2),{'-b','linewid',2},0.5);
@@ -60,6 +61,7 @@ for nSession = 1:numSession
                 xlabel('Time (ms)','fontsize',12);
                 ylabel('Firing rate (Hz)','fontsize',12);
                 hold off;
+                set(gca, 'TickDir', 'out')
             end
             setPrint(6*4, 4.5*m, ['GPFATracePlots/GPFAModelFit_Session_' num2str(nSession) '_xDim_' num2str(xDim) ])
         end

@@ -56,19 +56,20 @@ LDS.R    = 0;
 %% generate outputs of LDS
 % no difference across trials
 [X,Z]    = SimulateLDSIdenticalTrials(LDS,T,nTrial);
-Y        = poissrnd(exp(Z)*10);
+Yratio   = 1;
+Y        = poissrnd(exp(Z)*Yratio);
 % Y (Y==0) = 0.001;
 
 
 Ph       = lds(sqrt(Y), xDim,'mean_type','no_mean','tol',1e-5); 
-[~, y_est,~]   = loo(sqrt(Y), Ph);
+[err, y_est,~]   = loo(sqrt(Y), Ph);
 % 'stage mean' or 'no mean' does no matter for this fit
 % P        = sqrt(Ph.Q);
 
 % Result
 % disp(['Difference of Latent system (per Chanel, per Time Point, per Trial):   ',...
 %     num2str(sqrt(norm(abs(Ph.Xk_t(:))/P - abs(X(:)))^2/norm(X(:))^2/xDim/T/nTrial))]);
-
+1 - err
 figure; plot_n_trial = 4;
 for n_plot = 1: plot_n_trial
     subplot(1, 4, n_plot)
@@ -76,7 +77,7 @@ for n_plot = 1: plot_n_trial
     % black line: real dynamic in latent space
     % red line  : fitted dynamic in latent space
     plot(sqrt(squeeze(Y(5,:,n_plot))),'--','color',[0.5 0.5 0.5], 'linewid', 1)
-    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))*10),'--k', 'linewid', 1)
+    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))*Yratio),'-k', 'linewid', 1)
     plot(squeeze(y_est(5,:,n_plot)),'--r')
     hold off     
     box off
@@ -85,15 +86,17 @@ for n_plot = 1: plot_n_trial
 end
 setPrint(4*8, 6, 'Plots/Test_Poisson_High_firing_rate_Idential_Trial')
 
-Y        = poissrnd(exp(Z));
+Yratio   = 0.5;
+Y        = poissrnd(exp(Z)*Yratio);
 Ph       = lds(sqrt(Y), xDim,'mean_type','no_mean','tol',1e-5); 
-[~, y_est,~]   = loo(sqrt(Y), Ph);
+[err, y_est,~]   = loo(sqrt(Y), Ph);
+1 - err
 figure; plot_n_trial = 4;
 for n_plot = 1: plot_n_trial
     subplot(1, 4, n_plot)
     hold on;
     plot(sqrt(squeeze(Y(5,:,n_plot))),'--','color',[0.5 0.5 0.5], 'linewid', 1)
-    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))),'--k', 'linewid', 1)
+    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))*Yratio),'-k', 'linewid', 1)
     plot(squeeze(y_est(5,:,n_plot)),'--r')
     hold off
     box off
@@ -102,15 +105,17 @@ for n_plot = 1: plot_n_trial
 end
 setPrint(4*8, 6, 'Plots/Test_Poisson_Medium_firing_rate_Idential_Trial')
 
-Y        = poissrnd(exp(Z)*0.1);
+Yratio   = 0.1;
+Y        = poissrnd(exp(Z)*Yratio);
 Ph       = lds(sqrt(Y), xDim,'mean_type','no_mean','tol',1e-5); 
-[~, y_est,~]   = loo(sqrt(Y), Ph);
+[err, y_est,~]   = loo(sqrt(Y), Ph);
+1 - err
 figure; plot_n_trial = 4;
 for n_plot = 1: plot_n_trial
     subplot(1, 4, n_plot)
     hold on;
     plot(sqrt(squeeze(Y(5,:,n_plot))),'--','color',[0.5 0.5 0.5], 'linewid', 1)
-    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))*0.1),'--k', 'linewid', 1)
+    plot(sqrt(exp(squeeze(Z(5,:,n_plot)))*Yratio),'-k', 'linewid', 1)
     plot(squeeze(y_est(5,:,n_plot)),'--r')
     hold off
     box off

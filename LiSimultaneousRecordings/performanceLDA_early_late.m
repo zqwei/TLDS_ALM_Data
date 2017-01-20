@@ -4,19 +4,15 @@ setDir;
 
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 
-mean_type    = 'Constant_mean';
-tol          = 1e-6;
-cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
 optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
-contra_corr  = nan(numSession, 3);
-ipsi_corr    = nan(numSession, 3);
-contra_rtVar = nan(numSession, 1);
-ipsi_rtVar   = nan(numSession, 1);
+TLDS_decode  = nan(numSession, 2);
+LDA_decode   = nan(numSession, 2);
 explainedCRR = nan(numSession, 1);
+kFold        = 10;
 
 
 for nSession = 1:numSession
@@ -27,8 +23,15 @@ for nSession = 1:numSession
     Y          = permute(Y, [2 3 1]);
     yDim       = size(Y, 1);
     T          = size(Y, 2);
-    
     m          = ceil(yDim/4)*2;
+    totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
+    neuroMat   = squeeze(mean(Y(:, timePoint(end)-5:timePoint(end), :), 2));
+    
+    L          = 1 - kfoldLoss(fitcdiscr(neuroMat', totTargets, ...
+                 'discrimType','pseudoLinear', 'KFold', kFold),...
+                 'lossfun', 'classiferror', 'mode', 'individual');
+    LDA_decode(nSession,1) = mean(L);
+    LDA_decode(nSession,2) = std(L)/sqrt(kFold);
     
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
@@ -45,12 +48,13 @@ for nSession = 1:numSession
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
     end
     
-    [contra_corr(nSession,1), ~, contra_corr(nSession,2), contra_corr(nSession,3)] =  ...
-        corr_mode(mean(scoreMat(totTargets, timePoint(end)), 2), firstLickTime(totTargets), 'Spearman');
-    [ipsi_corr(nSession,1), ~, ipsi_corr(nSession,2), ipsi_corr(nSession,3)] =  ...
-        corr_mode(mean(scoreMat(~totTargets, timePoint(end)), 2), firstLickTime(~totTargets), 'Spearman');
-    contra_rtVar(nSession) = std(firstLickTime(totTargets));
-    ipsi_rtVar(nSession)   = std(firstLickTime(~totTargets));    
+    neuroMat   = scoreMat(:, timePoint(end));
+    L          = 1 - kfoldLoss(fitcdiscr(neuroMat, totTargets, ...
+                 'discrimType','pseudoLinear', 'KFold', kFold),...
+                 'lossfun', 'classiferror', 'mode', 'individual');
+    TLDS_decode(nSession,1) = mean(L);
+    TLDS_decode(nSession,2) = std(L)/sqrt(kFold);
+    
 end
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
@@ -72,8 +76,15 @@ for nSession = 1:numSessionHi
     Y          = permute(Y, [2 3 1]);
     yDim       = size(Y, 1);
     T          = size(Y, 2);
+    totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
+    neuroMat   = squeeze(mean(Y(:, timePoint(end)-5:timePoint(end), :), 2));
     
-    m          = ceil(yDim/4)*2;
+    L          = 1 - kfoldLoss(fitcdiscr(neuroMat', totTargets, ...
+                 'discrimType','pseudoLinear', 'KFold', kFold),...
+                 'lossfun', 'classiferror', 'mode', 'individual');
+    LDA_decode(nSession+numSession,1) = mean(L);
+    LDA_decode(nSession+numSession,2) = std(L)/sqrt(kFold);
+    
     
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
@@ -89,52 +100,28 @@ for nSession = 1:numSessionHi
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
     end
-
-    [contra_corr(nSession+numSession,1), ~, contra_corr(nSession+numSession,2), contra_corr(nSession+numSession,3)] =  ...
-        corr_mode(mean(scoreMat(totTargets, timePoint(end)), 2), firstLickTime(totTargets), 'Spearman');
-    [ipsi_corr(nSession+numSession,1), ~, ipsi_corr(nSession+numSession,2), ipsi_corr(nSession+numSession,3)] =  ...
-        corr_mode(mean(scoreMat(~totTargets, timePoint(end)), 2), firstLickTime(~totTargets), 'Spearman');
     
-%     contra_corr(nSession+numSession)  = corr(mean(scoreMat(totTargets, timePoint(end)), 2), firstLickTime(totTargets), 'type', 'Spearman');
-%     ipsi_corr(nSession+numSession)    = corr(mean(scoreMat(~totTargets, timePoint(end)), 2), firstLickTime(~totTargets), 'type', 'Spearman');
-    contra_rtVar(nSession+numSession) = std(firstLickTime(totTargets));
-    ipsi_rtVar(nSession+numSession)   = std(firstLickTime(~totTargets));    
+    neuroMat   = scoreMat(:, timePoint(end));
+    L          = 1 - kfoldLoss(fitcdiscr(neuroMat, totTargets, ...
+                 'discrimType','pseudoLinear', 'KFold', kFold),...
+                 'lossfun', 'classiferror', 'mode', 'individual');
+    TLDS_decode(nSession+numSession,1) = mean(L);
+    TLDS_decode(nSession+numSession,2) = std(L)/sqrt(kFold);
+
 end
 
-figure;
-subplot(1, 2, 1)
-hold on
-scatter(contra_rtVar, contra_corr(:,1), [], explainedCRR, 'filled')
-plot([0 150], [0 0], '--k')
-xlabel('Std Reaction time (ms)')
-ylabel('Rank correlation RT-TLDS')
-title('Contra')
-box off
-set(gca, 'TickDir', 'out')
 
-subplot(1, 2, 2)
-hold on
-scatter(ipsi_rtVar, ipsi_corr(:,1), [], explainedCRR, 'filled')
-plot([0 150], [0 0], '--k')
-xlabel('Std Reaction time (ms)')
-ylabel('Rank correlation RT-TLDS')
-title('Ipsi')
-box off
-set(gca, 'TickDir', 'out')
-setPrint(8*2, 6, 'Plots/ReactionTimeVar_TLDSScore', 'pdf')
 
 figure
 hold on
-% ploterr(ipsi_corr(:,1), contra_corr(:,1), {ipsi_corr(:,2),ipsi_corr(:,3)}, {contra_corr(:,2),contra_corr(:,3)}, '.k')
-scatter(ipsi_corr(:,1), contra_corr(:,1), [], explainedCRR, 'filled')
+ploterr(LDA_decode(:,1), TLDS_decode(:,1), LDA_decode(:,2), TLDS_decode(:,2), '.k')
+scatter(LDA_decode(:,1), TLDS_decode(:,1), [], explainedCRR, 'filled')
 % colorbar
-plot([-0.5 0.5], [0 0], '--k')
-plot([0 0], [-0.5 0.5], '--k')
-xlim([-0.5 0.5])
-ylim([-0.5 0.5])
-xlabel('Ipsi rank correlation RT-TLDS')
-ylabel('Contra rank correlation RT-TLDS')
-box off
+plot([0.5 1], [0.5 1], '--k')
+xlim([0.5 1])
+ylim([0.5 1])
+xlabel('Performance LDA')
+ylabel('Performance TLDS')
 set(gca, 'TickDir', 'out')
-% setPrint(8, 6, 'Plots/ContraIpsi_TLDSScore_err')
-setPrint(8, 6, 'Plots/ContraIpsi_TLDSScore', 'pdf')
+box off
+setPrint(8, 6, 'Plots/Performance_TLDSScore_late')

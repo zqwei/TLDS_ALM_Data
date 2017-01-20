@@ -21,32 +21,39 @@ TLDSMean         = [TLDSMeanOld      ;TLDSMean      ];
 TLDSStd          = [TLDSStdOld       ;TLDSStd       ];
 
 
-legendSet = {'Sample', 'Delay', 'Response', 'S-D', 'D-R'};
+legendSet = {'Presample', 'Sample', 'Delay', 'Response', 'P-S', 'S-D', 'D-R'};
 titleSet  = {'All', 'Contra', 'Ipsi'};
-colorSet  = {'b', 'r', 'g', 'y', 'm'};
+colorSet  = {'k', 'b', 'r', 'g', 'c', 'y', 'm'};
 
-% figure;
-% for nPlot = 1:length(titleSet)
-%     subplot(1, 3, nPlot)
-%     hold on
-%     for nEpoch = 1:size(GPFAMean, 3)
-%         errorbarxy(squeeze(GPFAMean(:, nPlot, nEpoch)), squeeze(TLDSMean(:, nPlot, nEpoch)), ...
-%             squeeze(GPFAStd(:, nPlot, nEpoch)), squeeze(TLDSStd(:, nPlot, nEpoch)),...
-%             {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
-%     end
-%     plot([0 1], [0 1], '--k')
-%     box off
+figure;
+for nPlot = 1:length(titleSet)
+    subplot(1, 3, nPlot)
+    hold on
+    for nEpoch = 1:size(GPFAMean, 3)
+        errorbarxy(squeeze(GPFAMean(:, nPlot, nEpoch)), squeeze(TLDSMean(:, nPlot, nEpoch)), ...
+            squeeze(GPFAStd(:, nPlot, nEpoch)), squeeze(TLDSStd(:, nPlot, nEpoch)),...
+            {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
+    end
+    plot([0 1], [0 1], '--k')
+    box off
 %     legend(legendSet)
 %     legend('location', 'southeast')
 %     legend('boxoff')
-%     xlim([0 1])
-%     ylim([0 1])
-%     xlabel('GPFA similarity index')
-%     ylabel('TLDS similarity index')
-%     title(titleSet{nPlot})
-% end
-% 
-% setPrint(8*3, 6, 'Plots/SimilarityIndex_GPFA_TLDS')
+    xlim([0 1])
+    ylim([0 1])
+    xlabel('GPFA similarity index')
+    ylabel('TLDS similarity index')
+    title(titleSet{nPlot})
+    set(gca, 'TickDir', 'out')
+    
+    GPFAs = squeeze(GPFAMean(:, nPlot, :));
+    TLDSs = squeeze(TLDSMean(:, nPlot, :));
+    
+    [p, h] = ttest(GPFAs(:), TLDSs(:))
+    
+end
+
+setPrint(8*3, 6, 'Plots/SimilarityIndex_GPFA_TLDS')
 % 
 % 
 % figure;
@@ -84,15 +91,21 @@ for nPlot = 1:length(titleSet)
     end
     plot([0 1], [0 1], '--k')
     box off
-    legend(legendSet)
-    legend('location', 'southeast')
-    legend('boxoff')
+%     legend(legendSet)
+%     legend('location', 'southeast')
+%     legend('boxoff')
     xlim([0 1])
     ylim([0 1])
     xlabel('Boxcar 250ms similarity index')
     ylabel('TLDS similarity index')
     title(titleSet{nPlot})
     set(gca, 'TickDir', 'out')
+    
+    GPFAs = squeeze(Boxcar250Mean(:, nPlot, :));
+    TLDSs = squeeze(TLDSMean(:, nPlot, :));
+    
+    [p, h] = ttest(GPFAs(:), TLDSs(:))
+    
 end
 
 setPrint(8*3, 6, 'Plots/SimilarityIndex_BoxCar_TLDS')
@@ -105,6 +118,11 @@ for nEpoch = 1:size(GPFAMean, 3)
         squeeze(TLDSStd(:, 3, nEpoch)), squeeze(TLDSStd(:, 2, nEpoch)),...
         {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
 end
+
+GPFAs = squeeze(TLDSMean(:, 3, :));
+TLDSs = squeeze(TLDSMean(:, 2, :));
+[p, h] = ttest(GPFAs(:), TLDSs(:))
+
 plot([0 1], [0 1], '--k')
 box off
 % legend(legendSet)
@@ -119,3 +137,4 @@ set(gca, 'TickDir', 'out')
 
 setPrint(8, 6, 'Plots/SimilarityIndex_TLDS_ContraIpsi')
 
+close all

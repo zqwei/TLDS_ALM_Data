@@ -5,12 +5,13 @@
 addpath('../Func');
 setDir;
 load([TempDatDir 'Shuffle_Spikes.mat'])    
-for nUnit                 = 1:length(nDataSet)
-    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
-end
+nDataSetOld               = nDataSet;
+% for nUnit                 = 1:length(nDataSet)
+%     nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+% end
 ActiveNeuronIndexOld      = ActiveNeuronIndex;
 load([TempDatDir 'Shuffle_HiSpikes.mat'])  
-nDataSet                  = [nDataSetOld'; nDataSet];
+nDataSet                  = [nDataSetOld; nDataSet];
 ActiveNeuronIndex         = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 
 %% Single LDA of trial type across time
@@ -46,7 +47,7 @@ for nUnit           = 1:numUnits
     actMat(nUnit, 1:numT)     = mean(nDataSet(nUnit).unit_yes_trial);
     actMat(nUnit, 1:numT)     = actMat(nUnit, 1:numT) - mean(actMat(nUnit, 1:8));
     actMat(nUnit, numT+1:end) = mean(nDataSet(nUnit).unit_no_trial);
-    actMat(nUnit, numT+1:end)     = actMat(nUnit, numT+1:end) - mean(actMat(nUnit, numT+1:numT+8));
+    actMat(nUnit, numT+1:end) = actMat(nUnit, numT+1:end) - mean(actMat(nUnit, numT+1:numT+8));
 end
 
 

@@ -4,7 +4,7 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [1, 3, 4, 2, 5];
+xDimSet      = [1, 3, 4, 2, 5, 8, 6, 4, 6, 6, 8];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 
@@ -42,6 +42,7 @@ for nSession = 1:numSession
             scoreMat      = nan(numTrials, size(nSessionData, 3));
             for nTime     = 1:size(nSessionData, 3)
                 scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+                scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
             end
 
             subplot(2, 2, 1)

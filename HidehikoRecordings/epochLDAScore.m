@@ -52,7 +52,11 @@ for nSession      = 1:length(nDataSet)
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
     numUnits      = length(nDataSet(nSession).nUnit);
     numTrials     = numYesTrial + numNoTrial;
-    nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    
+    mean_yes     = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
+    mean_no      = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8)));
+    
+    nSessionData  = [nDataSet(nSession).unit_yes_trial - mean_yes; nDataSet(nSession).unit_no_trial - mean_no];
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = nan(size(nSessionData, 2), numEpochs);
     for nPeriod       = 1:numEpochs

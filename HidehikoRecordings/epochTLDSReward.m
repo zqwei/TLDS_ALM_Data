@@ -13,7 +13,7 @@ xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
 optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
-for nSession = 1:5;%numSession
+for nSession = 1:numSession
     figure;
     Y          = [corrDataSet(nSession).unit_yes_trial; corrDataSet(nSession).unit_no_trial];
     numYesTrial = size(corrDataSet(nSession).unit_yes_trial, 1);
@@ -53,8 +53,10 @@ for nSession = 1:5;%numSession
     
     subplot(1, 2, 1)
     hold on
-    plot(params.timeSeries, scoreMat(totTargets, :), '-m')
-    plot(params.timeSeries, scoreMat(~totTargets, :), '-g')
+    scoreMatC     = scoreMat(totTargets, :);
+    plot(params.timeSeries, scoreMatC(1:8, :), '-m')
+    scoreMatE     = scoreMat(~totTargets, :);
+    plot(params.timeSeries, scoreMatE(1:8, :), '-g')
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off
@@ -66,7 +68,8 @@ for nSession = 1:5;%numSession
 
     subplot(1, 2, 2)
     hold on
-    plot(params.timeSeries, correctRate, '-k')
+    % plot(params.timeSeries, correctRate, '-k')
+    shadedErrorBar(params.timeSeries, correctRate,sqrt(correctRate.*(1-correctRate)/length(totTargets)),{'-k','linewid',1},0.5);
     gridxy ([params.polein, params.poleout, 0],[mean(totTargets)], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off

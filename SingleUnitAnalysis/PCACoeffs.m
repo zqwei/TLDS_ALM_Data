@@ -19,12 +19,14 @@ cmap = [         0    0.4470    0.7410
     0.6350    0.0780    0.1840];
 
 
-load([TempDatDir 'Shuffle_Spikes.mat'])    
-for nUnit                 = 1:length(nDataSet)
-    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
-end
-load([TempDatDir 'Shuffle_HiSpikes.mat'])  
-nDataSet                  = [nDataSetOld'; nDataSet];
+load([TempDatDir 'Shuffle_Spikes.mat'])  
+nDataSetOld               = nDataSet;
+% for nUnit                 = 1:length(nDataSet)
+%     nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+% end
+% load([TempDatDir 'Shuffle_HiSpikes.mat'])  
+% nDataSet                  = [nDataSetOld'; nDataSet];
+nDataSet                  = [nDataSetOld; nDataSet];
 
 %% EV
 evMat              = zeros(numFold, length(combinedParams), numComps);
@@ -142,8 +144,8 @@ firingRatesAverage = [squeeze(firingRatesAverage(:, 1, :)), squeeze(firingRatesA
 firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(pcaX,2));
 firingRatesAverage = bsxfun(@rdivide, firingRatesAverage, std(pcaX,[],2));
 [coeffs,score,~]        = pca(firingRatesAverage', 'NumComponents', numComps);
-pcaFiringRatesAverage(:, 1, :) = score(1:77, :)'/length(nDataSet);
-pcaFiringRatesAverage(:, 2, :) = score(78:end, :)'/length(nDataSet);
+pcaFiringRatesAverage(:, 1, :) = score(1:77, :)';%/length(nDataSet);
+pcaFiringRatesAverage(:, 2, :) = score(78:end, :)';%/length(nDataSet);
 pcaFiringRatesAverage(1, :, :) = -pcaFiringRatesAverage(1, :, :);
 figure;
 for nPlot           = 1:numComps
@@ -210,21 +212,23 @@ figure;
 ylimList   = [0.31, 0.62, 0.43];
 for nGroup = 0:3
     validIdx = groupIdx==nGroup;
-    score  = (coeffs(validIdx, :)' * firingRatesAverage(validIdx, :))'/sum(validIdx);
+    score  = (coeffs(validIdx, :)' * firingRatesAverage(validIdx, :))';%/sum(validIdx);
+    sum(score(:).^2)
     pcaFiringRatesAverage(:, 1, :) = score(1:77, :)';
     pcaFiringRatesAverage(:, 2, :) = score(78:end, :)';
-    for nPlot           = 1:numComps
+    for nPlot           = 1:1
         subplot(4, numComps, nPlot + nGroup*3)
         hold on
-        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 1, :)), '-r', 'linewid', 2);
-        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 2, :)), '-b', 'linewid', 2);
+        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 1, :)), '-b', 'linewid', 2);
+        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 2, :)), '-r', 'linewid', 2);
         hold off
         box off
         xlim([min(params.timeSeries) max(params.timeSeries)]);
-        ylim([-ylimList(nPlot) ylimList(nPlot)])
+        % ylim([-ylimList(nPlot) ylimList(nPlot)])
         gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5)
         xlabel('Time (s)')
         ylabel(['PC' num2str(nPlot) ' score'])  
+        set(gca, 'TickDir', 'out')
     end
 end
 setPrint(8*3, 6*4, 'Plots/CollectedUnitsPCATracesDynamicalNeuron')
@@ -238,8 +242,8 @@ for nGroup = 0:3
     for nPlot           = 1:numComps
         subplot(4, numComps, nPlot + nGroup*3)
         hold on
-        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 1, :)), '-r', 'linewid', 2);
-        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 2, :)), '-b', 'linewid', 2);
+        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 1, :)), '-b', 'linewid', 2);
+        plot(params.timeSeries, squeeze(pcaFiringRatesAverage(nPlot, 2, :)), '-r', 'linewid', 2);
         hold off
         box off
         xlim([min(params.timeSeries) max(params.timeSeries)]);

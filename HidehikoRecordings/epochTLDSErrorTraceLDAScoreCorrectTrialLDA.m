@@ -10,10 +10,10 @@ timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSe
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+optFitSet   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
-for nSession = 1:numSession
+for nSession = 3%1:numSession
     
     Y          = [corrDataSet(nSession).unit_yes_trial; corrDataSet(nSession).unit_no_trial];
     numYesTrial = size(corrDataSet(nSession).unit_yes_trial, 1);
@@ -70,7 +70,7 @@ for nSession = 1:numSession
     scoreMat      = nan(numTrials, size(nSessionData, 3));
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-        scoreMat(:, nTime) = scoreMat(:, nTime) - mean_scoreMat(:, nTime);%mean(scoreMat(:, nTime));
+        scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime)); %mean_scoreMat(:, nTime);%mean(scoreMat(:, nTime));
     end
 
     subplot(2, 2, 1)
@@ -79,6 +79,7 @@ for nSession = 1:numSession
     maxTrialNo  = min(8, numNoTrial);
     plot(params.timeSeries, scoreMat(1:maxTrialYes, :), '-b')
     plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+maxTrialNo, :), '-r')
+    ylim([-0.8 0.8])
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off
@@ -87,7 +88,7 @@ for nSession = 1:numSession
     ylabel('LDA score')
     title(['Score using instantaneous LDA - contra/ipsi: ' num2str(sum(contraIndex)) '/' num2str(sum(~contraIndex))])
     set(gca, 'TickDir', 'out')
-
+    set(gca, 'YTick', -0.8:0.4:0.8)
     simCorrMat    = corr(scoreMat, 'type', 'Spearman');
 
     subplot(2, 2, 2)
@@ -106,7 +107,7 @@ for nSession = 1:numSession
     title('LDA score rank similarity')
     set(gca, 'TickDir', 'out')
     
-    if numYesTrial > 8
+    if numYesTrial > 3
         simCorrMat   = (corr(scoreMat(1:numYesTrial, :), 'type', 'Spearman'));% abs(corr(scoreMat(1:numYesTrial, :), 'type', 'Spearman'));
         subplot(2, 2, 3)
         hold on
@@ -125,7 +126,7 @@ for nSession = 1:numSession
         set(gca, 'TickDir', 'out')
     end
     
-    if numNoTrial > 8
+    if numNoTrial > 3
         simCorrMat   = (corr(scoreMat(1+numYesTrial:end, :), 'type', 'Spearman')); % abs(corr(scoreMat(1+numYesTrial:end, :), 'type', 'Spearman'));
         subplot(2, 2, 4)
         hold on

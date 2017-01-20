@@ -269,7 +269,8 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+%     [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+    [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
     firstLickTime = nDataSet(nSession).firstLickTime;
     nSessionData  = permute(y_est, [3 1 2]);
