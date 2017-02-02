@@ -2,11 +2,12 @@ addpath('../Func');
 setDir;
 
 load([TempDatDir 'Shuffle_Spikes.mat'])    
-for nUnit                 = 1:length(nDataSet)
-    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
-end
+nDataSetOld               = nDataSet;
+% for nUnit                 = 1:length(nDataSet)
+%     nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+% end
 load([TempDatDir 'Shuffle_HiSpikes.mat'])  
-nDataSet                  = [nDataSetOld'; nDataSet];
+nDataSet                  = [nDataSetOld; nDataSet];
 
 numUnits                  = length(nDataSet);
 pValue                    = applyFuncToCompareTrialType(nDataSet, @pValueTTest2);

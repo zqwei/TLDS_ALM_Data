@@ -15,12 +15,15 @@ ROCThres            = 0.5;
 
 
 load([TempDatDir 'Shuffle_Spikes.mat'])    
-for nUnit                 = 1:length(nDataSet)
-    nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
-end
+% for nUnit                 = 1:length(nDataSet)
+%     nDataSetOld(nUnit)    = rmfield(nDataSet(nUnit), {'depth_in_um', 'AP_in_um', 'ML_in_um', 'cell_type'});
+% end
+
+nDataSetOld               = nDataSet;
+
 ActiveNeuronIndexOld      = ActiveNeuronIndex;
 load([TempDatDir 'Shuffle_HiSpikes.mat'])  
-nDataSet                  = [nDataSetOld'; nDataSet];
+nDataSet                  = [nDataSetOld; nDataSet];
 ActiveNeuronIndex         = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 selectedNeuronalIndex = ActiveNeuronIndex';
 selectedNeuronalIndex = selectedHighROCneurons(nDataSet, params, ROCThres, selectedNeuronalIndex);
