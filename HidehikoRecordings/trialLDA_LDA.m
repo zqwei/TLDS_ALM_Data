@@ -76,6 +76,6 @@ end
 
 setPrint(8*mCol, 6*mRow, 'Plots/SimilarityLDALDA')
 
-setColorbar(cmap, 0, 1, 'similarity', 'Plots/SimilarityLDALDA')
+% setColorbar(cmap, 0, 1, 'similarity', 'Plots/SimilarityLDALDA')
 
 close;

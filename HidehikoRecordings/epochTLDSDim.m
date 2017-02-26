@@ -31,4 +31,6 @@ for nSession = 1:numSession
     ylim([0 ceil(max(Err_all(:)+Std_all(:)))])
     box off
     setPrint(6, 4.5, ['LDSPlots/LDSModelComparison_Session_' num2str(nSession)])
+    
+    close all
 end

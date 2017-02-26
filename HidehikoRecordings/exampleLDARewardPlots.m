@@ -11,7 +11,7 @@ numFold = 10;
 
 
 
-for nSession  = 3%1:length(nDataSet)
+for nSession  = 1:length(nDataSet)
     figure;
 
     numYesTrial   = length(corrDataSet(nSession).unit_yes_trial_index);
@@ -39,7 +39,8 @@ for nSession  = 3%1:length(nDataSet)
     scoreMatC     = scoreMat(totTargets, :);
     plot(params.timeSeries, scoreMatC(1:8, :), '-m')
     scoreMatE     = scoreMat(~totTargets, :);
-    plot(params.timeSeries, scoreMatE(1:8, :), '-g')
+    numErrorTrial = size(scoreMatE, 1);
+    plot(params.timeSeries, scoreMatE(1:min(8, numErrorTrial), :), '-g')
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off

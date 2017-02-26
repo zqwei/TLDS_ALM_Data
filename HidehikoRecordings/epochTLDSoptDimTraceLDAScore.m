@@ -12,15 +12,15 @@ numSession   = length(nDataSet);
 xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
 optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 nFold        = 30;
-cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
+cmap         = cbrewer('div', 'Spectral', 128, 'cubic');
 
 for nSession = 1:numSession
     
-    mean_yes      = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
-    mean_no       = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8))); 
+%     mean_yes      = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
+%     mean_no       = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8))); 
     
-%     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
-    Y           = [nDataSet(nSession).unit_yes_trial - mean_yes; nDataSet(nSession).unit_no_trial - mean_no];
+    Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+%     Y           = [nDataSet(nSession).unit_yes_trial - mean_yes; nDataSet(nSession).unit_no_trial - mean_no];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
     numTrials   = numYesTrial + numNoTrial;
@@ -32,7 +32,7 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSets(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    % [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
+%     [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
     [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
 
 
@@ -57,7 +57,7 @@ for nSession = 1:numSession
 %     keep_neuron_id([1 8 9 14 15]) = 0;
 %     y_est         = y_est(keep_neuron_id==1, :, :);
 %     nSessionData  = permute(y_est, [3 1 2]);
-    nSessionData  = permute(x_est, [3 1 2]);
+    nSessionData  = permute(y_est, [3 1 2]);
     nSessionData  = normalizationDim(nSessionData, 2);      
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -138,6 +138,6 @@ for nSession = 1:numSession
     set(gca, 'TickDir', 'out')
 
     setPrint(8*2, 6*2, ['Plots/TLDSLDASimilarityExampleSesssion_idx_' num2str(nSession, '%02d') '_xDim_' num2str(xDim)])
+    
+    close all
 end
-
-% close all

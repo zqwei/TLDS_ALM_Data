@@ -2,7 +2,7 @@ addpath('../Func');
 addpath('../Release_LDSI_v3')
 setDir;
 
-load([TempDatDir 'Simultaneous_Spikes.mat'])
+load([TempDatDir 'SimultaneousError_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
@@ -33,7 +33,7 @@ end
 
 nDataSetOld    = nDataSet;
 
-load([TempDatDir 'Simultaneous_HiSpikes.mat'])
+load([TempDatDir 'SimultaneousError_HiSpikes.mat'])
 mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
@@ -66,4 +66,4 @@ for nSession = 1:numSessionHi
 end
 
 nDataSet        = [nDataSetOld'; nDataSet'];
-save([TempDatDir 'Combined_Simultaneous_Spikes.mat'], 'nDataSet', 'params')
+save([TempDatDir 'Combined_Simultaneous_Error_Spikes.mat'], 'nDataSet', 'params')

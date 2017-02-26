@@ -8,8 +8,8 @@ setDir;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 mCol                = 4;
 numFold             = 30;
-xDimSet      = [3, 3, 4, 3, 3];
-optFitSets   = [4, 25, 7, 20, 8];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 
@@ -66,4 +66,4 @@ for nSession      = 1:length(nDataSet)
 
 end
 
-close;
+close all;

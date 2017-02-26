@@ -9,8 +9,8 @@ load([TempDatDir 'SimultaneousError_HiSpikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 for nSession = 1:numSession
@@ -56,7 +56,8 @@ for nSession = 1:numSession
     scoreMatC     = scoreMat(totTargets, :);
     plot(params.timeSeries, scoreMatC(1:8, :), '-m')
     scoreMatE     = scoreMat(~totTargets, :);
-    plot(params.timeSeries, scoreMatE(1:8, :), '-g')
+    numErrorTrial = size(scoreMatE, 1);
+    plot(params.timeSeries, scoreMatE(1:min(8, numErrorTrial), :), '-g')    
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
     box off

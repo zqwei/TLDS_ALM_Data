@@ -21,13 +21,10 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
+    [~, y_est] = loo (Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
-    x_est      = permute(x_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_no_fit  = y_est(1+numYesTrial:end, :, :);
-    nDataSet(nSession).x_yes_fit = x_est(1:numYesTrial, :, :);
-    nDataSet(nSession).x_no_fit  = x_est(1+numYesTrial:end, :, :);
     nDataSet(nSession).Ph  = Ph;
 end
 
@@ -55,15 +52,12 @@ for nSession = 1:numSessionHi
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
+    [~, y_est] = loo (Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
-    x_est      = permute(x_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_no_fit  = y_est(1+numYesTrial:end, :, :);
-    nDataSet(nSession).x_yes_fit = x_est(1:numYesTrial, :, :);
-    nDataSet(nSession).x_no_fit  = x_est(1+numYesTrial:end, :, :);
     nDataSet(nSession).Ph  = Ph;
 end
 
 nDataSet        = [nDataSetOld'; nDataSet'];
-save([TempDatDir 'Combined_Simultaneous_Spikes.mat'], 'nDataSet', 'params')
+save([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'], 'nDataSet', 'params')

@@ -12,8 +12,8 @@ numSession   = length(nDataSet);
 nFold        = 10;
 bestModelIdx = 4;
 thres        = 0.8;
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 
 for nSession = 1:numSession
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
@@ -46,5 +46,5 @@ for nSession = 1:numSession
     hold off
     box off
     set(gca, 'TickDir', 'out')
-    setPrint(6, 4.5, ['LDSPlots/LDSModelComparison_Session_' num2str(nSession)])
+    setPrint(6, 4.5, ['LDSPlots/LDSModelComparison_Session_RefLine_' num2str(nSession)])
 end

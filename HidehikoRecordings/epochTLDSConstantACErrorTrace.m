@@ -8,8 +8,8 @@ load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSet    = [2, 18, 9, 8, 6, 12, 11, 12, 24, 23, 13];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSet    = [2, 18, 9, 8, 6, 12, 11, 12, 24, 23, 13, 27, 24, 16, 23, 13, 27, 14];
 explainedERR = nan(numSession, 1);
 explainedCRR = nan(numSession, 1);
 

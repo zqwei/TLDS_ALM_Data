@@ -8,8 +8,8 @@ load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 explainedERR = nan(numSession, 1);
 explainedCRR = nan(numSession, 1);
 
@@ -77,14 +77,14 @@ for nSession = 1:numSession
     setPrint(6*4, 4.5*m, ['LDSTracePlots/LDSModelFit_ErrorSession_' num2str(nSession) '_xDim_' num2str(xDim) ])
 end
 
-figure;
-hold on
-plot(explainedCRR, explainedERR, 'ok');
-plot([0 1], [0 1], '--k');
-hold off
-xlim([0 0.5])
-ylim([0 0.5])
-xlabel('EV correct trial')
-ylabel('EV error trial')
-setPrint(8, 6, 'Plots/LDSModelFit_EV_ErrorCorrect')
-close all
+% figure;
+% hold on
+% plot(explainedCRR, explainedERR, 'ok');
+% plot([0 1], [0 1], '--k');
+% hold off
+% xlim([0 0.5])
+% ylim([0 0.5])
+% xlabel('EV correct trial')
+% ylabel('EV error trial')
+% setPrint(8, 6, 'Plots/LDSModelFit_EV_ErrorCorrect')
+% close all

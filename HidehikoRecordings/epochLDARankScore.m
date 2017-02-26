@@ -8,7 +8,7 @@ timePoints          = timePointTrialPeriod(params.polein, params.poleout, params
 numEpochs           = 4;
 
 
-for nSession  = 12:length(nDataSet)
+for nSession  = 1:length(nDataSet)
     figure;
 
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
@@ -107,4 +107,6 @@ for nSession  = 12:length(nDataSet)
     
 
     setPrint(8*3, 6*1, ['Plots/LDARankExampleSesssion_idx_' num2str(nSession, '%02d')])
+    
+    close all
 end

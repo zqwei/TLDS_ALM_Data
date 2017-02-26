@@ -7,8 +7,8 @@ mCol                = 4;
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 timePoints          = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 numEpochs           = 4;
-xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4];
-optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15];
+xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
+optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
 
 
 
@@ -31,7 +31,8 @@ for nSession  = 1:length(nDataSet)
     xDim       = xDimSet(nSession);
     optFit     = optFitSets(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [~, y_est, ~] = loo (Y, Ph, [0, timePoints(2:end-1), T]);
+%     [~, y_est, ~] = loo (Y, Ph, [0, timePoints(2:end-1), T]);
+    [x_est, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
     nSessionData  = permute(y_est, [3 1 2]);    
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
@@ -119,4 +120,6 @@ for nSession  = 1:length(nDataSet)
     
 
     setPrint(8*3, 6*1, ['Plots/TLDSLDARankExampleSesssion_idx_' num2str(nSession, '%02d')])
+    
+    close all
 end

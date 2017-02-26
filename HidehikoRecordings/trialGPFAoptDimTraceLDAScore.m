@@ -4,7 +4,7 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [1, 3, 4, 2, 5, 8, 6, 4, 6, 6, 8];
+xDimSet      = [1, 3, 4, 2, 5, 8, 6, 4, 6, 6, 8, 8, 6, 6, 10, 6, 6, 4];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 

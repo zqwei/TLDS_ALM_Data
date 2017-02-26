@@ -20,10 +20,19 @@ params.timeSeries      = params.timeWindowIndexRange * params.binsize;
 params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'None';
 minFiringRate          = 5; % Hz per epoch
-nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                        
+nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);       
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(1).name    = 'Shuffle_HiSpikes_non_overlap';
 DataSetList(1).params  = params; 
-DataSetList(1).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(1).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(1).name '.mat'], 'nDataSet');
 
 
@@ -33,39 +42,89 @@ minTimeToAnalysis      =  round(-3.1 * params.frameRate);
 maxTimeToAnalysis      =  round(2.0 * params.frameRate);
 params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
 params.timeSeries      = params.timeWindowIndexRange / params.frameRate;
-nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(2).name    = 'Shuffle_HiSpikes_boxcar_070ms';
 DataSetList(2).params  = params; 
-DataSetList(2).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(2).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(2).name '.mat'], 'nDataSet', '-v7.3');
 
 
 params.binsize         =  0.100;
-nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);    
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(3).name    = 'Shuffle_HiSpikes_boxcar_100ms';
 DataSetList(3).params  = params; 
-DataSetList(3).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(3).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(3).name '.mat'], 'nDataSet', '-v7.3');
 
 params.binsize         =  0.150;
 nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                 
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(4).name    = 'Shuffle_HiSpikes_boxcar_150ms';
 DataSetList(4).params  = params; 
-DataSetList(4).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(4).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(4).name '.mat'], 'nDataSet', '-v7.3');
 
 params.binsize         =  0.200;
 nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(5).name    = 'Shuffle_HiSpikes_boxcar_200ms';
 DataSetList(5).params  = params; 
-DataSetList(5).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(5).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(5).name '.mat'], 'nDataSet', '-v7.3');
 
 params.binsize         =  0.250;
 nDataSet               =  getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                 
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+nDataSet               = getSpikeHiDataWithEphysTimeAndBoxCar(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
+end
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
 DataSetList(6).name    = 'Shuffle_HiSpikes_boxcar_250ms';
 DataSetList(6).params  = params; 
-DataSetList(6).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+DataSetList(6).ActiveNeuronIndex = ActiveNeuronIndex;%findHighFiringUnits(nDataSet, params, minFiringRate);
 save([TempDatDir DataSetList(6).name '.mat'], 'nDataSet', '-v7.3');
 
 

@@ -4,7 +4,11 @@ load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 numSession   = length(nDataSet);
 
 for nSession = 1:numSession
-    load([SpikingHiDir SpikeHiFileList(nDataSet(nSession).sessionIndex).name])
+    if nDataSet(nSession).sessionIndex <= length(SpikeHiFileList)
+        load([SpikingHiDir SpikeHiFileList(nDataSet(nSession).sessionIndex).name])
+    else
+        load([SpikingHiDir2 SpikeHiFileList2(nDataSet(nSession).sessionIndex - length(SpikeHiFileList)).name])
+    end
     numYesTrial = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial  = length(nDataSet(nSession).unit_no_trial_index);
     totTargets = [true(numYesTrial, 1); false(numNoTrial, 1)];

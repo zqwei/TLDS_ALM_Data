@@ -11,7 +11,7 @@ xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
 nFold        = 30;
 numSession   = length(nDataSet);
 
-for nSession = 12:numSession
+for nSession = 1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);
