@@ -39,14 +39,26 @@ end
 
 figure;
 hold on
-bar(explainedCRR, explainedVRR, [], numUints, 'filled');
-plot([-0.05 1], [-0.05 1], '--k');
-% colorbar
+bar(1:numSession-1, explainedVRR(1:numSession-1),'FaceColor','none')
+bar(1:numSession-1, explainedCRR(1:numSession-1),'FaceColor','b')
 hold off
-xlim([-0.05 0.6])
-ylim([-0.05 0.6])
-xlabel('EV TLDS model')
-ylabel('EV Vanilla model')
+box off
+xlim([0.5 25.5])
+ylim([0 0.711])
+xlabel('Session index')
+ylabel('Variance explained')
+set(gca, 'YTick', [0.0 0.7])
 set(gca, 'TickDir', 'out')
-% setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
-% close all
+setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
+
+figure;
+plot(numUints(1:numSession-1), explainedCRR(1:numSession-1)./explainedVRR(1:numSession-1),'ok')
+box off
+xlim([5.5 22.5])
+ylim([0.18 1.02])
+set(gca, 'YTick', [0.2 1.0])
+set(gca, 'XTick', [6 22])
+xlabel('Number units')
+ylabel('EV_{TLDS}/EV_{Ref}')
+set(gca, 'TickDir', 'out')
+setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect_numUnits')
