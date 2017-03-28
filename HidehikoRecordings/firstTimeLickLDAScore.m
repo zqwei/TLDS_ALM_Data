@@ -9,7 +9,7 @@ slideWin     = -5:-1;
 %%% LDA
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
-for nSession      = 1:length(nDataSet)
+for nSession      = 3 %1:length(nDataSet)
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(nDataSet(nSession).unit_no_trial_index);
     totTargets    = nDataSet(nSession).totTargets;
@@ -63,7 +63,8 @@ for nSession      = 1:length(nDataSet)
     xlabel('LDA score')
     ylabel('First lick time (ms)')    
     title(nTitile);
-    set(gca, 'TickDir', 'out')    
+    set(gca, 'TickDir', 'out')  
+    xlim([-1 2])
     setPrint(8, 6, ['Plots/LDAReactionTimeSesssion_idx_' num2str(nSession, '%02d')])    
 end
 
@@ -76,7 +77,7 @@ timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
 optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
-for nSession = 1:numSession
+for nSession = 3 %1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
@@ -142,7 +143,8 @@ for nSession = 1:numSession
     xlabel('LDA score')
     ylabel('First lick time (ms)')
     title(nTitile);
-    set(gca, 'TickDir', 'out')    
+    set(gca, 'TickDir', 'out')  
+    xlim([-1 2])
     setPrint(8, 6, ['Plots/TLDSReactionTimeSesssion_idx_' num2str(nSession, '%02d')])
 end
 
