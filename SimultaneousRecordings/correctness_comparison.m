@@ -39,7 +39,7 @@ for nSession  = 1:length(nDataSet) - 1
     nSessionData  = normalizationDim(nSessionData, 2);  
     [~, ~, ~, correctRate] = coeffSLDA(nSessionData, totTargets);
     
-    correctRate   = mean(correctRate(timePoint(end)-5:timePoint(end)));
+    correctRate   = mean(correctRate(timePoint(end)-3:timePoint(end)));
     
     tlds_corr_rate(nSession, 1) = correctRate;
     tlds_corr_rate(nSession, 2) = sqrt(correctRate.*(1-correctRate)/length(totTargets));
@@ -49,6 +49,8 @@ end
 figure;
 hold on
 plot([0.5 1], [0.5 1], '--k')
+% ploterr(fns_corr_rate(:,1)-per_corr_trial, tlds_corr_rate(:,1)-per_corr_trial, fns_corr_rate(:,2), tlds_corr_rate(:,2), '.k')
+% scatter(fns_corr_rate(:,1)-per_corr_trial, tlds_corr_rate(:,1)-per_corr_trial, [], per_corr_trial', 'filled')
 ploterr(fns_corr_rate(:,1), tlds_corr_rate(:,1), fns_corr_rate(:,2), tlds_corr_rate(:,2), '.k')
 scatter(fns_corr_rate(:,1), tlds_corr_rate(:,1), [], per_corr_trial', 'filled')
 xlim([0.5 1.001])
