@@ -48,10 +48,10 @@ for nSession = 1:numSession - 1
     
 end
 
-figure;
+figure; % figure 4d
 hold on
 plot([-0.6 0.6], [-0.6 0.6], '--k')
-gridxy([0], [0])
+gridxy(0, 0)
 plot(abs(fns_cc), abs(tlds_cc), 'ob')
 plot(abs(fns_ic), abs(tlds_ic), 'sr')
 box off
@@ -64,40 +64,39 @@ set(gca,'xTick',-0.6:0.6:0.6)
 set(gca,'yTick',-0.6:0.6:0.6)
 setPrint(8, 6, 'Plots/RT_comparison')
 
-
-contStd = (tlds_contra_corr(:,3) - tlds_contra_corr(:,2))/2;
-ipsiStd = (tlds_ipsi_corr(:,3) - tlds_ipsi_corr(:,2))/2;
-
-% filledStd = abs(tlds_ic) > contStd; 
-% figure;
-% subplot(1, 2, 1)
-% hold on
-% scatter(contra_rtVar(~filledStd), contra_corr(~filledStd,1), [], explainedCRR(~filledStd))
-% scatter(contra_rtVar(filledStd), contra_corr(filledStd,1), [], explainedCRR(filledStd), 'filled')
-% plot([0 150], [0 0], '--k')
-% xlabel('Std Reaction time (ms)')
-% ylabel('Rank correlation RT-TLDS')
-% title('Contra')
-% box off
-% set(gca, 'TickDir', 'out')
-% 
-% filledStd = abs(ipsi_corr(:,1)) > ipsiStd; 
-% subplot(1, 2, 2)
-% hold on
-% scatter(ipsi_rtVar(~filledStd), ipsi_corr(~filledStd,1), [], explainedCRR(~filledStd))
-% scatter(ipsi_rtVar(filledStd), ipsi_corr(filledStd,1), [], explainedCRR(filledStd), 'filled')
-% plot([0 150], [0 0], '--k')
-% xlabel('Std Reaction time (ms)')
-% ylabel('Rank correlation RT-TLDS')
-% title('Ipsi')
-% box off
-% set(gca, 'TickDir', 'out')
-% % setPrint(8*2, 6, 'Plots/ReactionTimeVar_TLDSScore', 'pdf')
-% 
-figure
+figure; % figure s6ab
+contStd      = (tlds_contra_corr(1:numSession - 1,3) - tlds_contra_corr(1:numSession - 1,2))/2;
+ipsiStd      = (tlds_ipsi_corr(1:numSession - 1,3) - tlds_ipsi_corr(1:numSession - 1,2))/2;
+filledStd    = abs(tlds_cc') > contStd; 
+contra_rtVar = contra_rtVar(1:numSession - 1);
+ipsi_rtVar   = ipsi_rtVar(1:numSession - 1);
+explainedCRR = explainedCRR(1:numSession - 1);
+subplot(1, 2, 1)
 hold on
-filledStd = abs(tlds_cc') > contStd(1:end-1) | abs(tlds_ic') > ipsiStd(1:end-1); 
+scatter(contra_rtVar(~filledStd), tlds_cc(~filledStd), [], explainedCRR(~filledStd))
+scatter(contra_rtVar(filledStd), tlds_cc(filledStd), [], explainedCRR(filledStd), 'filled')
+plot([0 150], [0 0], '--k')
+xlabel('Std Reaction time (ms)')
+ylabel('Rank correlation RT-TLDS')
+title('Contra')
+box off
+set(gca, 'TickDir', 'out')
+filledStd    = abs(tlds_ic') > ipsiStd; 
+subplot(1, 2, 2)
+hold on
+scatter(ipsi_rtVar(~filledStd), tlds_ic(~filledStd), [], explainedCRR(~filledStd))
+scatter(ipsi_rtVar(filledStd), tlds_ic(filledStd), [], explainedCRR(filledStd), 'filled')
+plot([0 150], [0 0], '--k')
+xlabel('Std Reaction time (ms)')
+ylabel('Rank correlation RT-TLDS')
+title('Ipsi')
+box off
+set(gca, 'TickDir', 'out')
+setPrint(8*2, 6, 'Plots/ReactionTimeVar_TLDSScore')
 
+figure % figure s6c
+hold on
+filledStd = abs(tlds_cc') > contStd | abs(tlds_ic') > ipsiStd; 
 % ploterr(ipsi_corr(:,1), contra_corr(:,1), {ipsi_corr(:,2),ipsi_corr(:,3)}, {contra_corr(:,2),contra_corr(:,3)}, '.k')
 scatter(tlds_ic(filledStd), tlds_cc(filledStd), [], explainedCRR(filledStd), 'filled')
 scatter(tlds_ic(~filledStd), tlds_cc(~filledStd), [], explainedCRR(~filledStd))
@@ -111,4 +110,48 @@ ylabel('Contra rank correlation RT-TLDS')
 box off
 set(gca, 'TickDir', 'out')
 setPrint(8, 6, 'Plots/ContraIpsi_TLDSScore_err')
-% % setPrint(8, 6, 'Plots/ContraIpsi_TLDSScore', 'pdf')
+
+
+figure; % figure s6de
+contStd      = (fns_contra_corr(1:numSession - 1,3) - fns_contra_corr(1:numSession - 1,2))/2;
+ipsiStd      = (fns_ipsi_corr(1:numSession - 1,3) - fns_ipsi_corr(1:numSession - 1,2))/2;
+filledStd    = abs(fns_cc') > contStd; 
+subplot(1, 2, 1)
+hold on
+scatter(contra_rtVar(~filledStd), fns_cc(~filledStd), [], explainedCRR(~filledStd))
+scatter(contra_rtVar(filledStd), fns_cc(filledStd), [], explainedCRR(filledStd), 'filled')
+plot([0 150], [0 0], '--k')
+xlabel('Std Reaction time (ms)')
+ylabel('Rank correlation RT-TLDS')
+title('Contra')
+box off
+set(gca, 'TickDir', 'out')
+filledStd    = abs(fns_ic') > ipsiStd; 
+subplot(1, 2, 2)
+hold on
+scatter(ipsi_rtVar(~filledStd), fns_ic(~filledStd), [], explainedCRR(~filledStd))
+scatter(ipsi_rtVar(filledStd), fns_ic(filledStd), [], explainedCRR(filledStd), 'filled')
+plot([0 150], [0 0], '--k')
+xlabel('Std Reaction time (ms)')
+ylabel('Rank correlation RT-TLDS')
+title('Ipsi')
+box off
+set(gca, 'TickDir', 'out')
+setPrint(8*2, 6, 'Plots/ReactionTimeVar_LDAScore')
+
+figure % figure s6f
+hold on
+filledStd = abs(fns_cc') > contStd | abs(fns_ic') > ipsiStd; 
+% ploterr(ipsi_corr(:,1), contra_corr(:,1), {ipsi_corr(:,2),ipsi_corr(:,3)}, {contra_corr(:,2),contra_corr(:,3)}, '.k')
+scatter(fns_ic(filledStd), fns_cc(filledStd), [], explainedCRR(filledStd), 'filled')
+scatter(fns_ic(~filledStd), fns_cc(~filledStd), [], explainedCRR(~filledStd))
+% colorbar
+plot([-0.5 0.5], [0 0], '--k')
+plot([0 0], [-0.5 0.5], '--k')
+xlim([-0.5 0.5])
+ylim([-0.5 0.5])
+xlabel('Ipsi rank correlation RT-TLDS')
+ylabel('Contra rank correlation RT-TLDS')
+box off
+set(gca, 'TickDir', 'out')
+setPrint(8, 6, 'Plots/ContraIpsi_LDAScore_err')
