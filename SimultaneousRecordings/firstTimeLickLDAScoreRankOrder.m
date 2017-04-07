@@ -52,8 +52,12 @@ figure; % figure 4d
 hold on
 plot([-0.6 0.6], [-0.6 0.6], '--k')
 gridxy(0, 0)
-plot(abs(fns_cc), abs(tlds_cc), 'ob')
-plot(abs(fns_ic), abs(tlds_ic), 'sr')
+sig_cc = abs(tlds_cc)>0.24;
+sig_ic = abs(tlds_ic)>0.24;
+plot(abs(fns_cc(sig_cc)), abs(tlds_cc(sig_cc)), 'ob', 'markerfacecolor', 'b')
+plot(abs(fns_ic(sig_ic)), abs(tlds_ic(sig_ic)), 'or', 'markerfacecolor', 'r')
+plot(abs(fns_cc(~sig_cc)), abs(tlds_cc(~sig_cc)), 'ob')
+plot(abs(fns_ic(~sig_ic)), abs(tlds_ic(~sig_ic)), 'or')
 box off
 xlim([0 0.60001])
 ylim([0 0.60001])

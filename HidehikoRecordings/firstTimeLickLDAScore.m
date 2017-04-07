@@ -4,7 +4,7 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 
-slideWin     = -5:-1;
+slideWin     = -5:0;
 
 %%% LDA
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
@@ -35,7 +35,7 @@ for nSession      = 3 %1:length(nDataSet)
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')
-    xlim([-4.2 4.2])
+    xlim([-2.6 2.01])
     set(gca, 'TickDir', 'out')    
     setPrint(8, 6, ['Plots/LDAScoreHistSesssion_idx_' num2str(nSession, '%02d')])   
     figure;
@@ -62,7 +62,7 @@ for nSession      = 3 %1:length(nDataSet)
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')    
-    title(nTitile);
+%     title(nTitile);
     set(gca, 'TickDir', 'out')  
     xlim([-1 2])
     setPrint(8, 6, ['Plots/LDAReactionTimeSesssion_idx_' num2str(nSession, '%02d')])    
@@ -107,20 +107,20 @@ for nSession = 3 %1:numSession
     end        
     figure;
     hold on;
-    [fi, xi] = histcounts(mean(scoreMat(totTargets, timePoint(end)+slideWin), 2), -4:0.2:4);
+    [fi, xi] = histcounts(mean(scoreMat(totTargets, timePoint(end)+slideWin) *4/3, 2), -4:0.2:4);
     stairs(xi(1:end-1), fi, 'b')
-    [fi, xi] = histcounts(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), -4:0.2:4);
+    [fi, xi] = histcounts(mean(scoreMat(~totTargets, timePoint(end)+slideWin) *4/3, 2), -4:0.2:4);
     stairs(xi(2:end), fi, 'r')
     box off
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')
     set(gca, 'TickDir', 'out') 
-    xlim([-4.2 4.2])
+    xlim([-2.01 2.01])
     setPrint(8, 6, ['Plots/TLDSScoreHistSesssion_idx_' num2str(nSession, '%02d')])    
     figure;
     hold on
-    plot(mean(scoreMat(totTargets, timePoint(end)+slideWin), 2), firstLickTime(totTargets), 'ob');
+    plot(mean(scoreMat(totTargets, timePoint(end)+slideWin), 2) *4/3, firstLickTime(totTargets), 'ob');
     [p, h] = corr(mean(scoreMat(totTargets, timePoint(end)+slideWin), 2), firstLickTime(totTargets), 'type', 'Spearman');
     nTitile = ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')];
     x = mean(scoreMat(totTargets, timePoint(end)+slideWin), 2);
@@ -129,7 +129,7 @@ for nSession = 3 %1:numSession
     P = [a, b];
     yfit = P(1)*x+P(2);
     plot(x, yfit, '-b')
-    plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'or');
+    plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2) *4/3, firstLickTime(~totTargets), 'or');
     [p, h] = corr(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'type', 'Spearman');
     nTitile = {nTitile; ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')]};
     x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
@@ -142,7 +142,7 @@ for nSession = 3 %1:numSession
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')
-    title(nTitile);
+%     title(nTitile);
     set(gca, 'TickDir', 'out')  
     xlim([-1 2])
     setPrint(8, 6, ['Plots/TLDSReactionTimeSesssion_idx_' num2str(nSession, '%02d')])
