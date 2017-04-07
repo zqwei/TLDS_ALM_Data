@@ -54,6 +54,32 @@ for nPlot = 1:length(titleSet)
 end
 
 setPrint(8*3, 6, 'Plots/SimilarityIndex_GPFA_TLDS')
+
+
+figure;
+for nPlot = 1:length(titleSet)
+    for nEpoch = 5:size(GPFAMean, 3)
+        subplot(3, 3, (nEpoch-5)*3+nPlot)
+        hold on
+        errorbarxy(squeeze(GPFAMean(:, nPlot, nEpoch)), squeeze(TLDSMean(:, nPlot, nEpoch)), ...
+            squeeze(GPFAStd(:, nPlot, nEpoch)), squeeze(TLDSStd(:, nPlot, nEpoch)), {'ko', 'k', 'k'})
+        plot([0 1], [0 1], '--k')
+        box off
+        xlim([0 0.6])
+        ylim([0 0.6])
+        xlabel('GPFA similarity index')
+        ylabel('TLDS similarity index')
+        title(titleSet{nPlot})
+        set(gca, 'TickDir', 'out')    
+        GPFAs = squeeze(GPFAMean(:, nPlot, nEpoch));
+        TLDSs = squeeze(TLDSMean(:, nPlot, nEpoch));
+        [p, h] = ttest(GPFAs(:), TLDSs(:), 'tail', 'right')
+    end
+    
+end
+
+setPrint(8*3, 6*3, 'Plots/SimilarityIndex_GPFA_TLDS')
+
 % 
 % 
 % figure;
@@ -84,7 +110,7 @@ figure;
 for nPlot = 1:length(titleSet)
     subplot(1, 3, nPlot)
     hold on
-    for nEpoch = 1:size(GPFAMean, 3)
+    for nEpoch = 5:size(GPFAMean, 3)
         errorbarxy(squeeze(Boxcar250Mean(:, nPlot, nEpoch)), squeeze(TLDSMean(:, nPlot, nEpoch)), ...
             squeeze(Boxcar250Std(:, nPlot, nEpoch)), squeeze(TLDSStd(:, nPlot, nEpoch)),...
             {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
@@ -94,8 +120,8 @@ for nPlot = 1:length(titleSet)
 %     legend(legendSet)
 %     legend('location', 'southeast')
 %     legend('boxoff')
-    xlim([0 1])
-    ylim([0 1])
+    xlim([0 0.6])
+    ylim([0 0.6])
     xlabel('Boxcar 250ms similarity index')
     ylabel('TLDS similarity index')
     title(titleSet{nPlot})
@@ -113,7 +139,7 @@ setPrint(8*3, 6, 'Plots/SimilarityIndex_BoxCar_TLDS')
 
 figure;
 hold on
-for nEpoch = 1:size(GPFAMean, 3)
+for nEpoch = 5:size(GPFAMean, 3)
     errorbarxy(squeeze(TLDSMean(:, 3, nEpoch)), squeeze(TLDSMean(:, 2, nEpoch)), ...
         squeeze(TLDSStd(:, 3, nEpoch)), squeeze(TLDSStd(:, 2, nEpoch)),...
         {[colorSet{nEpoch} 'o'], colorSet{nEpoch}, colorSet{nEpoch}})
@@ -128,8 +154,8 @@ box off
 % legend(legendSet)
 % legend('location', 'southeast')
 % legend('boxoff')
-xlim([0 1])
-ylim([0 1])
+xlim([0 0.6])
+ylim([0 0.6])
 xlabel('Contra similarity index')
 ylabel('Ipsi similarity index')
 % title(titleSet{nPlot})
