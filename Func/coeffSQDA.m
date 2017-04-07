@@ -37,46 +37,19 @@ function coeffGammaDeltaErr  = coeffClassify(nSessionData, totTargets)
     % Here we only consider to use a Gamma which is close enough to zero
     
     zeroVarUnits           = var(nSessionData, 1) < 1e-5;
-%     coeffLength            = size(nSessionData, 2);
     nSessionData           = nSessionData(:, ~zeroVarUnits);
+    
+    costFun                = [0, 1; sum(~totTargets)/sum(totTargets), 0];
     
     Mdl                    = fitcdiscr(nSessionData, totTargets, ...
                                 'DiscrimType', 'pseudoquadratic',... 
                                 'SaveMemory', 'on', 'FillCoeffs','off', ...
-                                'Prior', 'empirical');
-% % % %     disp(Mdl.MinGamma)
-% % %                         
-% % %     if size(nSessionData,1) < size(nSessionData,2)                   
-% % %         [err, gamma, delta, ~] = cvshrink(Mdl, 'NumGamma', 10, ...
-% % %                                 'NumDelta', 100, 'Verbose', 0);                         
-% % %         % min-min error rule
-% % %         minerr                 = min(min(err));
-% % %         [p, q]                 = find(err == minerr);
-% % %         idx                    = sub2ind(size(delta), p, q);    
-% % %         gammaDeltaSet          = [gamma(p) delta(idx)];
-% % %         gammaDeltaSet          = gammaDeltaSet(gammaDeltaSet(:, 2)...
-% % %                                     == max(gammaDeltaSet(:, 2)),:);
-% % %         gammaDeltaSet          = gammaDeltaSet(gammaDeltaSet(:, 1)...
-% % %                                     == min(gammaDeltaSet(:, 1)),:);
-% % %     else
-% % %         [err, gamma, ~]        = cvshrink(Mdl, 'NumGamma', 10, ...
-% % %                                 'Verbose', 0);                         
-% % %         % min-min error rule
-% % %         minerr                 = min(min(err));
-% % %         gammaDeltaSet          = gamma(err == minerr);
-% % %         gammaDeltaSet          = gammaDeltaSet(gammaDeltaSet(:, 1)...
-% % %                                     == min(gammaDeltaSet(:, 1)),:);
-% % %         gammaDeltaSet          = [gammaDeltaSet(1), 0];
-% % %     end
-        
-% % %     obj                        = fitcdiscr(nSessionData, totTargets, ...
-% % %                                     'DiscrimType', 'pseudoquadratic',...         
-% % %                                     'Delta', gammaDeltaSet(2), ...
-% % %                                     'Gamma', gammaDeltaSet(1));
+                                'Prior', 'empirical', 'Cost', costFun);
+                            
+    numFold                = 10;
+    cvmodel                = crossval(Mdl, 'KFold', numFold);
+    kLoss                  = kfoldLoss(cvmodel, 'Mode', 'individual');
     
-% % %     cvmodel                = crossval(obj, 'KFold', 5);
-    cvmodel                = crossval(Mdl, 'KFold', 5);
-    
-    coeffGammaDeltaErr     = 1 - kfoldLoss(cvmodel);
+    coeffGammaDeltaErr     = [1 - mean(kLoss); std(kLoss)/sqrt(numFold)];
         
 end
