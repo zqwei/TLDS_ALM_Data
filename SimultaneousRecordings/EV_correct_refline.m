@@ -7,6 +7,7 @@ explainedCRR = [0.0941971391500324;0.216321097217030;0.127652483561879;0.1980879
 load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
+T            = length(params.timeSeries);
 numSession   = length(nDataSet);
 explainedVRR = nan(numSession, 1); 
 numUints     = nan(numSession, 1);
@@ -17,7 +18,7 @@ for nSession = 1:numSession-1
     Y          = permute(Y, [2 3 1]);
     yDim       = size(Y, 1);
     numUints(nSession)     = yDim;
-    err        = evMean (Y, nDataSet(nSession).Ph, timePoint, nDataSet(nSession).totTargets);
+    err        = evMean (Y, nDataSet(nSession).Ph, [0, timePoint, T], nDataSet(nSession).totTargets);
     explainedVRR(nSession) = 1 - err;
     
 end
@@ -39,12 +40,12 @@ end
 
 figure;
 hold on
-bar(1:numSession-1, explainedVRR(1:numSession-1),'FaceColor','none')
 bar(1:numSession-1, explainedCRR(1:numSession-1),'FaceColor','b')
+bar(1:numSession-1, explainedVRR(1:numSession-1),'FaceColor','none')
 hold off
 box off
 xlim([0.5 25.5])
-ylim([0 0.711])
+ylim([0 0.701])
 xlabel('Session index')
 ylabel('Variance explained')
 set(gca, 'YTick', [0.0 0.7])
@@ -52,11 +53,13 @@ set(gca, 'TickDir', 'out')
 setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
 
 figure;
+hold on
 plot(numUints(1:numSession-1), explainedCRR(1:numSession-1)./explainedVRR(1:numSession-1),'ok')
+plot([5.5 22.5], [1 1],'--k')
 box off
 xlim([5.5 22.5])
-ylim([0.18 1.02])
-set(gca, 'YTick', [0.2 1.0])
+ylim([0.18 1.3])
+set(gca, 'YTick', [0.2 1.3])
 set(gca, 'XTick', [6 22])
 xlabel('Number units')
 ylabel('EV_{TLDS}/EV_{Ref}')
