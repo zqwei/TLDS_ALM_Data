@@ -1,7 +1,4 @@
-addpath('../Func');
-setDir;
-
-load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
+load('Combined_Simultaneous_Spikes.mat')
 
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
@@ -36,9 +33,9 @@ for nSession = 11%1:numSession-1
 
     figure;
     hold on
-    for nTrial = 1:10
+    for nTrial = [1 2 4 3 5 6 8]
         nTrialpcaY = squeeze(pcaY(:, nTrial, :));
-        plot(nTrialpcaY(1,:), nTrialpcaY(2,:))
+        plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5))
         plot(nTrialpcaY(1,timePoint(1)), nTrialpcaY(2,timePoint(1)),'og','markersize', 2)
         plot(nTrialpcaY(1,timePoint(2)), nTrialpcaY(2,timePoint(2)),'ob','markersize', 2)
         plot(nTrialpcaY(1,timePoint(3)), nTrialpcaY(2,timePoint(3)),'om','markersize', 2)
@@ -66,15 +63,63 @@ for nSession = 11%1:numSession-1
     
     figure;
     hold on
-    for nTrial = 1:10
+    for nTrial = [1 2 4 3 5 6 8]
         nTrialpcaY = squeeze(pcaY(:, nTrial, :));
         nTrialpcaY = getGaussianPSTH (filterInUse, nTrialpcaY, 2);
-        plot(nTrialpcaY(1,:), nTrialpcaY(2,:));
+        plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5));
         plot(nTrialpcaY(1,timePoint(1)), nTrialpcaY(2,timePoint(1)),'og','markersize', 2)
         plot(nTrialpcaY(1,timePoint(2)), nTrialpcaY(2,timePoint(2)),'ob','markersize', 2)
         plot(nTrialpcaY(1,timePoint(3)), nTrialpcaY(2,timePoint(3)),'om','markersize', 2)
     end
     
     setPrint(8, 6, 'raw_PC')
+    
+end
+
+
+for nSession = 11%1:numSession-1
+    Y          = [nDataSet(nSession).x_yes_fit; nDataSet(nSession).x_no_fit];
+    Y          = permute(Y, [2 1 3]);
+    pcaY       = reshape(Y, size(Y, 1), []);
+    [~, pcaY]  = pca(pcaY');
+    pcaY       = pcaY';
+    pcaY       = reshape(pcaY, size(Y, 1), size(Y, 2), size(Y, 3));
+    numYes     = sum(nDataSet(nSession).totTargets);
+    
+    figure;
+    hold on
+    for nTrial = 1:numYes
+        nTrialpcaY = squeeze(pcaY(:, nTrial, :));
+        plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5), 'b')
+    end
+    
+    nTrialpcaY = squeeze(mean(pcaY(:, nDataSet(nSession).totTargets, :), 2));
+    plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5), 'k', 'linewid', 1)
+    plot(nTrialpcaY(1,timePoint(1)), nTrialpcaY(2,timePoint(1)),'og','markersize', 2)
+    plot(nTrialpcaY(1,timePoint(2)), nTrialpcaY(2,timePoint(2)),'ob','markersize', 2)
+    plot(nTrialpcaY(1,timePoint(3)), nTrialpcaY(2,timePoint(3)),'om','markersize', 2)
+    
+    setPrint(8, 6, 'TLDS_Ave_PC')
+    
+    Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    Y          = permute(Y, [2 1 3]);
+    pcaY       = reshape(Y, size(Y, 1), []);
+    [~, pcaY]  = pca(pcaY');
+    pcaY       = pcaY';
+    pcaY       = reshape(pcaY, size(Y, 1), size(Y, 2), size(Y, 3));
+    
+    figure;
+    hold on
+    for nTrial = 1:numYes
+        nTrialpcaY = squeeze(pcaY(:, nTrial, :));
+        nTrialpcaY = getGaussianPSTH (filterInUse, nTrialpcaY, 2);
+        plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5), 'b');
+    end
+    nTrialpcaY = squeeze(mean(pcaY(:, nDataSet(nSession).totTargets, :), 2));
+    plot(nTrialpcaY(1,4:timePoint(3)+5), nTrialpcaY(2,4:timePoint(3)+5), 'k', 'linewid', 1)
+    plot(nTrialpcaY(1,timePoint(1)), nTrialpcaY(2,timePoint(1)),'og','markersize', 2)
+    plot(nTrialpcaY(1,timePoint(2)), nTrialpcaY(2,timePoint(2)),'ob','markersize', 2)
+    plot(nTrialpcaY(1,timePoint(3)), nTrialpcaY(2,timePoint(3)),'om','markersize', 2)
+    setPrint(8, 6, 'raw_Ave_PC')
     
 end

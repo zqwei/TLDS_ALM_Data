@@ -26,20 +26,29 @@ function err = evMean (y, Ph, timePoint, totTrial) % Leave one neuron out evalua
 
     [yDim, T, K] = size(y);
     
-    d            = Ph.d;
-    
-    if size(d,1) ~= yDim
-        d        = ones(yDim,1) * d;
-    end
+%     d            = Ph.d;
+%     
+%     if size(d,1) ~= yDim
+%         d        = ones(yDim,1) * d;
+%     end
     
     nt           = length(timePoint) - 1;
+    
+    for nt_now  =  1:nt
+        d(:, nt_now)   =  mean(reshape(y, yDim, []), 2);
+    end
+    
+    
+    
+    
     for nt_now   = 1:nt
         y(:,timePoint(nt_now)+1:timePoint(nt_now+1),:) = ...
             remove_mean(y(:,timePoint(nt_now)+1:timePoint(nt_now+1),:),d(:,nt_now));
     end
     
-    rand_y       = sum(y(:).^2); % all variance needs to explain
-    err          = 0;
+%     rand_y       = sum(y(:).^2); % all variance needs to explain
+    rand_y       = squeeze(sum(sum(y(:,:,:).^2, 2), 3));
+    err          = zeros(yDim, 1);
     
     for nUnit    = 1:yDim
         y_n      = squeeze(y(nUnit,:,:));
@@ -50,8 +59,8 @@ function err = evMean (y, Ph, timePoint, totTrial) % Leave one neuron out evalua
         errNo    = bsxfun(@minus, y_n(:, ~totTrial), meanNo);
         errNo    = sum(errNo(:).^2);
         
-        err      = err + errYes + errNo;
+        err(nUnit) = err(nUnit) + errYes + errNo;
         
     end
     
-    err          = err/rand_y;
+    err          = sum(err)/sum(rand_y);
