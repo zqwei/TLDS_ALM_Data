@@ -14,8 +14,9 @@ mRow = ceil(length(nDataSet)/mCol*2);
 
 figure;
 
+SessionIndex      = [3, 6, 7, 9, 15, 17]; 
 
-for nSession      = 1:length(nDataSet)
+for nSession      = SessionIndex
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(nDataSet(nSession).unit_no_trial_index);
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
@@ -76,7 +77,7 @@ for nSession      = 1:length(nDataSet)
 
 end
 
-setPrint(8*mCol, 6*mRow, 'Plots/SimilarityLDALDA')
+setPrint(8*mCol, 6*mRow, 'SimilarityLDALDA', 'pdf')
 
 % setColorbar(cmap, 0, 1, 'similarity', 'Plots/SimilarityLDALDA')
 
