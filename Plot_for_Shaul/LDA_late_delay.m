@@ -35,7 +35,7 @@ for nSession      = 1:length(nDataSet)
     box off
     hold off
     xlabel('LDA score')
-    ylabel('First lick time (ms)')
+    ylabel('Counts (#)')
     xlim([-2.6 2.01])
     set(gca, 'TickDir', 'out')    
 end
@@ -70,7 +70,7 @@ for nSession      = 1:length(nDataSet)-1
     box off
     hold off
     xlabel('LDA score')
-    ylabel('First lick time (ms)')
+    ylabel('Counts (#)')
     xlim([-2.6 2.01])
     set(gca, 'TickDir', 'out')    
 end
