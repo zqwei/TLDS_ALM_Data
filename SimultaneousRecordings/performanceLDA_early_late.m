@@ -54,4 +54,4 @@ xlabel('Performance LDA')
 ylabel('Performance TLDS')
 set(gca, 'TickDir', 'out')
 box off
-setPrint(8, 6, 'Plots/Performance_TLDSScore_late')
+% setPrint(8, 6, 'Plots/Performance_TLDSScore_late')

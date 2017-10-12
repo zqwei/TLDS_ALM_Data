@@ -48,7 +48,9 @@ for nSession = 1:numSession
             subplot(2, 2, 1)
             hold on
             plot(params.timeSeries, scoreMat(1:8, :), '-b')
+%             plot(params.timeSeries, scoreMat(1:numYesTrial, :), '-b')
             plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+%             plot(params.timeSeries, scoreMat(numYesTrial+1:end, :), '-r')
             gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
             xlim([min(params.timeSeries) max(params.timeSeries)]);
             box off

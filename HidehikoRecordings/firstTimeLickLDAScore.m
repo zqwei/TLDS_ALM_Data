@@ -9,7 +9,7 @@ slideWin     = -5:0;
 %%% LDA
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
-for nSession      = 3 %1:length(nDataSet)
+for nSession      = [3, 16] %1:length(nDataSet)
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(nDataSet(nSession).unit_no_trial_index);
     totTargets    = nDataSet(nSession).totTargets;
@@ -49,22 +49,22 @@ for nSession      = 3 %1:length(nDataSet)
     P = [a, b];
     yfit = P(1)*x+P(2);
     plot(x, yfit, '-b')
-    plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'or')
+%     plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'or')
     [p, h] = corr(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'type', 'Spearman');
     nTitile = {nTitile; ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')]};
-    x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
-    y = firstLickTime(~totTargets);
-    [a, b] = rlinfit(x,y,70);
-    P = [a, b];
-    yfit = P(1)*x+P(2);
-    plot(x, yfit, '-r')    
+%     x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
+%     y = firstLickTime(~totTargets);
+%     [a, b] = rlinfit(x,y,70);
+%     P = [a, b];
+%     yfit = P(1)*x+P(2);
+%     plot(x, yfit, '-r')    
     box off
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')    
 %     title(nTitile);
     set(gca, 'TickDir', 'out')  
-    xlim([-1 2])
+    xlim([-2 1])
     setPrint(8, 6, ['Plots/LDAReactionTimeSesssion_idx_' num2str(nSession, '%02d')])    
 end
 
@@ -77,7 +77,7 @@ timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
 optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
-for nSession = 3 %1:numSession
+for nSession = [3, 16] %1:length(nDataSet)
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
@@ -129,22 +129,22 @@ for nSession = 3 %1:numSession
     P = [a, b];
     yfit = P(1)*x+P(2);
     plot(x, yfit, '-b')
-    plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2) *4/3, firstLickTime(~totTargets), 'or');
+%     plot(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2) *4/3, firstLickTime(~totTargets), 'or');
     [p, h] = corr(mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2), firstLickTime(~totTargets), 'type', 'Spearman');
     nTitile = {nTitile; ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')]};
-    x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
-    y = firstLickTime(~totTargets);
-    [a, b] = rlinfit(x,y,70);
-    P = [a, b];
-    yfit = P(1)*x+P(2);
-    plot(x, yfit, '-r')
+%     x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
+%     y = firstLickTime(~totTargets);
+%     [a, b] = rlinfit(x,y,70);
+%     P = [a, b];
+%     yfit = P(1)*x+P(2);
+%     plot(x, yfit, '-r')
     box off
     hold off
     xlabel('LDA score')
     ylabel('First lick time (ms)')
 %     title(nTitile);
     set(gca, 'TickDir', 'out')  
-    xlim([-1 2])
+    xlim([-2 1])
     setPrint(8, 6, ['Plots/TLDSReactionTimeSesssion_idx_' num2str(nSession, '%02d')])
 end
 
