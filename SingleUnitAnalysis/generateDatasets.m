@@ -19,5 +19,6 @@ params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'None';
 minFiringRate          = 5; % Hz per epoch
 nDataSet               = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
-ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
-save([TempDatDir 'Shuffle_Spikes.mat'], 'nDataSet', 'params', 'ActiveNeuronIndex');
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+CR                     = getBehavioralPerformance(SpikingDataDir, SpikeFileList);
+save([TempDatDir 'Shuffle_Spikes.mat'], 'nDataSet', 'params', 'ActiveNeuronIndex', 'CR');

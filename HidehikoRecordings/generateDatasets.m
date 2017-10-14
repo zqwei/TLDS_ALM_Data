@@ -20,17 +20,20 @@ params.expression      = 'None';
 minFiringRate          = 5; % Hz per epoch
 nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
 ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
-
+CR                     = getHiBehavioralPerformance(SpikingHiDir, SpikeHiFileList);
 
 nDataSetOld            = nDataSet;
 ActiveNeuronIndexOld   = ActiveNeuronIndex;
+CROld                  = CR;
 
 nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
 ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+CR                     = getHiBehavioralPerformance(SpikingHiDir2, SpikeHiFileList2);
 for nUnit = 1:length(nDataSet)
     nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeHiFileList);
 end
 
 nDataSet               = [nDataSetOld; nDataSet];
 ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
-save([TempDatDir 'Shuffle_HiSpikes.mat'], 'nDataSet', 'params', 'ActiveNeuronIndex');
+CR                     = [CROld; CR];
+save([TempDatDir 'Shuffle_HiSpikes.mat'], 'nDataSet', 'params', 'ActiveNeuronIndex', 'CR');
