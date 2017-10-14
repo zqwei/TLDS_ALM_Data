@@ -18,7 +18,7 @@ addpath('../Func/plotFuncs')
 set(0, 'defaultaxesTickDir', 'out')
 set(0, 'defaultaxesLineWidth', 1.0)
 
-SpikingDataDir              = '../../../Data_In_Use/Dataset_Comparison/ElectrophysiologyData/';
+SpikingDataDir              = '../../../Data_In_Use/Dataset_Comparison/ElectrophysiologyData/delay1e3n/';
 SpikingHiDir                = '../../../Data_In_Use/TLDS_Datasets/HidehikoData/';
 SpikingHiDir2               = '../../../Data_In_Use/TLDS_Datasets/HidehikoData2/';
 
