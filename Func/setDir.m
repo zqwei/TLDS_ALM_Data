@@ -19,10 +19,12 @@ set(0, 'defaultaxesTickDir', 'out')
 set(0, 'defaultaxesLineWidth', 1.0)
 
 SpikingDataDir              = '../../../Data_In_Use/Dataset_Comparison/ElectrophysiologyData/delay1e3n/';
+SpikingDataDir2             = '../../../Data_In_Use/TLDS_Datasets/ALMRecording_CbStim_170907/';
 SpikingHiDir                = '../../../Data_In_Use/TLDS_Datasets/HidehikoData/';
 SpikingHiDir2               = '../../../Data_In_Use/TLDS_Datasets/HidehikoData2/';
 
 SpikeFileList               = dir([SpikingDataDir '*.mat']);
+SpikeFileList2              = dir([SpikingDataDir2 '*.mat']);
 SpikeHiFileList             = dir([SpikingHiDir '*.mat']);
 SpikeHiFileList2            = dir([SpikingHiDir2 '*.mat']);
 
