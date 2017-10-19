@@ -127,8 +127,14 @@ function SpikeDataSet = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList,
                 SpikeDataSet(tot_Unit).unit_no_error_spk_time  = unit_no_error_spk_time;
                 
                 SpikeDataSet(tot_Unit).depth_in_um          = neuron_unit_info{nUnit}.depth_in_um; %#ok<USENS>
-                SpikeDataSet(tot_Unit).AP_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(1);
-                SpikeDataSet(tot_Unit).ML_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(2);
+                if isfield(neuron_unit_info{nUnit}, 'AP_ML_in_um')
+                    SpikeDataSet(tot_Unit).AP_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(1);
+                    SpikeDataSet(tot_Unit).ML_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(2);
+                else
+                    SpikeDataSet(tot_Unit).AP_in_um             = nan;
+                    SpikeDataSet(tot_Unit).ML_in_um             = nan;
+                end
+                
                 SpikeDataSet(tot_Unit).cell_type            = strcmp(neuron_unit_info{nUnit}.cell_type1, 'putative_pyramidal');
                 
             end
