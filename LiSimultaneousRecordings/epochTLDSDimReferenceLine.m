@@ -12,8 +12,8 @@ numSession   = length(nDataSet);
 nFold        = 10;
 bestModelIdx = 4;
 thres        = 0.8;
-xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
-optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
+% xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
+% optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
 
 for nSession = 1:numSession
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
@@ -33,10 +33,11 @@ for nSession = 1:numSession
     yDim       = size(Y, 1);
     T          = size(Y, 2);
     totTrial   = [true(yesTrial, 1); false(noTrial, 1)];
-    xDim       = xDimSet(nSession);
-    optFit     = optFitSet(nSession);
-    load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    err        = evMean (Y, Ph, timePoint, totTrial)*100;
+%     xDim       = xDimSet(nSession);
+%     optFit     = optFitSet(nSession);
+%     load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+%     err        = evMean (Y, Ph, timePoint, totTrial)*100;
+    err        = evMean (Y, [], timePoint, totTrial)*100;
 %     plot([optIdx, maxIdx], [maxEV, maxEV], '+k')
     xlabel('Latent Dimension');
     ylabel('% Exp. Var.');
