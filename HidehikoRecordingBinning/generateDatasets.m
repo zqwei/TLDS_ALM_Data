@@ -22,6 +22,7 @@ params.expression      = 'None';
 minFiringRate          = 5; % Hz per epoch
 nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir, SpikeHiFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);       
 nDataSetOld            = nDataSet;
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
 ActiveNeuronIndexOld   = ActiveNeuronIndex;
 nDataSet               = getSpikeHiDataWithEphysTime(SpikingHiDir2, SpikeHiFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
 ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
