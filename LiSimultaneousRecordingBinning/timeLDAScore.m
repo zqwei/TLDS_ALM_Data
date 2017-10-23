@@ -11,7 +11,7 @@ for nData = 1:length(DataSetList)
     mRow = ceil(length(nDataSet)/mCol);
     numFold = 10;
     
-    for nSession  = 1:8
+    for nSession  = 1:length(nDataSet)
         figure;
 
         numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);

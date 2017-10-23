@@ -9,9 +9,10 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
 nFold        = 30;
-cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
+cmap         = cbrewer('div', 'Spectral', 128, 'cubic');
+optFitSet    = nan(1, numSession);
 
 for nSession = 1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
@@ -33,7 +34,7 @@ for nSession = 1:numSession
                 [curr_err(n_fold),~] = loo (Y, Ph, [0, timePoint, T]);
             end
             [~, optFit] = min(curr_err);
-            optFit
+            optFitSet(nSession) = optFit;
             load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
             [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
             
