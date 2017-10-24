@@ -1,5 +1,5 @@
 
-function errorDataSet  = getSimultaneousErrorSpikeData(nDataSet, mDataSet, SpikingHiDir, SpikeHiFileList)
+function errorDataSet  = getSimultaneousErrorSpikeData(nDataSet, mDataSet, SpikeFileList)
     errorDataSet       = nDataSet;
     for nSession       = 1:length(nDataSet)
         numUnit        = length(errorDataSet(nSession).nUnit);
@@ -26,13 +26,13 @@ function errorDataSet  = getSimultaneousErrorSpikeData(nDataSet, mDataSet, Spiki
                                  [mDataSet.nUnit]==errorDataSet(nSession).nUnit(nUnit);
                     unit_yes_trial(nIntSect, nUnit, :)  = mDataSet(mUnit).unit_yes_error(mDataSet(mUnit).unit_yes_error_index==intSect(nIntSect), :);
                 end
-                load([SpikingHiDir SpikeHiFileList(nDataSet(nSession).sessionIndex).name])
-                ntrial_index = intSect(nIntSect);
-                ntrial_firstLick = unit(1).Behavior.First_lick(ntrial_index);
-                ntrial_firstLick = ntrial_firstLick - unit(1).Behavior.Cue_start(ntrial_index);
-                ntrial_firstLick(ntrial_firstLick<0) = [];
-                ntrial_firstLick = min(ntrial_firstLick) * 1000;
-                firstLickTime(nIntSect) = ntrial_firstLick;
+                load([SpikeFileList(nDataSet(nSession).sessionIndex).folder '/' SpikeFileList(nDataSet(nSession).sessionIndex).name])
+%                 ntrial_index = intSect(nIntSect);
+%                 ntrial_firstLick = unit(1).Behavior.First_lick(ntrial_index);
+%                 ntrial_firstLick = ntrial_firstLick - unit(1).Behavior.Cue_start(ntrial_index);
+%                 ntrial_firstLick(ntrial_firstLick<0) = [];
+%                 ntrial_firstLick = min(ntrial_firstLick) * 1000;
+                firstLickTime(nIntSect) = nan;
             end
             
             errorDataSet(nSession).unit_yes_trial       = unit_yes_trial;
@@ -65,13 +65,13 @@ function errorDataSet  = getSimultaneousErrorSpikeData(nDataSet, mDataSet, Spiki
                                  [mDataSet.nUnit]==errorDataSet(nSession).nUnit(nUnit);
                     unit_no_trial(nIntSect, nUnit, :)  = mDataSet(mUnit).unit_no_error(mDataSet(mUnit).unit_no_error_index==intSect(nIntSect), :);
                 end
-                load([SpikingHiDir SpikeHiFileList(nDataSet(nSession).sessionIndex).name])
-                ntrial_index = intSect(nIntSect);
-                ntrial_firstLick = unit(1).Behavior.First_lick(ntrial_index);
-                ntrial_firstLick = ntrial_firstLick - unit(1).Behavior.Cue_start(ntrial_index);
-                ntrial_firstLick(ntrial_firstLick<0) = [];
-                ntrial_firstLick = min(ntrial_firstLick) * 1000;
-                firstLickTime(nIntSect) = ntrial_firstLick;
+                load([SpikeFileList(nDataSet(nSession).sessionIndex).folder '/' SpikeFileList(nDataSet(nSession).sessionIndex).name])
+%                 ntrial_index = intSect(nIntSect);
+%                 ntrial_firstLick = unit(1).Behavior.First_lick(ntrial_index);
+%                 ntrial_firstLick = ntrial_firstLick - unit(1).Behavior.Cue_start(ntrial_index);
+%                 ntrial_firstLick(ntrial_firstLick<0) = [];
+%                 ntrial_firstLick = min(ntrial_firstLick) * 1000;
+                firstLickTime(nIntSect) = nan;
             end
             
             errorDataSet(nSession).unit_no_trial        = unit_no_trial;
