@@ -4,13 +4,13 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSpikes.mat'])
 
-slideWin     = -5:0;
-fltThres     = 100;
+slideWin     = -6:-1;
+fltThres     = 0;
 
 %%% LDA
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
-for nSession      = 14 % [3, 16] %1:length(nDataSet)
+for nSession      = 16 % [3, 16] %1:length(nDataSet)
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(nDataSet(nSession).unit_no_trial_index);
     totTargets    = nDataSet(nSession).totTargets;
@@ -79,7 +79,7 @@ timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 xDimSet      = [3, 3, 4, 3, 3, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3];
 optFitSet    = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19];
-for nSession = 14 %[3, 16] %1:length(nDataSet)
+for nSession = 16 %[3, 16] %1:length(nDataSet)
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);

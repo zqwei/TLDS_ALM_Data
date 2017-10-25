@@ -2,10 +2,12 @@ addpath('../Func');
 addpath('../Release_LDSI_v3');
 setDir;
 
+analysisIndex = [1:8 18 26:41];
+
 load([TempDatDir 'Combined_Simultaneous_Error_Spikes_LOO.mat'])
-errDataSet   = nDataSet;
+errDataSet   = nDataSet(analysisIndex);
 load([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'])
-corrDataSet  = nDataSet;
+corrDataSet  = nDataSet(analysisIndex);
 
 numTime           = size(corrDataSet(1).unit_yes_trial, 3);
 
@@ -14,13 +16,13 @@ filterLength                  = 11;
 filterStep                    = linspace(-filterLength / 2, filterLength / 2, filterLength);
 filterInUse                   = exp(-filterStep .^ 2 / (2 * sigma ^ 2));
 filterInUse                   = filterInUse / sum (filterInUse); 
-explainedCRR = [0.0941971391500324;0.216321097217030;0.127652483561879;0.198087983335957;0.357043607042852;0.0840192153190327;0.107332573346359;0.557599484041760;0.127320931929138;0.144772314850104;0.415913774401915;0.182525661848444;0.289938234354398;0.360483221402390;0.466216824758133;0.411115775925481;0.366425364730772;0.438203478685215;0.364274411208107;0.394978241906835;0.406057563091628;0.389362139537689;0.528165743352254;0.583359786983115;0.231085979647241]; % from EV_correct_error.m
+% explainedCRR = [0.0941971391500324;0.216321097217030;0.127652483561879;0.198087983335957;0.357043607042852;0.0840192153190327;0.107332573346359;0.557599484041760;0.127320931929138;0.144772314850104;0.415913774401915;0.182525661848444;0.289938234354398;0.360483221402390;0.466216824758133;0.411115775925481;0.366425364730772;0.438203478685215;0.364274411208107;0.394978241906835;0.406057563091628;0.389362139537689;0.528165743352254;0.583359786983115;0.231085979647241]; % from EV_correct_error.m
 
 correctRateTLDS   = nan(length(corrDataSet) - 1, numTime);
 correctRateRaw    = nan(length(corrDataSet) - 1, numTime);
 
 
-for nSession      = 1:length(corrDataSet) - 1    
+for nSession      = 1:length(corrDataSet)   
     % SAS space
     nSessionData  = [corrDataSet(nSession).unit_yes_fit; corrDataSet(nSession).unit_no_fit];
     nSessionData  = [nSessionData; errDataSet(nSession).unit_yes_fit; errDataSet(nSession).unit_no_fit];
@@ -57,7 +59,8 @@ end
 figure;
 subplot(1,3,1)
 hold on
-scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS), [], explainedCRR, 'filled')
+% scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS), [], explainedCRR, 'filled')
+scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS))
 plot([-2.6 2.01],[-2.6 2.01], '--k')
 xlim([-2.6 2.01]);
 ylim([-2.6 2.01]);
@@ -84,7 +87,8 @@ setPrint(8*3, 6, 'Plots/Correctness_signal_time')
 figure;
 subplot(1,3,1)
 hold on
-scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS), [], explainedCRR, 'filled')
+% scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS), [], explainedCRR, 'filled')
+scatter(params.timeSeries(corrTimeRaw), params.timeSeries(corrTimeTLDS))
 plot([-2.6 2.1],[-2.6 2.1], '--k')
 xlim([-2.6 2.1]);
 ylim([-2.6 2.1]);
@@ -106,13 +110,13 @@ pie(xCount)
 
 setPrint(8*3, 6, 'Plots/Correctness_signal_time')
 
-fns_corr_rate    = nan(length(nDataSet), 2);
-tlds_corr_rate   = nan(length(nDataSet), 2);
-per_corr_trial   = nan(length(nDataSet), 1);
+fns_corr_rate    = nan(length(corrDataSet), 2);
+tlds_corr_rate   = nan(length(corrDataSet), 2);
+per_corr_trial   = nan(length(corrDataSet), 1);
 
 numTimePoints    = 4;
 
-for nSession  = 1:length(nDataSet) - 1
+for nSession  = 1:length(corrDataSet)
     totTargets    = true(length(corrDataSet(nSession).totTargets), 1);
     totTargets    = [totTargets; false(length(errDataSet(nSession).totTargets), 1)];    
     per_corr_trial(nSession) = mean(totTargets);
@@ -131,7 +135,8 @@ plot([0.5 1], [0.5 1], '--k')
 % ploterr(fns_corr_rate(:,1)-per_corr_trial, tlds_corr_rate(:,1)-per_corr_trial, fns_corr_rate(:,2), tlds_corr_rate(:,2), '.k')
 % scatter(fns_corr_rate(:,1)-per_corr_trial, tlds_corr_rate(:,1)-per_corr_trial, [], per_corr_trial', 'filled')
 ploterr(fns_corr_rate(:,1), tlds_corr_rate(:,1), fns_corr_rate(:,2), tlds_corr_rate(:,2), '.k')
-scatter(fns_corr_rate(:,1), tlds_corr_rate(:,1), [], per_corr_trial', 'filled')
+% scatter(fns_corr_rate(:,1), tlds_corr_rate(:,1), [], per_corr_trial', 'filled')
+scatter(fns_corr_rate(:,1), tlds_corr_rate(:,1))
 xlim([0.5 0.82])
 ylim([0.5 0.82])
 xlabel('Correctness LDA')

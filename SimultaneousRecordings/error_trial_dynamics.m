@@ -17,9 +17,9 @@ filterInUse                   = filterInUse / sum (filterInUse);
 
 % analysis of error session figure 5de
 % session index 11, 19, 22, 23 (11 is already in figure 5de)
-sessionToAnalysis = [18 20];
+% sessionToAnalysis = [18 20];
 
-for nSession = sessionToAnalysis %1:length(corrDataSet)-1
+for nSession = 1:length(corrDataSet)-1
     
     figure
     

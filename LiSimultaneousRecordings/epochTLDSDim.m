@@ -13,7 +13,7 @@ nFold        = 10;
 bestModelIdx = 4;
 thres        = 0.8;
 
-for nSession = 1:numSession
+for nSession = 18%1:numSession
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
     load([TempDatDir 'Session_' num2str(nSession) '.mat'],'err_model1','err_model2', 'err_model3', 'err_model4');
     figure;

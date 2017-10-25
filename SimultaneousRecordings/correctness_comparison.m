@@ -13,7 +13,7 @@ fns_corr_rate    = nan(length(nDataSet), 2);
 tlds_corr_rate   = nan(length(nDataSet), 2);
 per_corr_trial   = nan(length(nDataSet), 1);
 
-for nSession  = 1:length(nDataSet) - 1
+for nSession  = 1:length(nDataSet)
     numYesTrial   = length(corrDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(corrDataSet(nSession).unit_no_trial_index);
     totTargets    = true(numYesTrial+numNoTrial, 1);

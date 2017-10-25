@@ -56,5 +56,6 @@ xlim([-0.05 0.61])
 ylim([-0.05 0.61])
 xlabel('EV correct trial')
 ylabel('EV error trial')
+set(gca, 'TickDir', 'out')
 setPrint(8, 6, 'Plots/LDSModelFit_EV_ErrorCorrect')
 close all

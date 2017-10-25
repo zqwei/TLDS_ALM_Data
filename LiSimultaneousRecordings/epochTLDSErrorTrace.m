@@ -13,7 +13,7 @@ optFitSet    = [6,10,11,10,30,18,19,27,27,28,14,4,20,9,14,24,5,8,18,22,1,12,5,12
 explainedERR = nan(numSession, 1);
 explainedCRR = nan(numSession, 1);
 
-for nSession = 1:numSession
+for nSession = 18 %1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);
@@ -74,15 +74,3 @@ for nSession = 1:numSession
     end
     setPrint(6*4, 4.5*m, ['LDSTracePlots/LDSModelFit_ErrorSession_' num2str(nSession) '_xDim_' num2str(xDim) ])
 end
-
-figure;
-hold on
-plot(explainedCRR, explainedERR, 'ok');
-plot([0 1], [0 1], '--k');
-hold off
-xlim([0 0.5])
-ylim([0 0.5])
-xlabel('EV correct trial')
-ylabel('EV error trial')
-setPrint(8, 6, 'Plots/LDSModelFit_EV_ErrorCorrect')
-close all
