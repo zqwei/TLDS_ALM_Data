@@ -2,9 +2,12 @@ addpath('../Func');
 addpath('../Release_LDSI_v3');
 setDir;
 
+analysisIndex = [1:8 18 26:42];
+
 load([TempDatDir 'Combined_Simultaneous_Error_Spikes_LOO.mat'])
-errDataSet   = nDataSet;
+errDataSet   = nDataSet(analysisIndex);
 load([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'])
+nDataSet     = nDataSet(analysisIndex);
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);

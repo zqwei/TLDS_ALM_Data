@@ -12,10 +12,8 @@ numSession   = length(nDataSet);
 nFold        = 10;
 bestModelIdx = 4;
 thres        = 0.8;
-% xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
-% optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
 
-for nSession = 1:numSession
+for nSession = 18 %1:numSession
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
     load([TempDatDir 'Session_' num2str(nSession) '.mat'],'err_model1','err_model2', 'err_model3', 'err_model4');
     figure;
@@ -37,13 +35,14 @@ for nSession = 1:numSession
 %     optFit     = optFitSet(nSession);
 %     load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
 %     err        = evMean (Y, Ph, timePoint, totTrial)*100;
-    err        = evMean (Y, [], timePoint, totTrial)*100;
+    err        = evMean (Y, [], [0, timePoint, T], totTrial)*100;
 %     plot([optIdx, maxIdx], [maxEV, maxEV], '+k')
     xlabel('Latent Dimension');
     ylabel('% Exp. Var.');
     gridxy([], [100-err],'Color','k','Linestyle','--')
 %     ylim([0 ceil(max(Err_all(:)+Std_all(:)))])
-    ylim([0 60])
+    ylim([0 52])
+    set(gca, 'YTick', [0 50])
     hold off
     box off
     set(gca, 'TickDir', 'out')

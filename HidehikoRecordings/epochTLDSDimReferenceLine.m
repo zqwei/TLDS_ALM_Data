@@ -36,13 +36,14 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    err        = evMean (Y, Ph, timePoint, totTrial)*100;
+    err        = evMean (Y, Ph, [0, timePoint, T], totTrial)*100;
 %     plot([optIdx, maxIdx], [maxEV, maxEV], '+k')
     xlabel('Latent Dimension');
     ylabel('% Exp. Var.');
     gridxy([], [100-err],'Color','k','Linestyle','--')
 %     ylim([0 ceil(max(Err_all(:)+Std_all(:)))])
-    ylim([0 60])
+    ylim([0 52])
+    set(gca, 'YTick', [0 50])
     hold off
     box off
     set(gca, 'TickDir', 'out')
