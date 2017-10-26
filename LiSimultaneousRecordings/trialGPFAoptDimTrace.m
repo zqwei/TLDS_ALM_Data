@@ -5,8 +5,9 @@ setDir;
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 numSession   = length(nDataSet);
 xDimSet      = [2, 5, 6, 2, 4, 2, 2, 1];
+xDimSet(18)  = 10;
 
-for nSession = 1:numSession    
+for nSession = 18%1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);

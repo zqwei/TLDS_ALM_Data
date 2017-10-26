@@ -7,7 +7,7 @@ mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
 numSession   = length(nDataSet);
-xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
 nFold        = 30;
 
 for nSession = 1:numSession

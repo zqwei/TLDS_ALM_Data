@@ -11,7 +11,7 @@ for nData = 1:length(DataSetList)
     mRow = ceil(length(nDataSet)/mCol);
     numFold = 10;
     
-    for nSession  = 1:length(nDataSet)
+    for nSession  = 18%1:length(nDataSet)
         figure;
 
         numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
@@ -112,7 +112,7 @@ for nData = 1:length(DataSetList)
             scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
         end
 
-        simCorrMat    = corr(scoreMat, 'type', 'Spearman');
+        simCorrMat    = abs(corr(scoreMat, 'type', 'Spearman'));
 
         subplot(3, 2, 4)
         hold on

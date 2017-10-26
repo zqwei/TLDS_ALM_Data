@@ -7,11 +7,11 @@ mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
 nFold        = 30;
 numSession   = length(nDataSet);
 
-for nSession = 1:numSession
+for nSession = 18%1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);
