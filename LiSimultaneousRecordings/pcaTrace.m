@@ -1,4 +1,5 @@
 addpath('../Func');
+addpath('../Release_LDSI_v3')
 setDir;
 
 
@@ -34,10 +35,22 @@ traceAve = squeeze(mean(traceData,1))' * pcaCoeff;
 
 plot(traceAve(timePoint(1)-3:timePoint(end)+10,1), traceAve(timePoint(1)-3:timePoint(end)+10,2), 'k')
 plot(traceAve(timePoint,1), traceAve(timePoint,2), 'or')
+setPrint(8, 6, 'Plots/NeuralspacePCA')
 
+xDimSet    = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
+optFitSet  = [6,10,11,10,30,18,19,27,27,28,14,4,20,9,14,24,5,8,18,22,1,12,5,12];
+Y          = nDataSet(nSession).unit_yes_trial;
+Y          = permute(Y, [2 3 1]);
+yDim       = size(Y, 1);
+T          = size(Y, 2);    
+m          = ceil(yDim/4)*2;
+xDim       = xDimSet(nSession);
+optFit     = optFitSet(nSession);
+load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+[~, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
+y_est      = permute(y_est, [3 1 2]);
 
-
-traceData           = nDataSet(nSession).unit_yes_trial;
+traceData           = y_est;
 for nUnit           = 1:size(traceData, 2)
     nUnitData       = squeeze(traceData(:, nUnit, :));
     nUnitData       = getGaussianPSTH (filterInUse, nUnitData, 2);
@@ -56,3 +69,66 @@ traceAve = squeeze(mean(traceData,1))' * pcaCoeff;
 
 plot(traceAve(timePoint(1)-3:timePoint(end)+10,1), traceAve(timePoint(1)-3:timePoint(end)+10,2), 'k')
 plot(traceAve(timePoint,1), traceAve(timePoint,2), 'or')
+setPrint(8, 6, 'Plots/NeuralspaceTLDSPCA')
+
+
+addpath('../Func');
+addpath('../Release_LDSI_v3')
+setDir;
+
+
+% examples
+exampleSets         = [1 6 11 16 21 26 31 36 41];
+traceData           = nDataSet(nSession).unit_yes_trial;
+for nUnit           = 1:size(traceData, 2)
+    nUnitData       = squeeze(traceData(:, nUnit, :));
+    nUnitData       = getGaussianPSTH (filterInUse, nUnitData, 2);
+    traceData(:, nUnit, :) = nUnitData;
+end
+pcaCoeff             = pca(squeeze(mean(traceData))', 'NumComponents', 2);
+
+figure;
+hold on
+for nTrial  = exampleSets
+    traceTrial = squeeze(traceData(nTrial, :, :))' * pcaCoeff;
+    plot(traceTrial(timePoint(1)-3:timePoint(end)+10, 1), traceTrial(timePoint(1)-3:timePoint(end)+10, 2), 'color', [0.7 0.7 0.7]);
+    plot(traceTrial(timePoint(1),1), traceTrial(timePoint(1),2), 'ob')
+    plot(traceTrial(timePoint(2),1), traceTrial(timePoint(2),2), 'or')
+    plot(traceTrial(timePoint(3),1), traceTrial(timePoint(3),2), 'og')
+end
+
+setPrint(8, 6, 'Plots/NeuralspacePCAExample')
+
+
+xDimSet    = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
+optFitSet  = [6,10,11,10,30,18,19,27,27,28,14,4,20,9,14,24,5,8,18,22,1,12,5,12];
+Y          = nDataSet(nSession).unit_yes_trial;
+Y          = permute(Y, [2 3 1]);
+yDim       = size(Y, 1);
+T          = size(Y, 2);    
+m          = ceil(yDim/4)*2;
+xDim       = xDimSet(nSession);
+optFit     = optFitSet(nSession);
+load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
+[~, y_est] = kfilter (Y, Ph, [0, timePoint, T]);
+y_est      = permute(y_est, [3 1 2]);
+
+traceData           = y_est;
+for nUnit           = 1:size(traceData, 2)
+    nUnitData       = squeeze(traceData(:, nUnit, :));
+    nUnitData       = getGaussianPSTH (filterInUse, nUnitData, 2);
+    traceData(:, nUnit, :) = nUnitData;
+end
+pcaCoeff             = pca(squeeze(mean(traceData))', 'NumComponents', 2);
+
+figure;
+hold on
+for nTrial  = exampleSets
+    traceTrial = squeeze(traceData(nTrial, :, :))' * pcaCoeff;
+    plot(traceTrial(timePoint(1)-3:timePoint(end)+10, 1), traceTrial(timePoint(1)-3:timePoint(end)+10, 2), 'color', [0.01 0.01 0.01]*nTrial);
+    plot(traceTrial(timePoint(1),1), traceTrial(timePoint(1),2), 'ob')
+    plot(traceTrial(timePoint(2),1), traceTrial(timePoint(2),2), 'or')
+    plot(traceTrial(timePoint(3),1), traceTrial(timePoint(3),2), 'og')
+end
+
+setPrint(8, 6, 'Plots/NeuralspaceTLDSPCAExample')

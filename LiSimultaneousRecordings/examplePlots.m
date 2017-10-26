@@ -81,6 +81,7 @@ for nSession  = 1:length(nDataSet)
     scoreMat      = nan(numTrials, size(nSessionData, 3));
     for nTime     = 1:size(nSessionData, 3)
         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+        scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
     end
 
     subplot(3, 2, 3)
