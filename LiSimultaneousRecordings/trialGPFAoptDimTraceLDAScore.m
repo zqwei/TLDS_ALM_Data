@@ -5,10 +5,11 @@ setDir;
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 numSession   = length(nDataSet);
 xDimSet      = [2, 5, 6, 2, 4, 2, 2, 1];
+xDimSet(18)  = 10;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 
-for nSession = 1:numSession    
+for nSession = 18 %1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
@@ -42,6 +43,7 @@ for nSession = 1:numSession
             scoreMat      = nan(numTrials, size(nSessionData, 3));
             for nTime     = 1:size(nSessionData, 3)
                 scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+                scoreMat(:, nTime) = scoreMat(:, nTime) - mean(scoreMat(:, nTime));
             end
 
             subplot(2, 2, 1)

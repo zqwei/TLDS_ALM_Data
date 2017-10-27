@@ -137,10 +137,10 @@ function SpikeDataSet = getSpikeDataWithEphysTimeAndBoxCar(SpikingDataDir, Spike
                 SpikeDataSet(tot_Unit).unit_no_error_index  = find_n_valid_no;
                 SpikeDataSet(tot_Unit).unit_no_error_spk_time  = unit_no_error_spk_time;
                 
-                SpikeDataSet(tot_Unit).depth_in_um          = neuron_unit_info{nUnit}.depth_in_um; %#ok<USENS>
-                SpikeDataSet(tot_Unit).AP_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(1);
-                SpikeDataSet(tot_Unit).ML_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(2);
-                SpikeDataSet(tot_Unit).cell_type            = neuron_unit_info{nUnit}.cell_type1;
+%                 SpikeDataSet(tot_Unit).depth_in_um          = neuron_unit_info{nUnit}.depth_in_um; %#ok<USENS>
+%                 SpikeDataSet(tot_Unit).AP_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(1);
+%                 SpikeDataSet(tot_Unit).ML_in_um             = neuron_unit_info{nUnit}.AP_ML_in_um(2);
+%                 SpikeDataSet(tot_Unit).cell_type            = neuron_unit_info{nUnit}.cell_type1;
                 
             end
         end
