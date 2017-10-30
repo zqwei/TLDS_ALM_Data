@@ -3,6 +3,7 @@ addpath('../Release_LDSI_v3')
 setDir;
 
 load([TempDatDir 'Simultaneous_Spikes.mat'])
+firstLickTimeMax = 97;
 
 slideWin     = -6:-1;
 numSession   = length(nDataSet);
@@ -47,8 +48,8 @@ for nSession      = 18 %1:numSession
 %     P = [a, b];
 %     yfit = P(1)*x+P(2);
 %     plot(x, yfit, '-b')
-    plot(scoreMat(~totTargets), firstLickTime(~totTargets), 'or')
-%     [p, h] = corr(scoreMat(~totTargets & firstLickTime<400), firstLickTime(~totTargets & firstLickTime<400), 'type', 'Spearman');
+    plot(scoreMat(~totTargets & firstLickTime>firstLickTimeMax), firstLickTime(~totTargets & firstLickTime>firstLickTimeMax), 'or')
+    [p, h] = corr(scoreMat(~totTargets & firstLickTime>firstLickTimeMax), firstLickTime(~totTargets & firstLickTime>firstLickTimeMax), 'type', 'Spearman')
 %     nTitile = {nTitile; ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')]};
 %     x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
 %     y = firstLickTime(~totTargets);
@@ -65,7 +66,7 @@ for nSession      = 18 %1:numSession
     ylim([0 255])
 %     xlim([-2 1])
     setPrint(8, 6, ['Plots/LDAReactionTimeSesssion_idx_' num2str(nSession, '%02d')])    
-    close all
+%     close all
 end
 
 %%% TLDS
@@ -124,8 +125,8 @@ for nSession = 18 %1:numSession
 %     P = [a, b];
 %     yfit = P(1)*x+P(2);
 %     plot(x, yfit, '-b')
-    plot(scoreMat(~totTargets), firstLickTime(~totTargets), 'or')
-%     [p, h] = corr(scoreMat(~totTargets & firstLickTime<400), firstLickTime(~totTargets & firstLickTime<400), 'type', 'Spearman');
+    plot(scoreMat(~totTargets & firstLickTime>firstLickTimeMax), firstLickTime(~totTargets & firstLickTime>firstLickTimeMax), 'or')
+    [p, h] = corr(scoreMat(~totTargets & firstLickTime>firstLickTimeMax), firstLickTime(~totTargets & firstLickTime>firstLickTimeMax), 'type', 'Spearman')
 %     nTitile = {nTitile; ['r_s=', num2str(p, '%.3f'), ', p=', num2str(h, '%.3f')]};
 %     x = mean(scoreMat(~totTargets, timePoint(end)+slideWin), 2);
 %     y = firstLickTime(~totTargets);
@@ -140,8 +141,8 @@ for nSession = 18 %1:numSession
 %     title(nTitile);
     set(gca, 'TickDir', 'out')  
     ylim([0 255])
-    xlim([0 0.6])
+%     xlim([0 0.4])
     setPrint(8, 6, ['Plots/TLDSReactionTimeSesssion_idx_' num2str(nSession, '%02d')])
-    close all
+%     close all
 end
 
