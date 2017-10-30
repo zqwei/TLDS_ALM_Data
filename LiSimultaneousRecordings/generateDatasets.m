@@ -1,23 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 0.  Generate raw activity of all neurons sorted in different ways
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% generate data from shuffled dataset code (based on
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comparison_V2_0
 
 addpath('../Func');
 setDir;
 
-% Rename the DataSetList Names as the simultaneously recorded datasets
-minUnitsSession        = 6;
-minRate                = 5;
-perMinRate             = 0.4; % percentage of min Rate in an entire trial
-ROCThres               = 0.50;
-minTrialRatio          = 2.0;
+minNumTrialToAnalysis  = 20;
+params.frameRate       =  29.68/2;
+params.binsize         =  1/params.frameRate;
+params.polein          =  -2.6;
+params.poleout         =  -1.3;
+minTimeToAnalysis      =  round(-3.1 * params.frameRate);
+maxTimeToAnalysis      =  round(2.0 * params.frameRate);
+params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
+params.timeSeries      = params.timeWindowIndexRange * params.binsize;
+params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
+params.expression      = 'None';
+minFiringRate          = 5; % Hz per epoch
+nDataSet               = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+CR                     = getBehavioralPerformance(SpikingDataDir, SpikeFileList);
 
-load([TempDatDir 'Shuffle_Spikes.mat']);
-params.ROCIndex          = ROCPop(nDataSet, params);
-params.ActiveNeuronIndex = ActiveNeuronIndex;
-[nDataSet, kickOutIndex] = ...
-                        getSimultaneousSpikeData(nDataSet, ...
-                        params,...
-                        minRate, perMinRate, ROCThres, ...
-                        minUnitsSession);
-save([TempDatDir 'Simultaneous_Spikes.mat'], 'nDataSet', 'kickOutIndex', 'params', 'ActiveNeuronIndex');
+
+
+nDataSetOld            = nDataSet;
+ActiveNeuronIndexOld   = ActiveNeuronIndex;
+CROld                  = CR;
+nDataSet               = getSpikeDataWithEphysTime(SpikingDataDir2, SpikeFileList2, params.minNumTrialToAnalysis, params.timeSeries, params.binsize);                                  
+ActiveNeuronIndex      = findHighFiringUnits(nDataSet, params, minFiringRate);
+CR                     = getBehavioralPerformance(SpikingDataDir2, SpikeFileList2);
+
+for nUnit = 1:length(nDataSet)
+    nDataSet(nUnit).sessionIndex  = nDataSet(nUnit).sessionIndex + length(SpikeFileList);
+end
+
+nDataSet               = [nDataSetOld; nDataSet];
+ActiveNeuronIndex      = [ActiveNeuronIndexOld; ActiveNeuronIndex];
+CR                     = [CROld; CR];
+
+save([TempDatDir 'Shuffle_Spikes.mat'], 'nDataSet', 'params', 'ActiveNeuronIndex', 'CR');
