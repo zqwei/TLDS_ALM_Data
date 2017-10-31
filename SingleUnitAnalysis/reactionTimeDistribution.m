@@ -15,15 +15,15 @@ for nSession = 1:length(SpikeHiFileList)+length(SpikeHiFileList2)
     firstLickTime = firstLickTime(valid_trials)*1000;
     firstLickTimeSet = [firstLickTimeSet, firstLickTime];
 end
-subplot(1, 2, 1)
-hist(firstLickTimeSet, 100);
-xlabel('first lick time')
-ylabel('# trials')
-title('hidehiko data')
-
-firstLickTimeSet = [];
-addpath('../Func');
-setDir;
+% subplot(1, 2, 1)
+% hist(firstLickTimeSet, 100);
+% xlabel('first lick time')
+% ylabel('# trials')
+% title('hidehiko data')
+% 
+% firstLickTimeSet = [];
+% addpath('../Func');
+% setDir;
 
 for nSession = 1:length(SpikeFileList)
     load([SpikingDataDir SpikeFileList(nSession).name])
@@ -42,8 +42,11 @@ for nSession = 1:length(SpikeFileList)
 
 end
 
-subplot(1, 2, 2)
-hist(firstLickTimeSet, 100);
+% subplot(1, 2, 2)
+hist(firstLickTimeSet, 0:15:900);
+xlim([0 600])
 xlabel('first lick time')
 ylabel('# trials')
-title('nuo data')
+box off
+set(gca, 'TickDir', 'out')
+setPrint(8, 6, 'RT_distribution')
