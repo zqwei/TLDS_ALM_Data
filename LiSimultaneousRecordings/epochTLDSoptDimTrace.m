@@ -9,8 +9,14 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [2, 2, 4, 2, 3, 2, 4, 2, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6;
-                0, 3, 0, 0, 4, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+% indexNumber= [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+% xDimSet      = [2, 2, 4, 2, 3, 2, 4, 2, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6;
+%                 0, 3, 0, 0, 4, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+% xDimSet      = [2, 2, 4, 2, 3, 2, 4, 2, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6;
+%                 0, 3, 0, 0, 4, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6];
+optFitSet    = nan(size(xDimSet));
+% optFitSet    = [6,10,11,10,30,18,19,27,9,11,9,30,13,11,30,25,11,9,30,22,1,15];
 nFold        = 30;
 
 for nSession = 1:numSession
@@ -31,6 +37,7 @@ for nSession = 1:numSession
                 [curr_err(n_fold),~] = loo (Y, Ph, [0, timePoint, T]);
             end
             [~, optFit] = min(curr_err);
+            optFitSet(nSession) = optFit;
             load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
             [~, y_est, ~] = loo (Y, Ph, [0, timePoint, T]);
             

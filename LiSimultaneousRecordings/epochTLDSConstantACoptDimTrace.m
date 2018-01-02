@@ -7,11 +7,15 @@ mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
+% xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6];
+optFitSet    = nan(size(xDimSet));
+% optFitSet    = [6,29,20,14,17,11,20,18,11,25,22,30,20,6,15,9,30,22,30,29,21,3];
+
 nFold        = 30;
 numSession   = length(nDataSet);
 
-for nSession = 18%1:numSession
+for nSession = 1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     yesTrial   = size(nDataSet(nSession).unit_yes_trial, 1);
     Y          = permute(Y, [2 3 1]);
@@ -29,7 +33,7 @@ for nSession = 18%1:numSession
                 [curr_err(n_fold),~] = loo (Y, Ph, [0 T]);
             end
             [~, optFit] = min(curr_err);
-            disp(optFit)
+            optFitSet(nSession) = optFit;
             load ([TempDatDir 'SessionConstantAC_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
             [~, y_est, ~] = loo (Y, Ph, [0 T]);
             
