@@ -8,8 +8,9 @@ load([TempDatDir 'Simultaneous_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
-optFitSet    = [ 6, 29, 20, 14, 17, 11, 20, 18];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6];
+optFitSet    = [6,29,20,14,17,11,20,18,11,25,22,30,20,6,15,9,30,22,30,29,21,3];
+
 explainedERR = nan(numSession, 1);
 explainedCRR = nan(numSession, 1);
 numUints     = nan(numSession, 1);

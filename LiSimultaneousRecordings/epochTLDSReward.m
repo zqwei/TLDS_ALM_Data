@@ -9,8 +9,8 @@ load([TempDatDir 'SimultaneousError_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [ 2,  3,  4,  2,  4,  2,  4,  3];
-optFitSet    = [ 6, 10, 11, 10, 30, 18, 19, 27];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6];
+optFitSet    = [6,10,11,10,30,18,19,27, 9,11, 9,30,13,11,30,25,11, 9,30,22, 1,15];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 for nSession = 1:numSession

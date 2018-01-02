@@ -7,12 +7,12 @@ mCol                = 4;
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 timePoints          = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 numEpochs           = 4;
-xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 3, 4, 4, 5, 6, 5, 4, 5, 4, 3, 3, 3, 4, 6];
-optFitSets   = [6,10,11,10,30,18,19,27,27,28,14,4,20,9,14,24,5,8,18,22,1,12,5,12];
+xDimSet      = [2, 3, 4, 2, 4, 2, 4, 3, 5, 3, 4, 5, 5, 6, 5, 5, 4, 4, 3, 3, 4, 6];
+optFitSets   = [6,10,11,10,30,18,19,27, 9,11, 9,30,13,11,30,25,11, 9,30,22, 1,15];
 
 
 
-for nSession  = 18%1:length(nDataSet)
+for nSession  = 1:length(nDataSet)
     figure;
 
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
