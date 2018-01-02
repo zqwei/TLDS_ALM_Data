@@ -2,9 +2,11 @@ addpath('../Func');
 addpath('../Release_LDSI_v3');
 setDir;
 
-load([TempDatDir 'Combined_Simultaneous_Error_Spikes_LOO.mat'])
+% load([TempDatDir 'Combined_Simultaneous_Error_Spikes_LOO.mat'])
+load([TempDatDir 'Combined_Simultaneous_KF_Error_Spikes.mat'])
 errDataSet   = nDataSet;
-load([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'])
+% load([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'])
+load([TempDatDir 'Combined_Simultaneous_KF_Spikes.mat'])
 corrDataSet  = nDataSet;
 
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');

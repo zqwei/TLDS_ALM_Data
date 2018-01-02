@@ -2,7 +2,7 @@ addpath('../Func');
 addpath('../Release_LDSI_v3')
 setDir;
 
-load([TempDatDir 'Simultaneous_Spikes.mat'])
+load([TempDatDir 'SimultaneousError_Spikes.mat'])
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
@@ -21,7 +21,7 @@ for nSession = 1:numSession
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'Session_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [~, y_est] = loo (Y, Ph, [0, timePoint, T]);
+    [~, y_est] = loo_forward (Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_no_fit  = y_est(1+numYesTrial:end, :, :);
@@ -30,7 +30,7 @@ end
 
 nDataSetOld    = nDataSet;
 
-load([TempDatDir 'Simultaneous_HiSpikes.mat'])
+load([TempDatDir 'SimultaneousError_HiSpikes.mat'])
 mean_type    = 'Constant_mean';
 tol          = 1e-6;
 cyc          = 10000;
@@ -52,7 +52,7 @@ for nSession = 1:numSessionHi
     xDim       = xDimSet(nSession);
     optFit     = optFitSet(nSession);
     load ([TempDatDir 'SessionHi_' num2str(nSession) '_xDim' num2str(xDim) '_nFold' num2str(optFit) '.mat'],'Ph');
-    [~, y_est] = loo (Y, Ph, [0, timePoint, T]);
+    [~, y_est] = loo_forward (Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_no_fit  = y_est(1+numYesTrial:end, :, :);
@@ -60,4 +60,4 @@ for nSession = 1:numSessionHi
 end
 
 nDataSet        = [nDataSetOld'; nDataSet'];
-save([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'], 'nDataSet', 'params')
+save([TempDatDir 'Combined_Simultaneous_KF_Error_Spikes.mat'], 'nDataSet', 'params')
