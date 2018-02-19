@@ -19,7 +19,7 @@
 
 function [nDataSet3D, kickOutIndexAll] = getSimultaneousSpikeData(...
                                     nDataSet, DataSetList, minRate, perMinRate, ...
-                                    ROCThres, minUnitsSession)
+                                    ROCThres, minUnitsSession, trialUnitRatio)
     
     ROCIndex          = DataSetList.ROCIndex;
     ActiveNeuronIndex = DataSetList.ActiveNeuronIndex;                        
@@ -27,7 +27,7 @@ function [nDataSet3D, kickOutIndexAll] = getSimultaneousSpikeData(...
     %%%
     % Set minimal ratio between number of trial and number of unit
     %%%
-    trialUnitRatio     = 2.5;
+    % trialUnitRatio     = 1.0;
     minNumTrial        = 20;
     
     %%%

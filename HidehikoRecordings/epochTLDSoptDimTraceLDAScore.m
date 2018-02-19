@@ -14,7 +14,7 @@ optFitSets   = [4, 25, 7, 20, 8, 10, 1, 14, 15, 10, 15, 20, 5, 27, 9, 24, 11, 19
 nFold        = 30;
 cmap         = cbrewer('div', 'Spectral', 128, 'cubic');
 
-for nSession = 3%1:numSession
+for nSession = 1:numSession
     
 %     mean_yes      = mean(mean(nDataSet(nSession).unit_yes_trial(:, 1:8)));
 %     mean_no       = mean(mean(nDataSet(nSession).unit_no_trial(:, 1:8))); 

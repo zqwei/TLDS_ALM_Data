@@ -32,10 +32,10 @@ function SpikeDataSet = getSpikeHiDataWithEphysTime(SpikingDataDir, SpikeFileLis
         task_stimulation    = unit(1).Behavior.stim_trial_vector;
         task_cue_time       = unit(1).Behavior.Cue_start;
         valid_trials = (behavior_report== 1 | behavior_report== 2) & ...
-                        (task_stimulation(:,1)==0);
+                        (task_stimulation==0);
                     
         valid_errors = (behavior_report== 3 | behavior_report== 4) & ...
-                        (task_stimulation(:,1)==0);  
+                        (task_stimulation==0);  
                     
         numUnits     = length(unit);
         % numTrials    = length(behavior_report);

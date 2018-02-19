@@ -23,10 +23,14 @@ SpikingDataDir2             = '../../../Data_In_Use/TLDS_Datasets/ALMRecording_C
 SpikingHiDir                = '../../../Data_In_Use/TLDS_Datasets/HidehikoData/';
 SpikingHiDir2               = '../../../Data_In_Use/TLDS_Datasets/HidehikoData2/';
 
+SpikingHiSoundDir           = '../../../Data_In_Use/TLDS_Datasets/HidehikoSoundData/';
+
+
 SpikeFileList               = dir([SpikingDataDir '*.mat']);
 SpikeFileList2              = dir([SpikingDataDir2 '*.mat']);
 SpikeHiFileList             = dir([SpikingHiDir '*.mat']);
 SpikeHiFileList2            = dir([SpikingHiDir2 '*.mat']);
+SpikeHiSoundFileList        = dir([SpikingHiSoundDir '*.mat']);
 
 TempDatDir                   = '../TempDat/';
 if ~exist(TempDatDir, 'dir')
