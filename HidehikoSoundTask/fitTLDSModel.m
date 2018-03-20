@@ -11,7 +11,7 @@ timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
 nFold        = 10;
 
-for nSession = 1:numSession
+for nSession = 15:numSession
     
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     Y          = permute(Y, [2 3 1]);

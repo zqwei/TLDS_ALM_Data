@@ -9,11 +9,11 @@ cyc          = 10000;
 timePoint    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 timePoint    = timePoint(2:end-1);
 numSession   = length(nDataSet);
-xDimSet      = [3, 3, 3, 3, 2, 5, 5, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 3;
-                0, 0, 4, 0, 3, 0, 0, 0, 0, 0, 0, 6, 6, 0, 5, 5, 6, 0];
+sessInd      = [ 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16];
+xDimSet      = [ 5, 6, 4, 6, 4, 6, 4, 6, 3, 8, 8, 0, 8, 6, 6, 7];
 nFold        = 30;
 
-for nSession = 1:numSession
+for nSession = 14 %1:numSession
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
     Y          = permute(Y, [2 3 1]);
     T          = size(Y, 2);
@@ -21,7 +21,7 @@ for nSession = 1:numSession
         xDim       = xDimSet(nDim, nSession);
         if xDim>0
             curr_err   = nan(nFold, 1);
-            for n_fold = 1:nFold
+            for n_fold = nFold:-1:1
                 is_fit     = false;
                 while ~is_fit
                     try

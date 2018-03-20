@@ -4,7 +4,8 @@ setDir;
 
 load([TempDatDir 'Simultaneous_HiSoundSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [1, 3, 4, 2, 5, 8, 6, 4, 6, 6, 8, 8, 6, 6, 10, 6, 6, 4];
+sessInd      = [ 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16];
+xDimSet      = [ 9, 6, 5, 6, 7, 7, 9, 7, 5, 8,15, 7,10, 8, 7,10];
 
 for nSession = 1:numSession
     load(['mat_results/run' num2str(nSession, '%03d') '/gpfa_xDim' num2str(xDimSet(nSession), '%02d') '.mat'])
