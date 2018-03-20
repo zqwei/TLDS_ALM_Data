@@ -8,7 +8,7 @@ kernSD       = 0;
 
 for nSession = 1:numSession
     method = plotPredErrorVsDim(nSession, kernSD);
-    save([TempDatDir 'GPFASessionHi_' num2str(nSession) '.mat'],'method');
+    save([TempDatDir 'GPFASessionHiSound_' num2str(nSession) '.mat'],'method');
     setPrint(12, 9, ['GPFAPlots/GPFAModelComparison_Session_' num2str(nSession)])
 end
 
