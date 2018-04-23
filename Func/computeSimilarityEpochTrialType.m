@@ -26,4 +26,4 @@ function [similarityMean, simlarityStd] = computeSimilarityEpochTrialType(scoreM
     
     similarityIndex = computeSimilarityEpochwithPreSample(scoreMat(~totTargets, :), scoreMatRef(~totTargets, :), timePoints); %computeSimilarityEpoch(scoreMat(~totTargets, :), scoreMatRef(~totTargets, :), timePoints);
     similarityMean(3, :) = similarityIndex(1, :);
-    simlarityStd(3, :)   = similarityIndex(2, :);    
+    simlarityStd(3, :)   = similarityIndex(2, :);

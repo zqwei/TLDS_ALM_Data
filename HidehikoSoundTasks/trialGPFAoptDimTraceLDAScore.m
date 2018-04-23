@@ -2,10 +2,9 @@ addpath('../Func');
 addpath(genpath('../gpfa_v0203'))
 setDir;
 
-load([TempDatDir 'Simultaneous_Spikes.mat'])
+load([TempDatDir 'Simultaneous_HiSoundSpikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [2, 5, 6, 2, 4, 2, 2, 1];
-xDimSet(18)  = 10;
+xDimSet      = [ 9, 6, 5, 6, 7, 7, 9, 7, 5, 8,15, 7,10, 8, 7,10];
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 
@@ -49,7 +48,9 @@ for nSession = 1:numSession
             subplot(2, 2, 1)
             hold on
             plot(params.timeSeries, scoreMat(1:8, :), '-b')
+%             plot(params.timeSeries, scoreMat(1:numYesTrial, :), '-b')
             plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+%             plot(params.timeSeries, scoreMat(numYesTrial+1:end, :), '-r')
             gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
             xlim([min(params.timeSeries) max(params.timeSeries)]);
             box off

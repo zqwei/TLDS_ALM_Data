@@ -17,7 +17,7 @@ optFitSet    = [6,10,11,10,30,18,19,27, 9,11, 9,30,13,11,30,25,11, 9,30,22, 1,15
 
 GPFAresultsFolder = '/Volumes/My Drive/ALM_Recording_Pole_Task_Svoboda_Lab/TLDS_analysis_Li_data/GPFA_Li_Data/mat_results/';
 
-for nSession = 1:numSession % example session 17
+for nSession = 17%1:numSession % example session 17
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
     load([TempDatDir 'Session_' num2str(nSession) '.mat'],'err_model1','err_model2', 'err_model3', 'err_model4');
     figure;

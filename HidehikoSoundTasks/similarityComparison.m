@@ -97,7 +97,7 @@ Boxcar250Std      = nan(numSession, 3, 7);
 
 load([TempDatDir 'DataListSimEphys.mat']);
 
-for nSession  = 1:numSession    
+for nSession  = 1:8    
     nData         = 2;
     load([TempDatDir DataSetList(nData).name '.mat'])
     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);

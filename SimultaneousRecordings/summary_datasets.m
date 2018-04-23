@@ -55,3 +55,23 @@ for nSession = 1:numSession
         EigA(nSession, nA) = max(abs(eig(squeeze(A(:,:,nA+1)))));
     end
 end
+
+sum_pair = 0;
+for nData = 1:length(nDataSet)
+    disp('--------------------------------')
+    disp(['Session #' num2str(nData)])
+    diff_trial = diff(nDataSet(nData).unit_yes_trial_index);
+    diff_trial_yes = find(diff_trial == 1);
+    if size(diff_trial_yes, 1)>1; diff_trial_yes = diff_trial_yes'; end
+    for n_trial = diff_trial_yes
+        disp(['Yes trial pair: ' num2str(nDataSet(nData).unit_yes_trial_index(n_trial)) ' and ' num2str(nDataSet(nData).unit_yes_trial_index(n_trial+1))])
+        sum_pair = sum_pair + 1;
+    end
+    diff_trial = diff(nDataSet(nData).unit_no_trial_index);
+    diff_trial_no = find(diff_trial == 1);
+    if size(diff_trial_no, 1)>1; diff_trial_no = diff_trial_no'; end
+    for n_trial = diff_trial_no
+        disp(['No trial pair: ' num2str(nDataSet(nData).unit_no_trial_index(n_trial)) ' and ' num2str(nDataSet(nData).unit_no_trial_index(n_trial+1))])
+        sum_pair = sum_pair + 1;
+    end
+end

@@ -30,28 +30,29 @@ end
 
 function coeffMat            = coeffClassify(nSessionData, totTargets)
     
-    
     % choice of parameters follows 'min-min' rul in Guo's paper
     % Here we only consider to use a Gamma which is close enough to zero
     
     zeroVarUnits           = var(nSessionData, 1) < 1e-5;
     coeffLength            = size(nSessionData, 2);
     nSessionData           = nSessionData(:, ~zeroVarUnits);
-           
-    obj                    = fitcdiscr(nSessionData, totTargets, ...
-                                    'DiscrimType', 'pseudoLinear');
-   
-    coeff                  = obj.Coeffs(1,2).Linear;
-    if norm(coeff)         > 0
-        coeff              = coeff./norm(coeff);
+    if size(nSessionData, 2) > 0     
+        obj                    = fitcdiscr(nSessionData, totTargets, ...
+                                        'DiscrimType', 'pseudoLinear');
+        coeff                  = obj.Coeffs(1,2).Linear;
+        if norm(coeff)         > 0
+            coeff              = coeff./norm(coeff);
+        end
+
+        if sum(zeroVarUnits)   > 0
+            coeffOld           = coeff;
+            coeff              = zeros(coeffLength, 1);
+            coeff(~zeroVarUnits) = coeffOld;
+        end
+
+        coeffMat               = coeff;
+    else
+        coeffMat               = zeros(length(zeroVarUnits), 1);
     end
-    
-    if sum(zeroVarUnits)   > 0
-        coeffOld           = coeff;
-        coeff              = zeros(coeffLength, 1);
-        coeff(~zeroVarUnits) = coeffOld;
-    end
-    
-    coeffMat               = coeff;
         
 end

@@ -19,11 +19,17 @@ nFold        = 30;
 % row #2: contra
 % row #3: ipsi
 
-GPFAMean     = nan(numSession, 3, 7);
-GPFAStd      = nan(numSession, 3, 7);
+% 1. TLDS
+% 2. TLDS - forward only
+% 3. GPFA
+% 4. LDS
+% 5. box150ms
+% 6. box250ms
+% 7. sLDS -- 2
+% 8. sLDS -- 4
+% 9. sLDS -- 8
 
-TLDSMean     = nan(numSession, 3, 7);
-TLDSStd      = nan(numSession, 3, 7);
+actCorr     = nan(numSession, 3, 7, );
 
 for nSession = 1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
@@ -51,9 +57,6 @@ for nSession = 1:numSession
     y_est = nan(size(Y));
     for nTrial = 1:size(Y, 3)
         y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
-%                 y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
-%                 y_est_nTrial (y_est_nTrial <0) = 0;
-%                 y_est_nTrial = y_est_nTrial.^2;
         y_est(:, :, nTrial) = y_est_nTrial;
     end
     nSessionData  = permute(y_est, [3 1 2]);
