@@ -3,6 +3,7 @@ addpath('../Release_LDSI_v3');
 setDir;
 
 load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
+load([TempDatDir 'Combined_data_SLDS_fit.mat'])
 
 % %% Print adjacent trials in each sessions
 % sum_pair = 0;
@@ -45,7 +46,8 @@ for nData = 1:length(nDataSet)
     numUnits      = length(nDataSet(nData).nUnit);
     numTrials     = length(totTargets);
     numYesTrial   = sum(totTargets);
-    nSessionData  = [nDataSet(nData).unit_KF_yes_fit; nDataSet(nData).unit_KF_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_KFFoward_yes_fit; nDataSet(nData).unit_KFFoward_no_fit];
+    nSessionData  = fitData(nData).K8yEst;
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -78,7 +80,7 @@ for nData = 1:length(nDataSet)
                 control_pair_corr = control_pair_corr(:);
                 control_pair_corr(isnan(control_pair_corr)) = [];
                 pair_correlation(tot_pair, 1, nEpoch) = pair_corr;
-                pair_correlation(tot_pair, 2, nEpoch) = mean(control_pair_corr);
+                pair_correlation(tot_pair, 2, nEpoch) = median(control_pair_corr);
                 pair_correlation(tot_pair, 3, nEpoch) = signrank(control_pair_corr, pair_corr);
             end
         end
@@ -101,7 +103,7 @@ for nData = 1:length(nDataSet)
                 control_pair_corr = control_pair_corr(:);
                 control_pair_corr(isnan(control_pair_corr)) = [];
                 pair_correlation(tot_pair, 1, nEpoch) = pair_corr;
-                pair_correlation(tot_pair, 2, nEpoch) = mean(control_pair_corr);
+                pair_correlation(tot_pair, 2, nEpoch) = median(control_pair_corr);
                 pair_correlation(tot_pair, 3, nEpoch) = signrank(control_pair_corr, pair_corr);
             end
         end
@@ -113,13 +115,14 @@ epoch_titles = {'PreSample', 'Sample', 'Delay', 'Response'};
 for nEpoch = 1:4
     subplot(1, 4, nEpoch)
     hold on
-    plot(squeeze(pair_correlation(:,1,nEpoch)), squeeze(pair_correlation(:,2,nEpoch)), '.')
+    plot(squeeze(pair_correlation(:,1,nEpoch)), squeeze(pair_correlation(:,2,nEpoch)), '.k')
     p = signrank(squeeze(pair_correlation(:,1,nEpoch)), squeeze(pair_correlation(:,2,nEpoch)), 'tail', 'right');
+%     median(squeeze(pair_correlation(:,1,nEpoch))-squeeze(pair_correlation(:,2,nEpoch)))
     plot([0 1], [0, 1], '--k')
     xlim([0 1])
     xlabel('adjecent pair')
     ylabel('other pairs')
-%     title([epoch_titles{nEpoch} 'p=' num2str(p, '%.3f')])
+    title([epoch_titles{nEpoch} 'p=' num2str(p, '%.3f')])
     set(gca, 'TickDir', 'out')
 end
 

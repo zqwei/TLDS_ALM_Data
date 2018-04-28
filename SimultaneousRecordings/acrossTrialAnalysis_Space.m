@@ -3,8 +3,9 @@ addpath('../Release_LDSI_v3');
 setDir;
 
 load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
+load([TempDatDir 'Combined_data_SLDS_fit.mat'])
 
-pair_correlation = nan(50, 5, 4);
+pair_correlation = nan(50, 10, 4);
 % 2nd dim
 % col 1: KF pair correlation
 % col 2: Full space
@@ -12,6 +13,10 @@ pair_correlation = nan(50, 5, 4);
 % col 4: GPFA
 % col 5: yes/no
 % col 6: session index
+% col 7: KF forward
+% col 8: KS2
+% col 9: KS4
+% col 10: KS8
 
 % 3rd dim
 % epochs
@@ -85,6 +90,65 @@ for nData = 1:length(nDataSet)
         trialGPFACorrEpoch(:, :, nEpoch) = abs(corr(scoreMat_', 'type', 'spearman'));
     end
     
+    %KF forward
+    nSessionData  = [nDataSet(nData).unit_KFFoward_yes_fit; nDataSet(nData).unit_KFFoward_no_fit];
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    trialKFForwardCorrEpoch = nan(numTrials, numTrials, length(timePoint)-1);
+    for nEpoch     = 1:length(timePoint)-1
+        scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
+        trialKFForwardCorrEpoch(:, :, nEpoch) = abs(corr(scoreMat_', 'type', 'spearman'));
+    end
+    
+    %KS2
+    nSessionData  = fitData(nData).K2yEst;
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    trialKS2CorrEpoch = nan(numTrials, numTrials, length(timePoint)-1);
+    for nEpoch     = 1:length(timePoint)-1
+        scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
+        trialKS2CorrEpoch(:, :, nEpoch) = abs(corr(scoreMat_', 'type', 'spearman'));
+    end
+    
+    %KS4
+    nSessionData  = fitData(nData).K4yEst;
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    trialKS4CorrEpoch = nan(numTrials, numTrials, length(timePoint)-1);
+    for nEpoch     = 1:length(timePoint)-1
+        scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
+        trialKS4CorrEpoch(:, :, nEpoch) = abs(corr(scoreMat_', 'type', 'spearman'));
+    end
+    
+    %KS8
+    nSessionData  = fitData(nData).K8yEst;
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    trialKS8CorrEpoch = nan(numTrials, numTrials, length(timePoint)-1);
+    for nEpoch     = 1:length(timePoint)-1
+        scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
+        trialKS8CorrEpoch(:, :, nEpoch) = abs(corr(scoreMat_', 'type', 'spearman'));
+    end
     
     % yes trials
     diff_trial     = diff(nDataSet(nData).unit_yes_trial_index);
@@ -102,6 +166,10 @@ for nData = 1:length(nDataSet)
                 pair_correlation(tot_pair, 2, nEpoch) = trialFullCorrEpoch(n_trial, n_trial+1, nEpoch);
                 pair_correlation(tot_pair, 3, nEpoch) = trialCKFCorrEpoch(n_trial, n_trial+1, nEpoch);
                 pair_correlation(tot_pair, 4, nEpoch) = trialGPFACorrEpoch(n_trial, n_trial+1, nEpoch);
+                pair_correlation(tot_pair, 7, nEpoch) = trialKFForwardCorrEpoch(n_trial, n_trial+1, nEpoch);
+                pair_correlation(tot_pair, 8, nEpoch) = trialKS2CorrEpoch(n_trial, n_trial+1, nEpoch);
+                pair_correlation(tot_pair, 9, nEpoch) = trialKS4CorrEpoch(n_trial, n_trial+1, nEpoch);
+                pair_correlation(tot_pair,10, nEpoch) = trialKS8CorrEpoch(n_trial, n_trial+1, nEpoch);
             end
         end
     end
@@ -120,6 +188,10 @@ for nData = 1:length(nDataSet)
                 pair_correlation(tot_pair, 2, nEpoch) = trialFullCorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
                 pair_correlation(tot_pair, 3, nEpoch) = trialCKFCorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
                 pair_correlation(tot_pair, 4, nEpoch) = trialGPFACorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
+                pair_correlation(tot_pair, 7, nEpoch) = trialKFForwardCorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
+                pair_correlation(tot_pair, 8, nEpoch) = trialKS2CorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
+                pair_correlation(tot_pair, 9, nEpoch) = trialKS4CorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
+                pair_correlation(tot_pair,10, nEpoch) = trialKS8CorrEpoch(n_trial+numYesTrial, n_trial+1+numYesTrial, nEpoch);
             end
         end
     end
@@ -127,23 +199,25 @@ end
 
 figure;
 epoch_titles = {'PreSample', 'Sample', 'Delay', 'Response'};
-xlabels = {'Full space', 'LDS', 'GPFA'};
+% xlabels = {'Full space', 'LDS', 'GPFA'};
 tot_plot = 0;
-for nPlot = 1:3
+for nPlot = [1 2 3 6 7 8 9]
     for nEpoch = 1:4
         tot_plot = tot_plot + 1;
-        subplot(3, 4, tot_plot)
+        subplot(7, 4, tot_plot)
         hold on
-        plot(squeeze(pair_correlation(:,nPlot+1,nEpoch)), squeeze(pair_correlation(:,1,nEpoch)), '.')
+        plot(squeeze(pair_correlation(:,1,nEpoch)), squeeze(pair_correlation(:,nPlot+1,nEpoch)), '.k')
         p = signrank(squeeze(pair_correlation(:,nPlot+1,nEpoch)), squeeze(pair_correlation(:,1,nEpoch)), 'tail', 'left');
+%         median(squeeze(pair_correlation(:,1,nEpoch))-squeeze(pair_correlation(:,nPlot+1,nEpoch)))
         plot([0 1], [0, 1], '--k')
         xlim([0 1])
         ylabel('SAS')
-        xlabel(xlabels{nPlot})
+        xlabel('Neural space')
         title([epoch_titles{nEpoch} 'p=' num2str(p, '%.3f')])
+        set(gca, 'TickDir', 'out')
     end
 end
-
+setPrint(8*4, 6*7, 'Plots/NPair_comparison_Fits')
 
 % figure
 % epoch_titles = {'PreSample', 'Sample', 'Delay', 'Response'};
