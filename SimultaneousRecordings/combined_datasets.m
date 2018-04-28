@@ -35,7 +35,7 @@ for nSession = 1:numSession
     nDataSet(nSession).unit_KFLOO_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_KFLOO_no_fit  = y_est(1+numYesTrial:end, :, :);
     % KF forward filter
-    [~, y_est] = loo_forward(Y, Ph, [0, timePoint, T]);
+    [~, y_est] = kfilterForward(Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_KFFoward_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_KFFoward_no_fit  = y_est(1+numYesTrial:end, :, :);
@@ -101,7 +101,7 @@ for nSession = 1:numSessionHi
     nDataSet(nSession).unit_KFLOO_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_KFLOO_no_fit  = y_est(1+numYesTrial:end, :, :);
     % KF forward filter
-    [~, y_est] = loo_forward(Y, Ph, [0, timePoint, T]);
+    [~, y_est] = kfilterForward(Y, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
     nDataSet(nSession).unit_KFFoward_yes_fit = y_est(1:numYesTrial, :, :);
     nDataSet(nSession).unit_KFFoward_no_fit  = y_est(1+numYesTrial:end, :, :);
@@ -169,7 +169,7 @@ for nSession = 1:numSessionSound
         nDataSet(nSession).unit_KFLOO_yes_fit = y_est(1:numYesTrial, :, :);
         nDataSet(nSession).unit_KFLOO_no_fit  = y_est(1+numYesTrial:end, :, :);
         % KF forward filter
-        [~, y_est] = loo_forward(Y, Ph, [0, timePoint, T]);
+        [~, y_est] = kfilterForward(Y, Ph, [0, timePoint, T]);
         y_est      = permute(y_est, [3 1 2]); % trial x unit x time
         nDataSet(nSession).unit_KFFoward_yes_fit = y_est(1:numYesTrial, :, :);
         nDataSet(nSession).unit_KFFoward_no_fit  = y_est(1+numYesTrial:end, :, :);
