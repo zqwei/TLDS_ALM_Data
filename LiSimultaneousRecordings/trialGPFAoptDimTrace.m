@@ -4,8 +4,7 @@ setDir;
 
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [2, 5, 6, 2, 4, 2, 2, 1];
-xDimSet(18)  = 10;
+xDimSet      = [2, 4, 6, 2, 4, 3, 4, 1, 4, 4, 4, 5, 6, 5, 6, 5, 9, 2, 3, 2, 3, 3];
 
 for nSession = 18%1:numSession    
     Y          = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
