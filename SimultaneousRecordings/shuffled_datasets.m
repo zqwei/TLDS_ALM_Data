@@ -32,6 +32,8 @@ for nSession = 1:numSession
     nDataSet(nSession).unit_KF_no_fit  = y_est(1+numYesTrial:end, :, :);
     % Shuffle KF filter
     Y_shuffle  = shuffleSession(nDataSet(nSession), numShfTrials);
+    nDataSet(nSession).unit_yes_Shftrial = Y_shuffle(1:numShfTrials, :, :);
+    nDataSet(nSession).unit_no_Shftrial = Y_shuffle(1+numShfTrials:end, :, :);
     Y_shuffle  = permute(Y_shuffle, [2 3 1]); % unit x time x trial
     [~, y_est] = kfilter(Y_shuffle, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
@@ -72,6 +74,8 @@ for nSession = 1:numSessionHi
     nDataSet(nSession).unit_KF_no_fit  = y_est(1+numYesTrial:end, :, :);
     % Shuffle KF filter
     Y_shuffle  = shuffleSession(nDataSet(nSession), numShfTrials);
+    nDataSet(nSession).unit_yes_Shftrial = Y_shuffle(1:numShfTrials, :, :);
+    nDataSet(nSession).unit_no_Shftrial = Y_shuffle(1+numShfTrials:end, :, :);
     Y_shuffle  = permute(Y_shuffle, [2 3 1]); % unit x time x trial
     [~, y_est] = kfilter(Y_shuffle, Ph, [0, timePoint, T]);
     y_est      = permute(y_est, [3 1 2]); % trial x unit x time
@@ -117,6 +121,8 @@ for nSession = 1:numSessionSound
         nDataSet(nSession).unit_KF_no_fit  = y_est(1+numYesTrial:end, :, :);
         % Shuffle KF filter
         Y_shuffle  = shuffleSession(nDataSet(nSession), numShfTrials);
+        nDataSet(nSession).unit_yes_Shftrial = Y_shuffle(1:numShfTrials, :, :);
+        nDataSet(nSession).unit_no_Shftrial = Y_shuffle(1+numShfTrials:end, :, :);
         Y_shuffle  = permute(Y_shuffle, [2 3 1]); % unit x time x trial
         [~, y_est] = kfilter(Y_shuffle, Ph, [0, timePoint, T]);
         y_est      = permute(y_est, [3 1 2]); % trial x unit x time

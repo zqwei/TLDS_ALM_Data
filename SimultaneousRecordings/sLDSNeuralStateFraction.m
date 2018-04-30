@@ -59,13 +59,17 @@ for k = [2 4 8]
         stateswitch = statseq(:, 1:end-1)~=statseq(:, 2:end);
         stateList(nSession, 2:end/2) = mean(stateswitch(totTargets, :));
         stateList(nSession, end/2+2:end) = mean(stateswitch(~totTargets, :));
-        switch_left = [switch_left; sum(stateswitch(~totTargets, :), 2)];
-        switch_right = [switch_left; sum(stateswitch(~totTargets, :), 2)];
+        switch_left = [switch_left; sum(stateswitch(totTargets, :), 2), ones(sum(totTargets), 1)*nDataSet(nSession).task_type];
+        switch_right = [switch_left; sum(stateswitch(~totTargets, :), 2), ones(sum(~totTargets), 1)*nDataSet(nSession).task_type];
     end
     
     for task        = 1:2
         param       = params(task);
         ind         = taskList == task;
+        disp(mean(switch_left(switch_left(:,2)==task, 1)))
+        disp(std(switch_left(switch_left(:,2)==task, 1)))
+        disp(mean(switch_right(switch_right(:,2)==task, 1)))
+        disp(std(switch_right(switch_right(:,2)==task, 1)))
         figure;
         hold on               
         shadedErrorBar(param.timeSeries, mean(stateList(ind,1:end/2)), std(stateList(ind,1:end/2)/sqrt(sum(ind))),{'-b','linewid',0.5},0.5);

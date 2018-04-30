@@ -23,6 +23,7 @@ for nData = 1:length(nDataSet)
     numTrials     = length(totTargets);
     numYesTrial   = sum(totTargets);
     nSessionData  = [nDataSet(nData).unit_KF_yes_fit; nDataSet(nData).unit_KF_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_yes_trial; nDataSet(nData).unit_no_trial];
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -36,6 +37,7 @@ for nData = 1:length(nDataSet)
     numTrials     = length(totTargetsShf);
     numYesTrial   = sum(totTargetsShf);
     nSessionData  = [nDataSet(nData).unit_KFShf_yes_fit; nDataSet(nData).unit_KFShf_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_yes_Shftrial; nDataSet(nData).unit_no_Shftrial];
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargetsShf);
     scoreShfMat   = nan(numTrials, size(nSessionData, 3));
@@ -128,6 +130,7 @@ for n = 1:3
         plot(comparison_table_slice(2, comparison_table_slice(3,:)>0.01), comparison_table_slice(1, comparison_table_slice(3,:)>0.01), 'o', 'MarkerEdgeColor', line_color(nEpoch, :), 'MarkerSize', 4)
         plot(comparison_table_slice(2, comparison_table_slice(3,:)<0.01), comparison_table_slice(1, comparison_table_slice(3,:)<0.01), 'o', 'MarkerEdgeColor', line_color(nEpoch, :), 'MarkerFaceColor', line_color(nEpoch, :), 'MarkerSize', 4)
     end
+    [p, h] = signrank(reshape(comparison_table(n,:, 1, :), [1, 7*55]), reshape(comparison_table(n,:, 2, :), [1, 7*55]))
     plot([0 1], [0 1], '--k')
     hold off
     xlabel('Average correlation shuffled trials')

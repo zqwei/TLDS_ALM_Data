@@ -8,7 +8,7 @@ load([TempDatDir 'Combined_Shuffle_Spikes.mat'])
 
 numShfTrials = 200;
 
-for nData = 1:length(nDataSet)
+for nData = 17%1:length(nDataSet)
     param          = params(nDataSet(nData).task_type);
     timePoint      = timePointTrialPeriod(param.polein, param.poleout, param.timeSeries);
     
@@ -17,6 +17,7 @@ for nData = 1:length(nDataSet)
     numTrials     = length(totTargets);
     numYesTrial   = sum(totTargets);
     nSessionData  = [nDataSet(nData).unit_KF_yes_fit; nDataSet(nData).unit_KF_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_yes_trial; nDataSet(nData).unit_no_trial];
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -30,6 +31,7 @@ for nData = 1:length(nDataSet)
     numTrials     = length(totTargetsShf);
     numYesTrial   = sum(totTargetsShf);
     nSessionData  = [nDataSet(nData).unit_KFShf_yes_fit; nDataSet(nData).unit_KFShf_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_yes_Shftrial; nDataSet(nData).unit_no_Shftrial];
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargetsShf);
     scoreShfMat   = nan(numTrials, size(nSessionData, 3));
