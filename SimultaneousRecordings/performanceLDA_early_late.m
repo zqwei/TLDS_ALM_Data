@@ -9,7 +9,7 @@ LDA_decode   = nan(numSession, 2);
 kFold        = 10;
 slideWin     = 0;
 
-for nSession = 1:numSession
+for nSession = 17%1:numSession
     param      = params(nDataSet(nSession).task_type);
     timePoint    = timePointTrialPeriod(param.polein, param.poleout, param.timeSeries);
     timePoint    = timePoint(2:end-1);

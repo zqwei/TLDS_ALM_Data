@@ -2,12 +2,10 @@ addpath('../Func');
 addpath('../Release_LDSI_v3');
 setDir;
 
-analysisIndex = [1:8 18 26:41];
-
-load([TempDatDir 'Combined_Simultaneous_Error_Spikes_LOO.mat'])
-errDataSet   = nDataSet(analysisIndex);
-load([TempDatDir 'Combined_Simultaneous_Spikes_LOO.mat'])
-corrDataSet  = nDataSet(analysisIndex);
+load([TempDatDir 'Combined_Simultaneous_Error_Spikes.mat'])
+errDataSet   = nDataSet;
+load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
+corrDataSet  = nDataSet;
 
 numTime           = size(corrDataSet(1).unit_yes_trial, 3);
 
@@ -16,7 +14,6 @@ filterLength                  = 11;
 filterStep                    = linspace(-filterLength / 2, filterLength / 2, filterLength);
 filterInUse                   = exp(-filterStep .^ 2 / (2 * sigma ^ 2));
 filterInUse                   = filterInUse / sum (filterInUse); 
-% explainedCRR = [0.0941971391500324;0.216321097217030;0.127652483561879;0.198087983335957;0.357043607042852;0.0840192153190327;0.107332573346359;0.557599484041760;0.127320931929138;0.144772314850104;0.415913774401915;0.182525661848444;0.289938234354398;0.360483221402390;0.466216824758133;0.411115775925481;0.366425364730772;0.438203478685215;0.364274411208107;0.394978241906835;0.406057563091628;0.389362139537689;0.528165743352254;0.583359786983115;0.231085979647241]; % from EV_correct_error.m
 
 correctRateTLDS   = nan(length(corrDataSet) - 1, numTime);
 correctRateRaw    = nan(length(corrDataSet) - 1, numTime);
