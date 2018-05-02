@@ -5,6 +5,8 @@ cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 
 
 load([TempDatDir 'Combined_Shuffle_Spikes.mat'])
+load([TempDatDir 'Combined_data_SLDS_Shf_fit.mat'], 'fitShfData')
+load([TempDatDir 'Combined_data_SLDS_fit.mat'], 'fitData')
 
 numShfTrials = 200;
 
@@ -22,8 +24,9 @@ for nData = 1:length(nDataSet)
     numUnits      = length(nDataSet(nData).nUnit);
     numTrials     = length(totTargets);
     numYesTrial   = sum(totTargets);
-    nSessionData  = [nDataSet(nData).unit_KF_yes_fit; nDataSet(nData).unit_KF_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_KF_yes_fit; nDataSet(nData).unit_KF_no_fit];
 %     nSessionData  = [nDataSet(nData).unit_yes_trial; nDataSet(nData).unit_no_trial];
+    nSessionData  = fitData(nData).K8yEst;
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargets);
     scoreMat      = nan(numTrials, size(nSessionData, 3));
@@ -36,8 +39,9 @@ for nData = 1:length(nDataSet)
     totTargetsShf = [true(numShfTrials, 1); false(numShfTrials, 1)];
     numTrials     = length(totTargetsShf);
     numYesTrial   = sum(totTargetsShf);
-    nSessionData  = [nDataSet(nData).unit_KFShf_yes_fit; nDataSet(nData).unit_KFShf_no_fit];
+%     nSessionData  = [nDataSet(nData).unit_KFShf_yes_fit; nDataSet(nData).unit_KFShf_no_fit];
 %     nSessionData  = [nDataSet(nData).unit_yes_Shftrial; nDataSet(nData).unit_no_Shftrial];
+    nSessionData  = fitShfData(nData).K8yEst;
     nSessionData  = normalizationDim(nSessionData, 2);  
     coeffs        = coeffLDA(nSessionData, totTargetsShf);
     scoreShfMat   = nan(numTrials, size(nSessionData, 3));

@@ -53,6 +53,9 @@ for nSession = 1:numSession
     y_est = nan(size(Y));
     for nTrial = 1:size(Y, 3)
         y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
+        y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
+        y_est_nTrial (y_est_nTrial <0) = 0;
+        y_est_nTrial = y_est_nTrial.^2;
         y_est(:, :, nTrial) = y_est_nTrial;
     end
     y_est = permute(y_est, [3 1 2]);
@@ -119,6 +122,9 @@ for nSession = 1:numSessionHi
     y_est = nan(size(Y));
     for nTrial = 1:size(Y, 3)
         y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
+        y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
+        y_est_nTrial (y_est_nTrial <0) = 0;
+        y_est_nTrial = y_est_nTrial.^2;
         y_est(:, :, nTrial) = y_est_nTrial;
     end
     y_est = permute(y_est, [3 1 2]);
@@ -187,6 +193,9 @@ for nSession = 1:numSessionSound
         y_est = nan(size(Y));
         for nTrial = 1:size(Y, 3)
             y_est_nTrial = estParams.C*seqTrain(nTrial).xsm;
+            y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
+            y_est_nTrial (y_est_nTrial <0) = 0;
+            y_est_nTrial = y_est_nTrial.^2;
             y_est(:, :, nTrial) = y_est_nTrial(:, 1:T);
         end
         y_est = permute(y_est, [3 1 2]);
