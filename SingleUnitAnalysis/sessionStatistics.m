@@ -52,3 +52,28 @@ for nSession = 1:length(nDataSet)
     fprintf(statsFile, '%f, %f, %d\n', [min(depth), max(depth), sum(pyr)]);
     
 end
+
+
+load([TempDatDir 'Shuffle_HiSoundSpikes.mat']);
+spkDataSet = nDataSet;
+
+load([TempDatDir 'Simultaneous_HiSoundSpikes.mat']);
+
+
+for nSession = 1:length(nDataSet)
+    
+    depth = nan(length(nDataSet(nSession).nUnit), 1);
+    pyr   = nan(length(nDataSet(nSession).nUnit), 1);
+    
+    sessionIndex = nDataSet(nSession).sessionIndex;
+    
+    for nUnit = 1:length(nDataSet(nSession).nUnit)
+        unitIndex = nDataSet(nSession).nUnit(nUnit);
+        cellIndex = [spkDataSet.sessionIndex] == sessionIndex & [spkDataSet.nUnit] == unitIndex;
+        depth(nUnit) = spkDataSet(cellIndex).depth_in_um;
+        pyr(nUnit) = spkDataSet(cellIndex).cell_type;
+    end
+    
+    fprintf(statsFile, '%f, %f, %d\n', [min(depth), max(depth), sum(pyr)]);
+    
+end

@@ -7,7 +7,7 @@ errDataSet   = nDataSet;
 load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
 
 
-numSession   = length(nDataSet) - 1;
+numSession   = length(nDataSet);
 numUnits     = nan(numSession, 1);
 numYesTrial  = nan(numSession, 1);
 numNoTrial   = nan(numSession, 1);
@@ -24,15 +24,19 @@ for nSession = 1:numSession
     fireRate(nSession, 3)  = min(mean(mean(nDataSet(nSession).unit_no_trial, 3), 1));
     fireRate(nSession, 4)  = max(mean(mean(nDataSet(nSession).unit_no_trial, 3), 1));
     numYesError(nSession)  = sum(errDataSet(nSession).totTargets);
-    fireRate(nSession, 5)  = min(mean(mean(errDataSet(nSession).unit_yes_trial, 3), 1));
-    fireRate(nSession, 6)  = max(mean(mean(errDataSet(nSession).unit_yes_trial, 3), 1));
+    if ~isempty(errDataSet(nSession).unit_yes_trial)
+        fireRate(nSession, 5)  = min(mean(mean(errDataSet(nSession).unit_yes_trial, 3), 1));
+        fireRate(nSession, 6)  = max(mean(mean(errDataSet(nSession).unit_yes_trial, 3), 1));
+    end
     numNoError(nSession)   = sum(~errDataSet(nSession).totTargets);
-    fireRate(nSession, 7)  = min(mean(mean(errDataSet(nSession).unit_no_trial, 3), 1));
-    fireRate(nSession, 8)  = max(mean(mean(errDataSet(nSession).unit_no_trial, 3), 1));
+    if ~isempty(errDataSet(nSession).unit_no_trial)
+        fireRate(nSession, 7)  = min(mean(mean(errDataSet(nSession).unit_no_trial, 3), 1));
+        fireRate(nSession, 8)  = max(mean(mean(errDataSet(nSession).unit_no_trial, 3), 1));
+    end
 end
 
-% summary_table = [(1:numSession)', numUnits, numYesTrial, numNoTrial, numYesError, numNoError, fireRate];
-summary_table = [(1:numSession)', numUnits, fireRate];
+summary_table = [(1:numSession)', numUnits, numYesTrial, numNoTrial, numYesError, numNoError, fireRate];
+% summary_table = [(1:numSession)', numUnits, fireRate];
 disp(summary_table)
 excel_output  = cell(numSession, 4);
 
@@ -49,8 +53,8 @@ end
 numXDim      = nan(numSession, 1);  
 EigA         = nan(numSession, 3);
 for nSession = 1:numSession
-    numXDim(nSession)      = size(nDataSet(nSession).x_yes_fit, 2);
-    A                      = nDataSet(nSession).Ph.A;
+    numXDim(nSession)      = size(nDataSet(nSession).KFPh.A, 1);
+    A                      = nDataSet(nSession).KFPh.A;
     for nA                 = 1:3
         EigA(nSession, nA) = max(abs(eig(squeeze(A(:,:,nA+1)))));
     end
