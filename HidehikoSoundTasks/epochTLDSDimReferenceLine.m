@@ -2,8 +2,8 @@ addpath('../Func');
 addpath('../Release_LDSI_v3')
 setDir;
 
-load([TempDatDir 'Simultaneous_HiSpikes.mat'])
-load([TempDatDir 'Simultaneous_HiSpikes_SLDS_EV.mat'])
+load([TempDatDir 'Simultaneous_HiSoundSpikes.mat'])
+load([TempDatDir 'Simultaneous_HiSoundSpikes_SLDS_EV.mat'])
 mean_type    = 'Constant_mean';
 tol          = 1e-3;
 cyc          = 10000;
@@ -14,15 +14,15 @@ nFold        = 10;
 % bestModelIdx = 4;
 % thres        = 0.8;
 
-GPFAresultsFolder = '/Volumes/My Drive/ALM_Recording_Pole_Task_Svoboda_Lab/TLDS_analysis_Li_data/GPFA_Hidehiko_Data/mat_results/';
+GPFAresultsFolder = '/Volumes/My Drive/ALM_Recording_Pole_Task_Svoboda_Lab/TLDS_analysis_Li_data/GPFA_Hidehiko_Sound_Data/mat_results/';
 
-for nSession = [11 12 15]
+for nSession = [4 6]
     xDim       = size(nDataSet(nSession).unit_yes_trial, 2)-2;
     figure;
     hold on
 
     % LDS
-    load([TempDatDir 'SessionHi_' num2str(nSession) '.mat'],'err_model1','err_model2', 'err_model3', 'err_model4');    
+    load([TempDatDir 'SessionHiSound_' num2str(nSession) '.mat'],'err_model1','err_model2', 'err_model3', 'err_model4');    
     Err_all    = 100 - [mean(err_model1');mean(err_model2');mean(err_model3');mean(err_model4')]*100;
     Std_all    = [std(err_model1');std(err_model2');std(err_model3');std(err_model4')]/sqrt(nFold)*100;    
 %     Err_all    = 100 - [mean(err_model1');mean(err_model4')]*100;
@@ -62,14 +62,14 @@ for nSession = [11 12 15]
     
     Err_all    = mean(EVData(nSession).K4EV, 2)*100;
     Std_all    = std(EVData(nSession).K4EV, [], 2)*100;
-    errorbar((0:xDim+1)', Err_all',Std_all', '-ob','linewid',1)
+    errorbar((0:xDim+1)', Err_all',Std_all', '-or','linewid',1)
     
     Err_all    = mean(EVData(nSession).K8EV, 2)*100;
     Std_all    = std(EVData(nSession).K8EV, [], 2)*100;
-    errorbar((0:xDim+1)', Err_all',Std_all', '-or','linewid',1)
+    errorbar((0:xDim+1)', Err_all',Std_all', '-ob','linewid',1)
 
     
-    xlim([0.5 xDim+1]);
+    xlim([0.5 xDim]);
 %     y_ax       = ylim;
 %     y_ax(2)    = ceil(y_ax(2)/10)*10;
     ylim([0 60])
