@@ -98,71 +98,76 @@ GPFAStd(12,:,:) = [];
 TLDSMean(12,:,:) = [];
 TLDSStd(12,:,:) = [];
 
-% Boxcar150Mean     = nan(numSession, 3, 7);
-% Boxcar150Std      = nan(numSession, 3, 7);
-% 
-% Boxcar250Mean     = nan(numSession, 3, 7);
-% Boxcar250Std      = nan(numSession, 3, 7);
-% 
-% 
-% load([TempDatDir 'DataListSimEphysHiSound.mat']);
-% 
-% for nSession  = [1 2 3 4 5 6 7 8 9 10 11 13 14 15 16]
-%     nData         = 2;
-%     load([TempDatDir DataSetList(nData).name '.mat'])
-%     numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
-%     numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
-%     numTrials   = numYesTrial + numNoTrial;
-%     params.timeSeries = params.timeSeries(params.timeSeries<1.5);
-%     Tmm           = length(params.timeSeries);
-%     timePoints    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);    
-%     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
-%     numUnits      = length(nDataSet(nSession).nUnit);
-%     nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
-%     nSessionData  = nSessionData(:, :, 1:Tmm);
-%     nSessionData  = normalizationDim(nSessionData, 2);  
-%     coeffs        = coeffLDA(nSessionData, totTargets);
-%     scoreMat      = nan(numTrials, size(nSessionData, 3));
-%     for nTime     = 1:size(nSessionData, 3)
-%         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-%     end
-%     
-%     scoreMatBox70 = scoreMat;
-%     
-%     nData         = 4;
-%     load([TempDatDir DataSetList(nData).name '.mat'])
-%     params.timeSeries = params.timeSeries(params.timeSeries<1.5);
-%     Tmm           = length(params.timeSeries);
-%     nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
-%     nSessionData  = nSessionData(:, :, 1:Tmm);
-%     nSessionData  = normalizationDim(nSessionData, 2);  
-%     coeffs        = coeffLDA(nSessionData, totTargets);
-%     scoreMat      = nan(numTrials, size(nSessionData, 3));
-%     for nTime     = 1:size(nSessionData, 3)
-%         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-%     end
-%     
-%     scoreMatBox150= scoreMat;
-%     
-%     nData         = 6;
-%     load([TempDatDir DataSetList(nData).name '.mat'])
-%     params.timeSeries = params.timeSeries(params.timeSeries<1.5);
-%     Tmm           = length(params.timeSeries);
-%     nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
-%     nSessionData  = nSessionData(:, :, 1:Tmm);
-%     nSessionData  = normalizationDim(nSessionData, 2);  
-%     coeffs        = coeffLDA(nSessionData, totTargets);
-%     scoreMat      = nan(numTrials, size(nSessionData, 3));
-%     for nTime     = 1:size(nSessionData, 3)
-%         scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
-%     end
-%     
-%     scoreMatBox250= scoreMat;
-%     
-%     [Boxcar150Mean(nSession,:,:), Boxcar150Std(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatBox150, scoreMatBox70, timePoints, totTargets);
-%     [Boxcar250Mean(nSession,:,:), Boxcar250Std(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatBox250, scoreMatBox70, timePoints, totTargets);
-%     
-% end
+Boxcar150Mean     = nan(numSession, 3, 7);
+Boxcar150Std      = nan(numSession, 3, 7);
+
+Boxcar250Mean     = nan(numSession, 3, 7);
+Boxcar250Std      = nan(numSession, 3, 7);
+
+
+load([TempDatDir 'DataListSimEphysHiSound.mat']);
+
+for nSession  = [1 2 3 4 5 6 7 8 9 10 11 13 14 15 16]
+    nData         = 2;
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    numYesTrial = size(nDataSet(nSession).unit_yes_trial, 1);
+    numNoTrial  = size(nDataSet(nSession).unit_no_trial, 1);
+    numTrials   = numYesTrial + numNoTrial;
+    params.timeSeries = params.timeSeries(params.timeSeries<1.5);
+    Tmm           = length(params.timeSeries);
+    timePoints    = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);    
+    totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];
+    numUnits      = length(nDataSet(nSession).nUnit);
+    nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    nSessionData  = nSessionData(:, :, 1:Tmm);
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    scoreMatBox70 = scoreMat;
+    
+    nData         = 4;
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    params.timeSeries = params.timeSeries(params.timeSeries<1.5);
+    Tmm           = length(params.timeSeries);
+    nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    nSessionData  = nSessionData(:, :, 1:Tmm);
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    scoreMatBox150= scoreMat;
+    
+    nData         = 6;
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    params.timeSeries = params.timeSeries(params.timeSeries<1.5);
+    Tmm           = length(params.timeSeries);
+    nSessionData  = [nDataSet(nSession).unit_yes_trial; nDataSet(nSession).unit_no_trial];
+    nSessionData  = nSessionData(:, :, 1:Tmm);
+    nSessionData  = normalizationDim(nSessionData, 2);  
+    coeffs        = coeffLDA(nSessionData, totTargets);
+    scoreMat      = nan(numTrials, size(nSessionData, 3));
+    for nTime     = 1:size(nSessionData, 3)
+        scoreMat(:, nTime) = squeeze(nSessionData(:, :, nTime)) * coeffs(:, nTime);
+    end
+    
+    scoreMatBox250= scoreMat;
+    
+    [Boxcar150Mean(nSession,:,:), Boxcar150Std(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatBox150, scoreMatBox70, timePoints, totTargets);
+    [Boxcar250Mean(nSession,:,:), Boxcar250Std(nSession,:,:)] = computeSimilarityEpochTrialType(scoreMatBox250, scoreMatBox70, timePoints, totTargets);
+    
+end
+
+Boxcar150Mean(12,:,:) = [];
+Boxcar150Std(12,:,:) = [];
+Boxcar250Mean(12,:,:) = [];
+Boxcar250Std(12,:,:) = [];
 
 save([TempDatDir 'SimilarityHiSoundIndex.mat'], 'GPFAMean', 'GPFAStd', 'TLDSMean', 'TLDSStd')
 save([TempDatDir 'SimilarityHiSoundIndex.mat'], 'Boxcar150Mean', 'Boxcar150Std', 'Boxcar250Mean', 'Boxcar250Std' , '-append')

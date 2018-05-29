@@ -21,7 +21,7 @@ for nSession = 1:numSession
     numUnit    = size(Y_s, 1);
     Y_s        = reshape(Y_s, numUnit, []);
     mean_y     = mean(mean(Y_s, 2),3);
-    rand_y     = sum(remove_mean(Y_s, mean_y).^2, 2);
+    rand_y     = sum(bsxfun(@minus, Y_s, mean_y).^2, 2);
     
     % mean
     yes_var    = sum(squeeze(var(nDataSet(nSession).unit_yes_trial, [], 1))*size(nDataSet(nSession).unit_yes_trial, 1), 2);
@@ -75,6 +75,22 @@ xlabel('EV TLDS model')
 ylabel('EV Vanilla model')
 set(gca, 'TickDir', 'out')
 setPrint(12, 9, 'Plots/LDSModelFit_EV_VanillaCorrect')
+
+for n = 1:7
+    for m = n+1:7
+        [p, h] = signrank(explainedCRR(:, n)-explainedCRR(:, m));
+        disp([n, m, p, h])
+    end
+end
+
+figure,
+hold on
+boxplot(explainedCRR(:, [3 1 4 5 2 6 7]))
+box off
+xlabel('EV TLDS model')
+ylabel('EV Vanilla model')
+set(gca, 'TickDir', 'out')
+setPrint(4, 3, 'Plots/LDSModelFit_EV_box_plot')
 
 % 
 % 

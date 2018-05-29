@@ -1,4 +1,4 @@
- addpath('../Func');
+addpath('../Func');
 addpath('../Release_LDSI_v3');
 setDir;
 
