@@ -16,6 +16,10 @@
 
 function smoothedUnitData = getGaussianPSTH (filterInUse, nUnitData, fDim)
 
+    if nargin ==2
+        fDim = 2;
+    end
+
     if fDim ~=2
         error('Fileter dimension is not supported');
     end
