@@ -93,6 +93,9 @@ for nData = 1:length(nDataSet)
 
 end
 
+save('ave_reward.mat', 'ave_reward')
+
+load('ave_reward.mat')
 
 figure;
 xlabels = {'Full space', 'LDS', 'GPFA',  'KF forward', 'sLDS2', 'sLDS4', 'sLDS8'};
@@ -115,4 +118,4 @@ for nPlot = 1:7
     set(gca, 'TickDir', 'out')
 end
 
-setPrint(8*4, 6*7, 'Plots/NSession_comparison_previous_trial_Fits', 'pdf')
+setPrint(8*7, 6, 'Plots/NSession_comparison_previous_trial_Fits', 'pdf')

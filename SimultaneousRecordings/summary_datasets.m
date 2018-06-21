@@ -55,8 +55,8 @@ EigA         = nan(numSession, 3);
 for nSession = 1:numSession
     numXDim(nSession)      = size(nDataSet(nSession).KFPh.A, 1);
     A                      = nDataSet(nSession).KFPh.A;
-    for nA                 = 1:3
-        EigA(nSession, nA) = max(abs(eig(squeeze(A(:,:,nA+1)))));
+    for nA                 = 1:4
+        EigA(nSession, nA) = max(abs(eig(squeeze(A(:,:,nA)))));
     end
 end
 
@@ -79,3 +79,21 @@ for nData = 1:length(nDataSet)
         sum_pair = sum_pair + 1;
     end
 end
+
+figure;
+EigA_ = EigA;
+EigA_(:,1) = EigA_(:,1)-0.1;
+timeA = 0.0674./(1-EigA_);
+timeA(timeA<0) = max(timeA(:));
+timeA(timeA>20) = 20;
+for nEpoch = 1:4
+    subplot(1, 4, nEpoch)
+    hist(timeA(:, nEpoch), 0:2.5:20)
+    xlabel('Time constant (sec)')
+    ylabel('# sessions')
+    ylim([0 52])
+    xlim([-2 23])
+    box off
+    set(gca, 'TickDir', 'out')
+end
+setPrint(8*4, 6, 'Plots/Time_constant', 'pdf')

@@ -78,10 +78,6 @@ for nData = 1:length(nDataSet)
     trialCKFCorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialCKFCorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialCKFCorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
@@ -99,10 +95,6 @@ for nData = 1:length(nDataSet)
     trialGPFACorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialGPFACorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialGPFACorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
@@ -120,10 +112,6 @@ for nData = 1:length(nDataSet)
     trialKFForwardCorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialKFForwardCorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialKFForwardCorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
@@ -141,10 +129,6 @@ for nData = 1:length(nDataSet)
     trialKS2CorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialKS2CorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialKS2CorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
@@ -163,10 +147,6 @@ for nData = 1:length(nDataSet)
     trialKS4CorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialKS4CorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialKS4CorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
@@ -185,10 +165,6 @@ for nData = 1:length(nDataSet)
     trialKS8CorrEpoch = nan(2, length(timePoint)-1);
     for nEpoch     = 1:length(timePoint)-1
         scoreMat_  = scoreMat(:, timePoint(nEpoch):timePoint(nEpoch+1));
-
-
-
-
         trialKS8CorrEpoch(1, nEpoch) = mean(corr(scoreMat_(1:numYesTrial, :), (1:numYesTrial)', 'type', 'spearman'));
         trialKS8CorrEpoch(2, nEpoch) = mean(corr(scoreMat_(1+numYesTrial:end,:), (1:(numTrials-numYesTrial))', 'type', 'spearman'));
     end
