@@ -13,7 +13,7 @@ load([TempDatDir 'Simultaneous_Spikes.mat'])
 timePoints          = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
 
 
-for nSession      = 1:length(nDataSet)
+for nSession      = 17%1:length(nDataSet)
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
     numNoTrial    = length(nDataSet(nSession).unit_no_trial_index);
     totTargets    = [true(numYesTrial, 1); false(numNoTrial, 1)];

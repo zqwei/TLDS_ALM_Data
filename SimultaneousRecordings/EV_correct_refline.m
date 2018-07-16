@@ -2,10 +2,11 @@ addpath('../Func');
 setDir;
 load([TempDatDir 'Combined_Simultaneous_Spikes.mat'])
 load([TempDatDir 'Combined_data_SLDS_fit.mat'], 'fitData')
+load('Err_set', 'Err_set_all')
 
 numSession   = length(nDataSet);
 
-explainedCRR = nan(numSession, 7);
+explainedCRR = nan(numSession, 9);
 %1: mean
 %2: edlds fit
 %3: lds fit
@@ -61,13 +62,20 @@ for nSession = 1:numSession
     errTrialC  = sum(sum((Y-y_est).^2, 1), 3)./rand_y';
     explainedCRR(nSession, 7) = 1 - mean(errTrialC);
     
+    % edlds const A
+    ratio      = (explainedCRR(nSession, 2)-explainedCRR(nSession, 3))/(Err_set_all(nSession, 4) - Err_set_all(nSession, 1));
+    explainedCRR(nSession, 8) = explainedCRR(nSession, 3) + ratio*(Err_set_all(nSession, 2) - Err_set_all(nSession, 1));
+    
+    % edlds const C
+    explainedCRR(nSession, 9) = explainedCRR(nSession, 3) + ratio*(Err_set_all(nSession, 3) - Err_set_all(nSession, 1));
+    
 end
 
 
 figure;
 hold on
 plot([-0.05 1], [-0.05 1], '--k');
-plot(explainedCRR(:, 2), explainedCRR(:, [1 2 3 4 5 6 7]), 'o')
+plot(explainedCRR(:, 2), explainedCRR(:, [1 8 9]), 'o') % 2 3 4 5 6 7
 hold off
 xlim([-0.05 0.6])
 ylim([-0.05 0.6])
@@ -76,8 +84,8 @@ ylabel('EV Vanilla model')
 set(gca, 'TickDir', 'out')
 setPrint(12, 9, 'Plots/LDSModelFit_EV_VanillaCorrect')
 
-for n = 1:7
-    for m = n+1:7
+for n = 1:9
+    for m = n+1:9
         [p, h] = signrank(explainedCRR(:, n)-explainedCRR(:, m));
         disp([n, m, p, h])
     end
@@ -85,100 +93,9 @@ end
 
 figure,
 hold on
-boxplot(explainedCRR(:, [3 1 4 5 2 6 7]))
+boxplot(explainedCRR(:, [3 1 4 9 8 5 2 6 7]))
 box off
 xlabel('EV TLDS model')
 ylabel('EV Vanilla model')
 set(gca, 'TickDir', 'out')
 setPrint(4, 3, 'Plots/LDSModelFit_EV_box_plot')
-
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-
-% % scatter(explainedCRR, explainedVRR, [], numUints, 'filled');
-% % 
-% % % colorbar
-% % hold off
-% % xlim([-0.05 0.6])
-% % ylim([-0.05 0.6])
-% % xlabel('EV TLDS model')
-% % ylabel('EV Vanilla model')
-% % set(gca, 'TickDir', 'out')
-% % setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
-% % close all
-% 
-% figure;
-% hold on
-% bar(1:numSession-1, explainedCRR(1:numSession-1),'FaceColor','b')
-% bar(1:numSession-1, explainedVRR(1:numSession-1),'FaceColor','none')
-% hold off
-% box off
-% xlim([0.5 25.5])
-% ylim([0 0.701])
-% xlabel('Session index')
-% ylabel('Variance explained')
-% set(gca, 'YTick', [0.0 0.7])
-% set(gca, 'TickDir', 'out')
-% setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect')
-% 
-% figure;
-% hold on
-% plot(numUints(1:numSession-1), explainedCRR(1:numSession-1)./explainedVRR(1:numSession-1),'ok')
-% plot([5.5 22.5], [1 1],'--k')
-% box off
-% xlim([5.5 22.5])
-% ylim([0.18 1.3])
-% set(gca, 'YTick', [0.2 1.3])
-% set(gca, 'XTick', [6 22])
-% xlabel('Number units')
-% ylabel('EV_{TLDS}/EV_{Ref}')
-% set(gca, 'TickDir', 'out')
-% setPrint(8, 6, 'Plots/LDSModelFit_EV_VanillaCorrect_numUnits')

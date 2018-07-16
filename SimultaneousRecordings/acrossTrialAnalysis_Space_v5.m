@@ -203,8 +203,8 @@ for nPlot = 1:7
         tot_plot = tot_plot + 1;
         subplot(7, 4, tot_plot)
         hold on
-        plot(squeeze(session_pair_corrlation(:,1,nEpoch, 1)), squeeze(session_pair_corrlation(:,nPlot+1,nEpoch, 1)), 'ob')
-        plot(squeeze(session_pair_corrlation(:,1,nEpoch, 2)), squeeze(session_pair_corrlation(:,nPlot+1,nEpoch, 2)), 'or')
+        plot(squeeze(session_pair_corrlation(:,nPlot+1,nEpoch, 1)), squeeze(session_pair_corrlation(:,1,nEpoch, 1)), 'ob')
+        plot(squeeze(session_pair_corrlation(:,nPlot+1,nEpoch, 2)), squeeze(session_pair_corrlation(:,1,nEpoch, 2)), 'or')
         vec1 = squeeze(session_pair_corrlation(:,nPlot+1,nEpoch, :));
         vec2 = squeeze(session_pair_corrlation(:,1,nEpoch, :));
         p = signrank(vec1(:), vec2(:), 'tail', 'both');
@@ -220,4 +220,4 @@ for nPlot = 1:7
         set(gca, 'TickDir', 'out')
     end
 end
-setPrint(8*4, 6*7, 'Plots/NSession_comparison_Fits', 'pdf')
+setPrint(8*4, 6*7, 'Plots/NSession_comparison_Fits_version_2', 'pdf')

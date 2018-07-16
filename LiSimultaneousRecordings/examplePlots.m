@@ -8,7 +8,7 @@ numFold = 10;
 
 
 
-for nSession  = 1:length(nDataSet)
+for nSession  = 17%1:length(nDataSet)
     figure;
     
     numYesTrial   = length(nDataSet(nSession).unit_yes_trial_index);
@@ -86,10 +86,11 @@ for nSession  = 1:length(nDataSet)
 
     subplot(3, 2, 3)
     hold on
-    plot(params.timeSeries, scoreMat(1:8, :), '-b')
-    plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+8, :), '-r')
+    plot(params.timeSeries, scoreMat(1:10, :), '-b')
+    plot(params.timeSeries, scoreMat(numYesTrial+1:numYesTrial+10, :), '-r')
     gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 0.5);
     xlim([min(params.timeSeries) max(params.timeSeries)]);
+    ylim([-4, 2.3])
     box off
     hold off
     xlabel('Time (s)')
