@@ -16,10 +16,6 @@ for nSession = 1:numSession
     for nTrial = 1:numYesTrial
         ntrial_index = nDataSet(nSession).unit_yes_trial_index(nTrial);
         ntrial_firstLick = behavior_lick_times{ntrial_index};
-%         ntrial_firstLick = ntrial_firstLick(:,1) - task_cue_time(ntrial_index);
-%         ntrial_firstLick(ntrial_firstLick<0) = [];
-%         ntrial_firstLick = min(ntrial_firstLick) * 1000;
-%         firstLickTime(nTrial) = ntrial_firstLick;
         if ~isempty(ntrial_firstLick)
             ntrial_firstLick = ntrial_firstLick(:,1) - task_cue_time(ntrial_index);
             ntrial_firstLick(ntrial_firstLick<0) = [];
@@ -33,7 +29,7 @@ for nSession = 1:numSession
             disp([nSession, ntrial_index])
         end
     end
-    
+
     for nTrial = 1:numNoTrial
         ntrial_index = nDataSet(nSession).unit_no_trial_index(nTrial);
         ntrial_firstLick = behavior_lick_times{ntrial_index};
@@ -49,7 +45,7 @@ for nSession = 1:numSession
         else
             disp([nSession, ntrial_index])
         end
-    end    
+    end
     nDataSet(nSession).totTargets = totTargets;
     nDataSet(nSession).firstLickTime = firstLickTime;
 end

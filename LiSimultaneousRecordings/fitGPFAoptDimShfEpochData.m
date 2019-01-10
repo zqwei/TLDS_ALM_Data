@@ -21,9 +21,9 @@ for nSession = 1:numSession
         seqTest(nTrial).T = size(Y_shuffle,3);
     end
     [fitData, ~] = exactInferenceWithLL(seqTest, estParams);
-    
+
     y_est = nan(size(Y_shuffle));
-            
+
     for nTrial = 1:size(Y_shuffle, 1)
         y_est_nTrial = estParams.C*fitData(nTrial).xsm;
 %         y_est_nTrial = bsxfun(@plus, y_est_nTrial, estParams.d);
@@ -31,9 +31,9 @@ for nSession = 1:numSession
 %         y_est_nTrial = y_est_nTrial.^2;
         y_est(nTrial, :, :) = y_est_nTrial;
     end
-    
+
     save(['GPFAFits/gpfa_optxDimShfEpochFit_idx_' num2str(nSession) '.mat'], 'estParams', 'seqTest', 'y_est');
-    
+
 end
 
 close all
