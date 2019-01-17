@@ -9,7 +9,7 @@ This an ensemble of supporting codes for **An orderly single-trial organization 
 # Analyses
 ## Population dynamical system fits
 
-### EDDLS
+### EDLDS
 
 ### GPFA
 
