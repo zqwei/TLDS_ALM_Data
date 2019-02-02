@@ -20,6 +20,7 @@ The `setDir` code in folder `Func` will automatically download the code at **eve
 ## Population dynamical system fits
 ### EDLDS
 ### GPFA
+The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits, please set the directory to folder `gpfa_v0203`.
 ### sLDS
 ## Populational dynamics analyses
 ### Clustered single unit selectivity
