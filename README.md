@@ -5,23 +5,25 @@ This an ensemble of supporting codes for **An orderly single-trial organization 
 **The documentation is still under construction** (This line will be removed as it completed).
 
 # Data
-
-# Analyses
-## Population dynamical system fits
-
-### EDLDS
-
-### GPFA
-
-### sLDS
-
-## Single neural dynamics analyses
-
-## Populational dynamics analyses
-
-### Sparse LDA
+Current data is stored at [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
+The `setDir` code in folder `Func` will automatically download the code at **every** run. One can remove the download code as the data is already downloaded.
 
 ## Code and Figures
+* Figure 1b (left): `SingleUnitAnalysis/ZscoreTime.m`
+* Figure 1b (right): `SingleUnitAnalysis/ZscoreTimeSound.m`
+* Figure S1a-f: `SingleUnitAnalysis/SimilarityLDA_LDA.m`
+* Figure S1j-l: `SingleUnitAnalysis/SimilarityLDA_LDA_Sound.m`
+* Figure S1g-i: `SingleUnitAnalysis/LDAScoreShuffledTrial.m`
+* Figure S1m-o: `SingleUnitAnalysis/LDAScoreShuffledTrialSound.m`
+
+# Analyses Details
+## Population dynamical system fits
+### EDLDS
+### GPFA
+### sLDS
+## Populational dynamics analyses
+### Clustered single unit selectivity
+### Sparse LDA
 
 # License
 
