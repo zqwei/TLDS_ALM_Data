@@ -18,10 +18,13 @@ The `setDir` code in folder `Func` will automatically download the code at **eve
 
 # Analyses Details
 ## Population dynamical system fits
+All population dynamical system fits codes are provided in folder `SimultaneousRecordingsFits` using data pre-downloaded from [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
 ### EDLDS
+EDLDS fit is as submodule forked from [Epoch-Dependent-LDS-Fit](https://github.com/zqwei/Epoch-Dependent-LDS-Fit).
 ### GPFA
 The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits, please set the directory to folder `gpfa_v0203`.
 ### sLDS
+sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The implementation code is sent upon request.
 ## Populational dynamics analyses
 ### Clustered single unit selectivity
 ### Sparse LDA
