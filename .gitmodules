@@ -1,0 +1,3 @@
+[submodule "EDLDS"]
+	path = EDLDS
+	url = https://github.com/zqwei/Epoch-Dependent-LDS-Fit.git
