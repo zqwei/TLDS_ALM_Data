@@ -37,7 +37,6 @@ imagesc(params.timeSeries, 1:numUnits, zScores(idx,:), [-10 10]);
 colormap(cbrewer('div', 'RdBu', 128))
 freezeColors
 h = colorbar;
-% set(h, 'YTick', 0:0.5:1)
 axis xy
 gridxy ([params.polein, params.poleout, 0],[], 'Color','k','Linestyle','--','linewid', 1.0)
 xlabel('Time (s)')
@@ -46,31 +45,3 @@ xlim([params.timeSeries(1) params.timeSeries(end)])
 set(gca, 'YTick', [1 length(logPValue)])
 set(gca, 'TickDir', 'out')
 setPrint(16, 6, 'Plots/Zscore')
-% % 
-% % 
-% % cellType                  = nan(numUnits, 2);
-% % 
-% % for nUnit                 = 1:numUnits
-% %     
-% %     cellType(nUnit, 1)    = sum(zScores(nUnit, :)>3);
-% %     cellType(nUnit, 2)    = sum(zScores(nUnit, :)<-3);
-% %     
-% % end
-% % 
-% % thres                      = 8;
-% % cellGroup                  = nan(numUnits, 1);
-% % cellGroup(cellType(:,1)<thres  & cellType(:,2)<thres ) = 0;
-% % cellGroup(cellType(:,1)>=thres & cellType(:,2)<thres ) = 1;
-% % cellGroup(cellType(:,1)<thres  & cellType(:,2)>=thres) = 2;
-% % cellGroup((cellType(:,1)>=thres & cellType(:,2)>=thres) | (abs(cellType(:,1)-cellType(:,2))<thres) & max(cellType(:,1), cellType(:,2))>=thres) = 3;
-% % save('cellGroup', 'cellGroup')
-% % 
-% % numTrials          = 100;
-% % firingRates        = generateDPCAData(nDataSet, numTrials);
-% % firingRatesAverage = nanmean(firingRates, ndims(firingRates));
-% % 
-% % figure;
-% % hold on
-% % plot(mean(squeeze(firingRatesAverage(cellGroup==2, 1, :))), '-b')
-% % plot(mean(squeeze(firingRatesAverage(cellGroup==2, 2, :))), '-r')
-% % hold off
