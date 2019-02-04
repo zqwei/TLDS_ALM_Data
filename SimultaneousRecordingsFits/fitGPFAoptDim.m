@@ -1,10 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GPFA fits for simultaneous recording data
+% 
+% Results will be stored in folder mat_results
+%
+%
+% ==========================================
+% Ziqiang Wei
+% weiz@janelia.hhmi.org
+% 2019-02-04
+%
+%
+%
 addpath('../Func');
 addpath(genpath('../gpfa_v0203'))
 setDir;
 
 load([TempDatDir 'Simultaneous_Spikes.mat'])
 numSession   = length(nDataSet);
-xDimSet      = [2, 4, 6, 2, 4, 3, 4, 1, 4, 4, 4, 5, 6, 5, 6, 5, 9, 2, 3, 2, 3, 3];
 
 for nSession = 1:numSession
     load(['mat_results/run0' num2str(nSession, '%02d') '/gpfa_xDim' num2str(xDimSet(nSession), '%02d') '.mat'])

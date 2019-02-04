@@ -1,7 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GPFA fits for simultaneous recording data
+%
+% 
+% Of note: xDimSet is obtained from correct data using fitGPFAoptDim.m
+%
+% ==========================================
+% Ziqiang Wei
+% weiz@janelia.hhmi.org
+% 2019-02-04
+%
+%
+%
 addpath('../Func');
 addpath(genpath('../gpfa_v0203'))
 setDir;
-
 load([TempDatDir 'SimultaneousError_Spikes.mat'])
 numSession   = length(nDataSet);
 xDimSet      = [2, 4, 6, 2, 4, 3, 4, 1, 4, 4, 4, 5, 6, 5, 6, 5, 9, 2, 3, 2, 3, 3];
@@ -30,5 +42,3 @@ for nSession = 1:numSession
     save(['GPFAFits/gpfa_optxDimErrFit_idx_' num2str(nSession) '.mat'], 'estParams', 'seqTest', 'y_est');
     
 end
-
-close all
