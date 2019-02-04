@@ -60,7 +60,7 @@ sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The
 
 ## Figure not included
 * Figure 1a, 2a, 4a-b, 7: schematics
-* Figure 2d, 5c-g, : can be recreated using other codes (code can be shared upon requests)
+* Figure 5c-g : can be recreated using other codes (code can be shared upon requests)
 
 # License
 MIT
