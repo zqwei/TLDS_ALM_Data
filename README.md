@@ -9,10 +9,13 @@ Current data is stored at [figshare](https://figshare.com/articles/Simultaneous_
 The `setDir` code in folder `Func` will automatically download the code at **every** run. One can remove the download code as the data is already downloaded.
 
 ## Code and Figures
+### Single neuron selectivity
 * Figure 1b (left): `SingleUnitAnalysis/ZscoreTime.m`
 * Figure 1b (right): `SingleUnitAnalysis/ZscoreTimeSound.m`
+### Coding direction rotations
 * Figure S1a-f: `SingleUnitAnalysis/SimilarityLDA_LDA.m`
 * Figure S1j-l: `SingleUnitAnalysis/SimilarityLDA_LDA_Sound.m`
+### Neural dynamics onto coding directions
 * Figure S1g-i: `SingleUnitAnalysis/LDAScoreShuffledTrial.m`
 * Figure S1m-o: `SingleUnitAnalysis/LDAScoreShuffledTrialSound.m`
 
