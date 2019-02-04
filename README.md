@@ -23,6 +23,13 @@ The `setDir` code in folder `Func` will automatically download the code at **eve
 * Figure 4c-f, Figure S5: `SimultaneousRecordingsAnalysis/timeLDA.m`
 * Figure 4g-h, Figure S6: `SimultaneousRecordingsAnalysis/rankSimilarityComparisonPlots.m`
 * Figure 5a-b: `SimultaneousRecordingsAnalysis/rankDynamics.m`
+### Trial type decodability
+### Reaction time
+### Error trial decodability
+### Explained variance
+* Figure 2d: `SimultaneousRecordingsAnalysis/EV_correct_refline.m`
+* Figure 6b: `SimultaneousRecordingsAnalysis/EV_correct_error.m`
+
 
 ## Population dynamical system fits
 All population dynamical system fits codes are provided in folder `SimultaneousRecordingsFits` using data pre-downloaded from [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
@@ -47,6 +54,11 @@ The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is fr
 ### sLDS
 sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The implementation code is sent upon request.
 * These codes can generate **Figures 2c, S2a, S2c**
+
+## Figure not included
+* Figure 1a, 4a-b, 7: schematics
+* Figure 2d, 5c-g, : can be recreated using other codes (code can be shared upon requests)
+
 # License
 MIT
 
