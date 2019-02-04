@@ -19,6 +19,10 @@ The `setDir` code in folder `Func` will automatically download the code at **eve
 ### Neural dynamics onto coding directions
 * Figure S1g-i: `SingleUnitAnalysis/LDAScoreShuffledTrial.m`
 * Figure S1m-o: `SingleUnitAnalysis/LDAScoreShuffledTrialSound.m`
+### Rank dynamics
+* Figure 4c-f, Figure S5: `SimultaneousRecordingsAnalysis/timeLDA.m`
+* Figure 4g-h, Figure S6: `SimultaneousRecordingsAnalysis/rankSimilarityComparisonPlots.m`
+* Figure 5a-b: `SimultaneousRecordingsAnalysis/rankDynamics.m`
 
 ## Population dynamical system fits
 All population dynamical system fits codes are provided in folder `SimultaneousRecordingsFits` using data pre-downloaded from [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
