@@ -23,6 +23,9 @@ All population dynamical system fits codes are provided in folder `SimultaneousR
 EDLDS fit is as submodule forked from [Epoch-Dependent-LDS-Fit](https://github.com/zqwei/Epoch-Dependent-LDS-Fit).
 ### GPFA
 The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits (aka _our implementations_), please set the directory of code to folder `gpfa_v0203`.
+* `fitGPFAoptDim`: fit for correct trial data and obtain optimal latent dimension.
+* `fitGPFAoptDimErrData`: apply correct trial fit to error trial data.
+
 ### sLDS
 sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The implementation code is sent upon request.
 ## Populational dynamics analyses
