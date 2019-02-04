@@ -2,8 +2,6 @@
 
 This an ensemble of supporting codes for **An orderly single-trial organization of population dynamics in premotor cortex predicts behavioral variability**, which can be used for a general purpose for neural population analyses on single trials.
 
-**The documentation is still under construction** (This line will be removed as it completed).
-
 # Data
 Current data is stored at [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
 The `setDir` code in folder `Func` will automatically download the code at **every** run. One can remove the download code as the data is already downloaded.
