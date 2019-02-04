@@ -1,3 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% image plot for rank dynamics
+% 
+%
+% ==========================================
+% Ziqiang Wei
+% weiz@janelia.hhmi.org
+% 2019-02-04
+%
+%
+%
+
 addpath('../Func');
 setDir;
 
