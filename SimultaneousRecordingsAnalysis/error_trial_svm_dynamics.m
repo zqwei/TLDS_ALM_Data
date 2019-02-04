@@ -10,7 +10,7 @@
 %
 %
 addpath('../Func');
-addpath('../Release_LDSI_v3');
+addpath('../EDLDS/Code/');
 setDir;
 
 load([TempDatDir 'Combined_Simultaneous_Error_Spikes.mat'])
