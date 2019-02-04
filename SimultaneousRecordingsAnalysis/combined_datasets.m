@@ -1,5 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Combining fitting results for correct trials
+% 
+%
+% ==========================================
+% Ziqiang Wei
+% weiz@janelia.hhmi.org
+% 2019-02-04
+%
+%
+%
+
 addpath('../Func');
-addpath('../Release_LDSI_v3')
+addpath('../EDLDS/Code/')
 setDir;
 
 load([TempDatDir 'Simultaneous_Spikes.mat'])

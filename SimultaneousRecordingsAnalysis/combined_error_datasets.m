@@ -1,5 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Combining fitting results for error trials
+% 
+%
+% ==========================================
+% Ziqiang Wei
+% weiz@janelia.hhmi.org
+% 2019-02-04
+%
+%
+%
 addpath('../Func');
-addpath('../Release_LDSI_v3')
+addpath('../EDLDS/Code/')
 setDir;
 
 load([TempDatDir 'SimultaneousError_Spikes.mat'])
