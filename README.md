@@ -29,6 +29,10 @@ EDLDS fit is as submodule forked from [Epoch-Dependent-LDS-Fit](https://github.c
     * model 2 -- constant W(mode)
     * model 3 -- constant W(projection)
     * model 4 -- variable W(mode) and W(projection)
+* `fitEDLDSoptDim` : refit EDLDS models at optimal dimensions (the optimal dimensions are estimated from `fitEDLDSModel`).
+* `fitEDLDSoptDimTrace` : fit EDLDS dynamics at optimal dimensions in correct trials
+* `fitEDLDSoptDimErrorTrace` : fit EDLDS dynamics at optimal dimensions in error trials
+
 ### GPFA
 The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits (aka _our implementations_), please set the directory of code to folder `gpfa_v0203`.
 * `fitGPFAoptDim`: fit for correct trial data and obtain optimal latent dimension.
