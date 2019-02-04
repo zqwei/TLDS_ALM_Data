@@ -8,18 +8,18 @@ This an ensemble of supporting codes for **An orderly single-trial organization 
 Current data is stored at [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
 The `setDir` code in folder `Func` will automatically download the code at **every** run. One can remove the download code as the data is already downloaded.
 
+# Analyses
 ## Code and Figures
 ### Single neuron selectivity
 * Figure 1b (left): `SingleUnitAnalysis/ZscoreTime.m`
 * Figure 1b (right): `SingleUnitAnalysis/ZscoreTimeSound.m`
-### Coding direction rotations
+### Coding direction rotations (based on Sparse LDA)
 * Figure S1a-f: `SingleUnitAnalysis/SimilarityLDA_LDA.m`
 * Figure S1j-l: `SingleUnitAnalysis/SimilarityLDA_LDA_Sound.m`
 ### Neural dynamics onto coding directions
 * Figure S1g-i: `SingleUnitAnalysis/LDAScoreShuffledTrial.m`
 * Figure S1m-o: `SingleUnitAnalysis/LDAScoreShuffledTrialSound.m`
 
-# Analyses Details
 ## Population dynamical system fits
 All population dynamical system fits codes are provided in folder `SimultaneousRecordingsFits` using data pre-downloaded from [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
 ### EDLDS
@@ -28,15 +28,10 @@ EDLDS fit is as submodule forked from [Epoch-Dependent-LDS-Fit](https://github.c
 The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits (aka _our implementations_), please set the directory of code to folder `gpfa_v0203`.
 * `fitGPFAoptDim`: fit for correct trial data and obtain optimal latent dimension.
 * `fitGPFAoptDimErrData`: apply correct trial fit to error trial data.
-
 ### sLDS
 sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The implementation code is sent upon request.
-## Populational dynamics analyses
-### Clustered single unit selectivity
-### Sparse LDA
 
 # License
-
 MIT
 
 # Citation
