@@ -24,13 +24,25 @@ The `setDir` code in folder `Func` will automatically download the code at **eve
 All population dynamical system fits codes are provided in folder `SimultaneousRecordingsFits` using data pre-downloaded from [figshare](https://figshare.com/articles/Simultaneous_extracellular_electrophysiology_data/7372898/3).
 ### EDLDS
 EDLDS fit is as submodule forked from [Epoch-Dependent-LDS-Fit](https://github.com/zqwei/Epoch-Dependent-LDS-Fit).
+* `fitEDLDSModel`: fit for 4 types of EDLDS models
+    * model 1 -- constant W(mode) and W(projection)
+    * model 2 -- constant W(mode)
+    * model 3 -- constant W(projection)
+    * model 4 -- variable W(mode) and W(projection)
+* `fitEDLDSoptDim` : refit EDLDS models at optimal dimensions (the optimal dimensions are estimated from `fitEDLDSModel`).
+* `fitEDLDSoptDimTrace` : fit EDLDS dynamics at optimal dimensions in correct trials
+* `fitEDLDSoptDimErrorTrace` : fit EDLDS dynamics at optimal dimensions in error trials
+* These codes can generate **Figures 2b, 2c, 6a, S2a, S2b**
+
 ### GPFA
 The [matlab code](http://users.ece.cmu.edu/~byronyu/software/gpfa0203.tgz) is from Byron Yu's lab. If you are interested to use the code in this repo to perform GPFA fits (aka _our implementations_), please set the directory of code to folder `gpfa_v0203`.
 * `fitGPFAoptDim`: fit for correct trial data and obtain optimal latent dimension.
 * `fitGPFAoptDimErrData`: apply correct trial fit to error trial data.
+* These codes can generate **Figures 2b, 2c, S2a**
+
 ### sLDS
 sLDS fit is done using code from [pyslds](https://github.com/mattjj/pyslds). The implementation code is sent upon request.
-
+* These codes can generate **Figures 2c, S2a, S2c**
 # License
 MIT
 
